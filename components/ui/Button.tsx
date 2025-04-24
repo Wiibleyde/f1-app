@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import * as Haptics from 'expo-haptics';
 
 interface ButtonProps {
     children: React.ReactNode;
@@ -12,8 +13,14 @@ const Button = ({
     onPress,
     disabled = false
 }: ButtonProps) => {
+
+    const handlePress = () => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+        onPress?.();
+    }
+
     return (
-        <TouchableOpacity style={styles.button} onPress={onPress} disabled={disabled}>
+        <TouchableOpacity style={styles.button} onPress={handlePress} disabled={disabled}>
             <Text style={styles.textButton}>
                 {children}
             </Text>
