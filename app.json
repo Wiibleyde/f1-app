@@ -4,7 +4,7 @@
     "slug": "f1-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/f1.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,7 +13,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/f1.png",
         "backgroundColor": "#ffffff"
       }
     },
@@ -27,8 +27,8 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
+          "image": "./assets/images/f1.png",
+          "imageWidth": 40,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
