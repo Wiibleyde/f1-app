@@ -3,13 +3,17 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 interface ButtonProps {
     children: React.ReactNode;
+    onPress?: () => void;
+    disabled?: boolean;
 }
 
 const Button = ({
-    children
+    children,
+    onPress,
+    disabled = false
 }: ButtonProps) => {
     return (
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={onPress} disabled={disabled}>
             <Text style={styles.textButton}>
                 {children}
             </Text>

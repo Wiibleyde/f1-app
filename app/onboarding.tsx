@@ -2,7 +2,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useEvent } from "expo";
 import { useVideoPlayer, VideoView } from "expo-video";
-import { StyleSheet, Dimensions, FlatList, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Dimensions, FlatList, TouchableOpacity, View, Animated } from "react-native";
 import { useState, useRef, useEffect } from "react";
 import Button from "@/components/ui/Button";
 
@@ -43,6 +43,32 @@ export default function OnBoardingScreen() {
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const flatListRef = useRef<FlatList<string[]>>(null);
+    
+    // Create animated values for each dot
+    const dotAnimations = useRef(
+        sliderInformations.map(() => ({
+            width: new Animated.Value(10),
+            opacity: new Animated.Value(0.5)
+        }))
+    ).current;
+
+    // Update animations when current index changes
+    useEffect(() => {
+        sliderInformations.forEach((_, index) => {
+            Animated.parallel([
+                Animated.timing(dotAnimations[index].width, {
+                    toValue: index === currentIndex ? 40 : 10,
+                    duration: 150, // Reduced from 300 to 150 for faster animation
+                    useNativeDriver: false,
+                }),
+                Animated.timing(dotAnimations[index].opacity, {
+                    toValue: index === currentIndex ? 1 : 0.5,
+                    duration: 150, // Reduced from 300 to 150 for faster animation
+                    useNativeDriver: false,
+                }),
+            ]).start();
+        });
+    }, [currentIndex]);
 
     const renderSlide = ({ item, index }: { item: string[], index: number }) => {
         return (
@@ -100,11 +126,17 @@ export default function OnBoardingScreen() {
 
             <View style={styles.paginationContainer}>
                 {sliderInformations.map((_, index) => (
-                    <View
+                    <Animated.View
                         key={index}
                         style={[
                             styles.paginationDot,
-                            index === currentIndex ? styles.activeDot : styles.inactiveDot,
+                            {
+                                width: dotAnimations[index].width,
+                                backgroundColor: currentIndex === index 
+                                    ? '#FF0000' 
+                                    : 'rgba(255, 255, 255, 0.5)',
+                                opacity: dotAnimations[index].opacity
+                            }
                         ]}
                     />
                 ))}
@@ -112,21 +144,21 @@ export default function OnBoardingScreen() {
 
             <View style={styles.navigationContainer}>
                 {currentIndex > 0 ? (
-                    <TouchableOpacity style={styles.navButton} onPress={handlePrev}>
-                        <ThemedText style={styles.navButtonText}>Précédent</ThemedText>
-                    </TouchableOpacity>
+                    <Button onPress={handlePrev}>
+                        Précédent
+                    </Button>
                 ) : (
-                    <TouchableOpacity style={styles.navButton} onPress={handleSkip}>
-                        <ThemedText style={styles.navButtonText}>Passer</ThemedText>
-                    </TouchableOpacity>
+                    <Button onPress={handleSkip}>
+                        Passer
+                    </Button>
                 )}
 
                 {currentIndex < sliderInformations.length - 1 ? (
-                    <TouchableOpacity style={styles.navButton} onPress={handleNext}>
-                        <ThemedText style={styles.navButtonText}>Suivant</ThemedText>
-                    </TouchableOpacity>
+                    <Button onPress={handleNext}>
+                        Suivant
+                    </Button>
                 ) : (
-                    <Button>
+                    <Button onPress={handleSkip}>
                         Commencer
                     </Button>
                 )}
@@ -162,16 +194,24 @@ const styles = StyleSheet.create({
         height: height,
         justifyContent: 'center',
         alignItems: 'center',
+        paddingTop: 20, // Add padding at the top to prevent text cutoff
+        paddingHorizontal: 20, // Add horizontal padding for better text display
     },
     slideTitle: {
         fontSize: 28,
         fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: 20,
+        marginTop: 10, // Add margin at the top to prevent text cutoff
+        paddingTop: 5, // Additional padding to ensure text is visible
+        includeFontPadding: true, // Ensure font includes proper padding
+        color: '#FFFFFF', // Force white color for title text
     },
     slideSubtitle: {
         fontSize: 18,
         textAlign: 'center',
+        paddingHorizontal: 10, // Add some horizontal padding
+        color: '#FFFFFF', // Force white color for subtitle text
     },
     paginationContainer: {
         flexDirection: 'row',
@@ -180,16 +220,9 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     paginationDot: {
-        width: 10,
         height: 10,
         borderRadius: 5,
         marginHorizontal: 5,
-    },
-    activeDot: {
-        backgroundColor: '#FFFFFF',
-    },
-    inactiveDot: {
-        backgroundColor: 'rgba(255, 255, 255, 0.5)',
     },
     navigationContainer: {
         flexDirection: 'row',
