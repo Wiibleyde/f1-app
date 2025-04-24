@@ -4,6 +4,7 @@ import { useEvent } from "expo";
 import { useVideoPlayer, VideoView } from "expo-video";
 import { StyleSheet, Dimensions, FlatList, TouchableOpacity, View } from "react-native";
 import { useState, useRef, useEffect } from "react";
+import Button from "@/components/ui/Button";
 
 const videoSource = require('../assets/bg.mp4');
 
@@ -20,7 +21,7 @@ export default function OnBoardingScreen() {
             player.play();
         }
     }, [isPlaying]);
-    
+
     const sliderInformations = [
         [
             "Bienvenue sur F1 App",
@@ -74,9 +75,9 @@ export default function OnBoardingScreen() {
     // This is an onboarding screen with a background video (./assets/videos/bg.mp4)
     // With a slider of 4 slides
     return (<>
-        <VideoView 
-            style={styles.backgroundVideo} 
-            player={player} 
+        <VideoView
+            style={styles.backgroundVideo}
+            player={player}
             nativeControls={false}
             contentFit="cover"
         />
@@ -96,7 +97,7 @@ export default function OnBoardingScreen() {
                     setCurrentIndex(slideIndex);
                 }}
             />
-            
+
             <View style={styles.paginationContainer}>
                 {sliderInformations.map((_, index) => (
                     <View
@@ -125,9 +126,9 @@ export default function OnBoardingScreen() {
                         <ThemedText style={styles.navButtonText}>Suivant</ThemedText>
                     </TouchableOpacity>
                 ) : (
-                    <TouchableOpacity style={styles.navButton} onPress={handleSkip}>
-                        <ThemedText style={styles.navButtonText}>Commencer</ThemedText>
-                    </TouchableOpacity>
+                    <Button>
+                        Commencer
+                    </Button>
                 )}
             </View>
         </ThemedView>
