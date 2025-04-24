@@ -8,7 +8,7 @@ const Splash = () => {
             <Image
                 source={require('@/assets/images/f1.svg')}
                 contentFit="contain"
-                style={{ width: 160, height: 40 }}
+                style={styles.logo}
             />
         </View>
     )
@@ -23,5 +23,9 @@ const styles = StyleSheet.create({
         height: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-    }
+    },
+    logo: {
+        width: 160,
+        height: 40,
+    },
 })
