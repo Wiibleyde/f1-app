@@ -16,7 +16,11 @@ export default function TabLayout() {
   
   if (isOnBoarding) {
     return (
-      <OnBoardingScreen onboardingComplete={() => setIsOnBoarding(false)} />
+      <OnBoardingScreen onboardingComplete={() => {
+        if (typeof setIsOnBoarding === 'function') {
+          setIsOnBoarding(false);
+        }
+      }} />
     );
   }
 

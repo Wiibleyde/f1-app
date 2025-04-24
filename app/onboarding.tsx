@@ -7,7 +7,7 @@ import Button from "@/components/ui/Button";
 import { logo, sliderInformations, videoSource } from "@/constants/OnBoarding";
 import RenderSlide from "@/components/renderSlider";
 
-export default function OnBoardingScreen({onboardingComplete}: {onboardingComplete: () => void}) {
+export default function OnBoardingScreen({onboardingComplete}: {onboardingComplete: any}) {
     const player = useVideoPlayer(videoSource, player => {
         player.loop = true;
         player.play();
@@ -57,6 +57,14 @@ export default function OnBoardingScreen({onboardingComplete}: {onboardingComple
     const handleScroll = (event: any) => {
         const slideIndex = Math.round(event.nativeEvent.contentOffset.x / width);
         setCurrentIndex(slideIndex);
+    };
+
+    const handleContinue = () => {
+        if (currentIndex === sliderInformations.length - 1) {
+            onboardingComplete();
+        } else {
+            setCurrentIndex(currentIndex + 1);
+        }
     };
 
     return (
@@ -113,7 +121,7 @@ export default function OnBoardingScreen({onboardingComplete}: {onboardingComple
 
             {currentIndex === sliderInformations.length - 1 && (
                 <View style={styles.continueContainer}>
-                    <Button onPress={handleSkip}>
+                    <Button onPress={handleContinue}>
                         Commencer
                     </Button>
                 </View>
