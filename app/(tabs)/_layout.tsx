@@ -10,6 +10,9 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import OnBoardingScreen from '../onboarding';
 import { useStorage } from '@/hooks/useStorage';
 
+import Fontisto from '@expo/vector-icons/Fontisto';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { storageItem: isOnBoarding, saveStorageItem: setIsOnBoarding } = useStorage<boolean>('onboarding', true);
@@ -38,15 +41,22 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: 'Accueil',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="races"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: "Courses",
+          tabBarIcon: ({ color }) => <Fontisto size={28} name="calendar" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="pilots"
+        options={{
+          title: "Pilotes",
+          tabBarIcon: ({ color }) => <Fontisto size={28} name="persons" color={color} />,
         }}
       />
     </Tabs>
