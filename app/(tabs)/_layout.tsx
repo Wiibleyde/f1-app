@@ -12,15 +12,11 @@ import { useStorage } from '@/hooks/useStorage';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const [isOnBoarding, setIsOnBoarding] = useStorage<boolean>('onboarding', true);
-  
+  const { storageItem: isOnBoarding, saveStorageItem: setIsOnBoarding } = useStorage<boolean>('onboarding', true);
+
   if (isOnBoarding) {
     return (
-      <OnBoardingScreen onboardingComplete={() => {
-        if (typeof setIsOnBoarding === 'function') {
-          setIsOnBoarding(false);
-        }
-      }} />
+      <OnBoardingScreen onboardingComplete={() => { setIsOnBoarding(false); }} />
     );
   }
 
