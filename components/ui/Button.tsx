@@ -1,6 +1,7 @@
-import React from 'react'
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import * as Haptics from 'expo-haptics';
+import Text from '@/theme/Text';
 
 interface ButtonProps {
     children: React.ReactNode;
@@ -21,7 +22,7 @@ const Button = ({
 
     return (
         <TouchableOpacity style={styles.button} onPress={handlePress} disabled={disabled}>
-            <Text style={styles.textButton}>
+            <Text variant='text' color='text'>
                 {children}
             </Text>
         </TouchableOpacity>
@@ -41,10 +42,5 @@ const styles = StyleSheet.create({
         paddingHorizontal: 40,
         paddingVertical: 10,
         borderTopRightRadius: 20,
-    },
-    textButton: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
     }
 })

@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet, View } from "react-native";
-import { ThemedText } from "./ThemedText";
+import Text from "@/theme/Text";
 
 interface RenderSlideProps {
     item: {
@@ -13,8 +13,8 @@ const RenderSlide = ({
 }: RenderSlideProps) => {
     return (
         <View style={styles.slideContainer}>
-            <ThemedText style={styles.slideTitle}>{item.title}</ThemedText>
-            <ThemedText style={styles.slideSubtitle}>{item.subtitle}</ThemedText>
+            <Text variant="title" color="text" style={styles.slideTitle}>{item.title}</Text>
+            <Text variant="text" color="text">{item.subtitle}</Text>
         </View>
     );
 };
@@ -33,19 +33,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     slideTitle: {
-        fontSize: 28,
-        fontWeight: 'bold',
         textAlign: 'center',
-        marginBottom: 20,
-        marginTop: 10,
-        paddingTop: 5,
-        includeFontPadding: true,
-        color: '#FFFFFF',
-    },
-    slideSubtitle: {
-        fontSize: 18,
-        textAlign: 'center',
-        paddingHorizontal: 10,
-        color: '#FFFFFF',
     },
 });

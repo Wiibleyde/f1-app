@@ -5,7 +5,7 @@ import { StyleSheet, Dimensions, View, Animated, ScrollView, Image } from "react
 import { useState, useRef, useEffect } from "react";
 import Button from "@/components/ui/Button";
 import { logo, sliderInformations, videoSource } from "@/constants/OnBoarding";
-import RenderSlide from "@/components/renderSlider";
+import RenderSlide from "@/components/RenderSlider";
 
 export default function OnBoardingScreen({onboardingComplete}: {onboardingComplete: any}) {
     const player = useVideoPlayer(videoSource, player => {
