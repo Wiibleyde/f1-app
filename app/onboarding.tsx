@@ -4,7 +4,7 @@ import { StyleSheet, Dimensions, Animated, ScrollView, Image } from "react-nativ
 import { useState, useRef, useEffect } from "react";
 import Button from "@/components/ui/Button";
 import { logo, sliderInformations, videoSource } from "@/constants/OnBoarding";
-import RenderSlide from "@/components/renderSlider";
+import RenderSlide from "@/components/RenderSlider";
 import Box from "@/theme/Box";
 
 export default function OnBoardingScreen({ onboardingComplete }: { onboardingComplete: any }) {
