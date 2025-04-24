@@ -2,11 +2,13 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useEvent } from "expo";
 import { useVideoPlayer, VideoView } from "expo-video";
-import { StyleSheet, Dimensions, FlatList, TouchableOpacity, View, Animated } from "react-native";
+import { StyleSheet, Dimensions, FlatList, View, Animated, ScrollView, Image } from "react-native";
 import { useState, useRef, useEffect } from "react";
 import Button from "@/components/ui/Button";
 
 const videoSource = require('../assets/bg.mp4');
+// Change from SVG to PNG or JPG format which is natively supported
+const logo = require('@/assets/images/f1.png'); // Make sure this file exists
 
 export default function OnBoardingScreen() {
     const player = useVideoPlayer(videoSource, player => {
@@ -79,20 +81,6 @@ export default function OnBoardingScreen() {
         );
     };
 
-    const handleNext = () => {
-        if (currentIndex < sliderInformations.length - 1) {
-            flatListRef.current?.scrollToIndex({ index: currentIndex + 1 });
-            setCurrentIndex(currentIndex + 1);
-        }
-    };
-
-    const handlePrev = () => {
-        if (currentIndex > 0) {
-            flatListRef.current?.scrollToIndex({ index: currentIndex - 1 });
-            setCurrentIndex(currentIndex - 1);
-        }
-    };
-
     const handleSkip = () => {
         // Navigate to app's main screen or complete onboarding
         // Add your navigation code here
@@ -108,6 +96,13 @@ export default function OnBoardingScreen() {
             contentFit="cover"
         />
         <ThemedView style={styles.container}>
+            <View style={styles.logoContainer}>
+                <Image 
+                    source={logo}
+                    style={styles.logo}
+                    resizeMode="contain"
+                />
+            </View>
             <FlatList
                 ref={flatListRef}
                 data={sliderInformations}
@@ -124,7 +119,7 @@ export default function OnBoardingScreen() {
                 }}
             />
 
-            <View style={styles.paginationContainer}>
+            <ScrollView pagingEnabled horizontal style={styles.paginationContainer} showsHorizontalScrollIndicator={false} contentContainerStyle={{ alignItems: 'center' }}>
                 {sliderInformations.map((_, index) => (
                     <Animated.View
                         key={index}
@@ -140,24 +135,18 @@ export default function OnBoardingScreen() {
                         ]}
                     />
                 ))}
-            </View>
+            </ScrollView>
 
-            <View style={styles.navigationContainer}>
-                {currentIndex > 0 ? (
-                    <Button onPress={handlePrev}>
-                        Précédent
-                    </Button>
-                ) : (
+            <View style={styles.passContainer}>
+                {currentIndex === 0 && (
                     <Button onPress={handleSkip}>
                         Passer
                     </Button>
                 )}
+            </View>
 
-                {currentIndex < sliderInformations.length - 1 ? (
-                    <Button onPress={handleNext}>
-                        Suivant
-                    </Button>
-                ) : (
+            <View style={styles.continueContainer}>
+                {currentIndex === sliderInformations.length - 1 && (
                     <Button onPress={handleSkip}>
                         Commencer
                     </Button>
@@ -224,9 +213,16 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginHorizontal: 5,
     },
-    navigationContainer: {
+    passContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        width: '80%',
+        position: 'absolute',
+        bottom: 40,
+    },
+    continueContainer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
         width: '80%',
         position: 'absolute',
         bottom: 40,
@@ -239,5 +235,15 @@ const styles = StyleSheet.create({
     navButtonText: {
         color: '#FFFFFF',
         fontWeight: 'bold',
+    },
+    logoContainer: {
+        position: 'absolute',
+        top: 60, // Increased top margin for better visibility
+        left: 20,
+        zIndex: 10, // Ensure the logo appears above other elements
+    },
+    logo: {
+        width: 110,
+        height: 40,
     },
 });
