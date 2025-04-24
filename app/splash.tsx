@@ -1,16 +1,17 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import React from 'react';
+import { StyleSheet } from 'react-native';
 import { Image } from 'expo-image';
+import Box from '@/theme/Box';
 
 const Splash = () => {
     return (
-        <View style={styles.container}>
+        <Box style={styles.container}>
             <Image
                 source={require('@/assets/images/f1.svg')}
                 contentFit="contain"
                 style={styles.logo}
             />
-        </View>
+        </Box>
     )
 }
 

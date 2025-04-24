@@ -1,13 +1,13 @@
-import { ThemedView } from "@/components/ThemedView";
 import { useEvent } from "expo";
 import { useVideoPlayer, VideoView } from "expo-video";
-import { StyleSheet, Dimensions, View, Animated, ScrollView, Image } from "react-native";
+import { StyleSheet, Dimensions, Animated, ScrollView, Image } from "react-native";
 import { useState, useRef, useEffect } from "react";
 import Button from "@/components/ui/Button";
 import { logo, sliderInformations, videoSource } from "@/constants/OnBoarding";
 import RenderSlide from "@/components/RenderSlider";
+import Box from "@/theme/Box";
 
-export default function OnBoardingScreen({onboardingComplete}: {onboardingComplete: any}) {
+export default function OnBoardingScreen({ onboardingComplete }: { onboardingComplete: any }) {
     const player = useVideoPlayer(videoSource, player => {
         player.loop = true;
         player.play();
@@ -68,19 +68,19 @@ export default function OnBoardingScreen({onboardingComplete}: {onboardingComple
     };
 
     return (
-        <ThemedView style={styles.container}>
+        <Box style={styles.container}>
             <VideoView
                 style={styles.backgroundVideo}
                 player={player}
                 contentFit="cover"
             />
-            <View style={styles.logoContainer}>
+            <Box style={styles.logoContainer}>
                 <Image
                     source={logo}
                     style={styles.logo}
                     resizeMode="contain"
                 />
-            </View>
+            </Box>
             <ScrollView
                 horizontal
                 pagingEnabled
@@ -112,21 +112,21 @@ export default function OnBoardingScreen({onboardingComplete}: {onboardingComple
             </ScrollView>
 
             {currentIndex === 0 && (
-                <View style={styles.passContainer}>
+                <Box style={styles.passContainer}>
                     <Button onPress={handleSkip}>
                         Passer
                     </Button>
-                </View>
+                </Box>
             )}
 
             {currentIndex === sliderInformations.length - 1 && (
-                <View style={styles.continueContainer}>
+                <Box style={styles.continueContainer}>
                     <Button onPress={handleContinue}>
                         Commencer
                     </Button>
-                </View>
+                </Box>
             )}
-        </ThemedView>
+        </Box>
     );
 }
 
