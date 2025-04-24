@@ -7,7 +7,7 @@ import Button from "@/components/ui/Button";
 import { logo, sliderInformations, videoSource } from "@/constants/OnBoarding";
 import RenderSlide from "@/components/renderSlider";
 
-export default function OnBoardingScreen() {
+export default function OnBoardingScreen({onboardingComplete}: {onboardingComplete: () => void}) {
     const player = useVideoPlayer(videoSource, player => {
         player.loop = true;
         player.play();

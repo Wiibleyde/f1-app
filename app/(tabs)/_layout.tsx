@@ -8,13 +8,17 @@ import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import OnBoardingScreen from '../onboarding';
+import { useStorage } from '@/hooks/useStorage';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-
-  return (
-    <OnBoardingScreen />
-  );
+  const [isOnBoarding, setIsOnBoarding] = useStorage<boolean>('onboarding', true);
+  
+  if (isOnBoarding) {
+    return (
+      <OnBoardingScreen onboardingComplete={() => setIsOnBoarding(false)} />
+    );
+  }
 
   return (
     <Tabs
