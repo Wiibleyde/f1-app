@@ -171,20 +171,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginHorizontal: 5,
   },
-  passContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '80%',
-    position: 'absolute',
-    bottom: 40,
-  },
-  continueContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    width: '80%',
-    position: 'absolute',
-    bottom: 40,
-  },
   navButton: {
     padding: 15,
     borderRadius: 10,
@@ -206,7 +192,7 @@ const styles = StyleSheet.create({
   },
   stepContainer: {
     flexDirection: 'row',
-    width: '80%',
+    width: '90%',
     position: 'absolute',
     bottom: 40,
   }
