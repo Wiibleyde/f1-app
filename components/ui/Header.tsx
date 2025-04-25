@@ -1,5 +1,6 @@
 import Box from '@/theme/Box'
 import Text from '@/theme/Text'
+import { Image } from 'expo-image'
 import { router } from 'expo-router'
 import React from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
@@ -16,9 +17,14 @@ const Header = ({
     return (
         <Box style={styles.header}>
             {backButton && <TouchableOpacity onPress={() => router.back()}>
-                <Text variant="title" textAlign='center' color='text'>
-                    Back
-                </Text>
+                <Image
+                    source={require('@/assets/images/back.svg')}
+                    style={{
+                        width: 30,
+                        height: 30,
+                        marginRight: 10,
+                    }}
+                />
             </TouchableOpacity>}
             <Text variant="title" textAlign='center' color='text'>
                 {title}
