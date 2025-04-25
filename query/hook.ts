@@ -30,6 +30,25 @@ export type Driver = {
   team_name: string;
 };
 
+
+export type RaceSession = {
+
+  meeting_key: number;
+  session_key: number;
+  location: string;
+  date_start: string;
+  date_end: string;
+  session_type: string;
+  session_name: string;
+  country_key: number;
+  country_code: string;
+  country_name: string;
+  circuit_key: number;
+  circuit_short_name: string;
+  gmt_offset: string;
+  year: number;
+}
+
 const fecthRacesFromYear = async (year: number): Promise<Race[]> => {
   const response = await fetch(`https://api.openf1.org/v1/meetings?year=${year}`);
   return response.json();
@@ -52,7 +71,7 @@ const fetchDrivers = async (): Promise<Driver[]> => {
   return Array.from(uniqueDriversMap.values());
 };
 
-const fetchRaceSessions = async (meeting_key: string): Promise<any> => {
+const fetchRaceSessions = async (meeting_key: string): Promise<RaceSession[]> => {
   const response = await fetch(`https://api.openf1.org/v1/sessions?meeting_key=${meeting_key}`);
   return response.json();
 }

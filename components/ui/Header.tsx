@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         alignItems: 'center',
         gap: 10,
+        paddingVertical: 20,
     },
     title: {
         color: '#FFFFFF',

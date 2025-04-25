@@ -1,8 +1,8 @@
 import { StyleSheet, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
-import Text from '@/theme/Text';
 import { useFetchRacesFromYear } from '@/query/hook';
 import RenderRace from '@/components/RenderRace';
 import Layout from '@/components/ui/Layout';
+import Header from '@/components/ui/Header';
 
 export default function HomeScreen() {
   const currentYear = new Date().getFullYear();
@@ -11,10 +11,8 @@ export default function HomeScreen() {
 
   return (
     <Layout>
-
-      <Text variant="title" textAlign="center" style={styles.title}>
-        Courses F1 {currentYear}
-      </Text>
+      
+      <Header title={`Courses ${currentYear}`} />
 
       {isLoading ? (
         <ActivityIndicator size="large" color="#ee0000" />

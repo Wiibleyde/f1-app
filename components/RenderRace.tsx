@@ -4,6 +4,7 @@ import Text from '@/theme/Text';
 import { router } from 'expo-router';
 import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
+import { getDay, getLastDay, getMonthThreeLetters } from '@/utils/date';
 
 interface RenderRaceProps {
   item: Race;
@@ -11,19 +12,6 @@ interface RenderRaceProps {
 }
 
 const RenderRace = ({ item, index }: RenderRaceProps) => {
-  const getMonthThreeLetters = (date: string) => {
-    return new Date(date).toLocaleString('en', { month: 'short' });
-  };
-
-  const getDay = (date: string): string => {
-    return new Date(date).getDate().toString().padStart(2, '0');
-  };
-
-  const getLastDay = (date: string): string => {
-    const lastDay = new Date(date);
-    lastDay.setDate(lastDay.getDate() + 3);
-    return lastDay.getDate().toString().padStart(2, '0');
-  };
 
   const handlePress = () => {
     router.push({ pathname: '/racesessions/[meeting_key]', params: { meeting_key: item.meeting_key } });
