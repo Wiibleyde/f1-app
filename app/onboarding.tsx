@@ -6,7 +6,7 @@ import Button from '@/components/ui/Button';
 import { logo, sliderInformations, videoSource } from '@/constants/OnBoarding';
 import Box from '@/theme/Box';
 import { Stack } from 'expo-router';
-import RenderSlide from '@/components/renderSlider';
+import RenderSlide from '@/components/RenderSlider';
 
 export default function OnBoardingScreen({ onboardingComplete }: { onboardingComplete: any }) {
   // Set status bar to transparent
