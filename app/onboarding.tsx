@@ -4,7 +4,6 @@ import { StyleSheet, Dimensions, Animated, ScrollView, Image, StatusBar } from '
 import { useState, useRef, useEffect } from 'react';
 import Button from '@/components/ui/Button';
 import { logo, sliderInformations, videoSource } from '@/constants/OnBoarding';
-import RenderSlide from '@/components/RenderSlider';
 import Box from '@/theme/Box';
 import { Stack } from 'expo-router';
 
@@ -130,7 +129,8 @@ export default function OnBoardingScreen({ onboardingComplete }: { onboardingCom
         decelerationRate="fast" // Improves scrolling performance
       >
         {sliderInformations.map((item, index) => (
-          <RenderSlide key={index} item={item} />
+          // <RenderSlide key={index} item={item} />
+          null
         ))}
       </ScrollView>
 
