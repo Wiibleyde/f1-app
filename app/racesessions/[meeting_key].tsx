@@ -1,8 +1,8 @@
+import Header from '@/components/ui/Header'
+import Layout from '@/components/ui/Layout'
 import { useFetchRaceSessions } from '@/query/hook'
-import Text from '@/theme/Text'
 import { Stack, useLocalSearchParams } from 'expo-router'
 import React from 'react'
-import { View } from 'react-native'
 
 const MeetingScreen = () => {
 
@@ -12,10 +12,10 @@ const MeetingScreen = () => {
     console.log(data, isLoading)
 
     return (
-        <View>
+        <Layout>
             <Stack.Screen options={{ headerShown: false }} />
-            <Text>{meeting_key}</Text>
-        </View>
+            <Header title='Sessions' backButton />
+        </Layout>
     )
 }
 

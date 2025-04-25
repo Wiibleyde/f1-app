@@ -1,9 +1,8 @@
 import { StyleSheet, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
-
-import Box from '@/theme/Box';
 import Text from '@/theme/Text';
 import { useFetchRacesFromYear } from '@/query/hook';
 import RenderRace from '@/components/RenderRace';
+import Layout from '@/components/ui/Layout';
 
 export default function HomeScreen() {
   const currentYear = new Date().getFullYear();
@@ -11,7 +10,8 @@ export default function HomeScreen() {
   const { data, isLoading, refetch, isRefetching } = useFetchRacesFromYear(currentYear);
 
   return (
-    <Box style={styles.container}>
+    <Layout>
+
       <Text variant="title" textAlign="center" style={styles.title}>
         Courses F1 {currentYear}
       </Text>
@@ -27,20 +27,11 @@ export default function HomeScreen() {
           showsVerticalScrollIndicator={false}
         />
       )}
-    </Box>
+    </Layout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    paddingTop: 50,
-    paddingHorizontal: '5%',
-    backgroundColor: '#000000',
-  },
   title: {
     alignSelf: 'flex-start',
     color: '#FFFFFF',
