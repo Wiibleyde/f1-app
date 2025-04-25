@@ -131,20 +131,14 @@ export default function OnBoardingScreen() {
               },
             ]}
           />
+
         ))}
       </Box>
 
-      {currentIndex === 0 && (
-        <Box style={styles.passContainer}>
-          <Button onPress={handlePress}>Passer</Button>
-        </Box>
-      )}
-
-      {currentIndex === sliderInformations.length - 1 && (
-        <Box style={styles.continueContainer}>
-          <Button onPress={handlePress}>Commencer</Button>
-        </Box>
-      )}
+      <Box style={[styles.stepContainer, { justifyContent: currentIndex === 0 ? 'flex-start' : 'flex-end' }]}>
+        {currentIndex == 0 && <Button onPress={handlePress}>Passer</Button>}
+        {currentIndex == sliderInformations.length - 1 && <Button onPress={handlePress}>Commencer</Button>}
+      </Box>
     </Box>
   );
 }
@@ -155,10 +149,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  stepContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   backgroundVideo: {
     position: 'absolute',
@@ -214,4 +204,10 @@ const styles = StyleSheet.create({
     width: 110,
     height: 40,
   },
+  stepContainer: {
+    flexDirection: 'row',
+    width: '80%',
+    position: 'absolute',
+    bottom: 40,
+  }
 });
