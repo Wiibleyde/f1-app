@@ -15,7 +15,8 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const [isLoading, setIsLoading] = useState(true);
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    Formula1Regular: require('../assets/fonts/Formula1-Regular.ttf'),
+    Formula1Bold: require('../assets/fonts/Formula1-Bold.ttf'),
   });
 
   useEffect(() => {

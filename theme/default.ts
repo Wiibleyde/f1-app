@@ -15,19 +15,24 @@ const theme = createTheme({
         secondary: palette.secondary,
         text: palette.text,
     },
-    spacing: {},
+    spacing: {
+        s: 8,
+        m: 16,
+        l: 24,
+        xl: 40,
+    },
     textVariants: {
         text: {
             fontSize: 16,
-            fontWeight: 'bold',
+            fontFamily: 'Formula1Regular',
         },
         title: {
-            fontSize: 32,
-            fontWeight: 'bold',
+            fontSize: 28,
+            fontFamily: 'Formula1Bold',
         },
         defaults: {
             fontSize: 16,
-            fontWeight: 'normal',
+            fontFamily: 'Formula1Regular',
         },
     },
 })
