@@ -11,7 +11,7 @@ interface RenderRaceProps {
 
 const RenderRace = ({ item, index }: RenderRaceProps) => {
   const getMonthThreeLetters = (date: string) => {
-    return new Date(date).toLocaleString('default', { month: 'short' });
+    return new Date(date).toLocaleString('en', { month: 'short' });
   };
 
   const getDay = (date: string): string => {
