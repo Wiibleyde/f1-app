@@ -25,11 +25,6 @@ export default function HomeScreen() {
           keyExtractor={(item) => item.broadcast_name}
           contentContainerStyle={styles.listContainer}
           showsVerticalScrollIndicator={false}
-          ListEmptyComponent={
-            <Box style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>Aucune course disponible</Text>
-            </Box>
-          }
         />
       )}
     </Box>
@@ -39,25 +34,22 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'flex-start',
-    width: '100%',
-    height: '100%',
     paddingTop: 50,
+    paddingHorizontal: '5%',
     backgroundColor: '#000000',
   },
   title: {
+    alignSelf: 'flex-start',
     color: '#FFFFFF',
-    marginBottom: 20,
+    marginBottom: 35,
+    marginTop: 10,
   },
   listContainer: {
-    width: '100%',
-    paddingBottom: 20,
-  },
-  emptyContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
+    gap: 8,
+    paddingBottom: 70,
   },
   emptyText: {
     color: '#FFFFFF',
