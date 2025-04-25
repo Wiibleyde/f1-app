@@ -3,6 +3,7 @@ import { StyleSheet, FlatList, ActivityIndicator, Pressable, TouchableOpacity } 
 import Box from '@/theme/Box';
 import Text from '@/theme/Text';
 import { useEffect, useState } from 'react';
+import { useStorage } from '@/hooks/useStorage';
 
 const url = 'https://api.openf1.org/v1/meetings?year='
 
@@ -101,8 +102,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
     color: '#FFFFFF',
     marginBottom: 20,
   },
@@ -123,7 +122,6 @@ const styles = StyleSheet.create({
   },
   raceName: {
     fontSize: 18,
-    fontWeight: 'bold',
     color: '#FFFFFF',
     marginBottom: 4,
   },

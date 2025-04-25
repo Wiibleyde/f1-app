@@ -1,13 +1,23 @@
 import { useEvent } from "expo";
 import { useVideoPlayer, VideoView } from "expo-video";
-import { StyleSheet, Dimensions, Animated, ScrollView, Image } from "react-native";
+import { StyleSheet, Dimensions, Animated, ScrollView, Image, StatusBar } from "react-native";
 import { useState, useRef, useEffect } from "react";
 import Button from "@/components/ui/Button";
 import { logo, sliderInformations, videoSource } from "@/constants/OnBoarding";
 import RenderSlide from "@/components/RenderSlider";
 import Box from "@/theme/Box";
+import { Stack } from "expo-router";
 
 export default function OnBoardingScreen({ onboardingComplete }: { onboardingComplete: any }) {
+    // Set status bar to transparent
+    useEffect(() => {
+        StatusBar.setTranslucent(true);
+        StatusBar.setBackgroundColor('transparent');
+        return () => {
+            StatusBar.setTranslucent(false);
+        };
+    }, []);
+
     const player = useVideoPlayer(videoSource, player => {
         player.loop = true;
         player.volume = 0;
@@ -102,6 +112,8 @@ export default function OnBoardingScreen({ onboardingComplete }: { onboardingCom
 
     return (
         <Box style={styles.container}>
+            <Stack.Screen options={{ headerShown: false }} />
+            
             <VideoView
                 style={styles.backgroundVideo}
                 player={player}

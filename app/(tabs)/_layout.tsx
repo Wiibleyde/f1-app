@@ -54,6 +54,13 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <Fontisto size={28} name="persons" color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: "Paramètres",
+          tabBarIcon: ({ color }) => <Fontisto size={28} name="spinner-cog" color={color} />,
+        }}
+      />
     </Tabs>
   );
 }
