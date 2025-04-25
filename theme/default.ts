@@ -22,6 +22,10 @@ const theme = createTheme({
         xl: 40,
     },
     textVariants: {
+        date: {
+            fontSize: 13,
+            fontFamily: 'Formula1Regular',
+        },
         text: {
             fontSize: 16,
             fontFamily: 'Formula1Regular',
