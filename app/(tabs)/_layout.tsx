@@ -10,15 +10,11 @@ import { useStorage } from '@/hooks/useStorage';
 import Fontisto from '@expo/vector-icons/Fontisto';
 
 export default function TabLayout() {
-  const { storageItem: isOnBoarding, saveStorageItem: setIsOnBoarding } = useStorage<boolean>('onboarding', true);
+  const { storageItem: isOnBoarding } = useStorage<boolean>('onboarding', true);
 
   if (isOnBoarding) {
     return (
-      <OnBoardingScreen
-        onboardingComplete={() => {
-          setIsOnBoarding(false);
-        }}
-      />
+      <OnBoardingScreen />
     );
   }
 

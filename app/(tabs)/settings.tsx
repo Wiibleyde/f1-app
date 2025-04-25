@@ -4,6 +4,7 @@ import Box from '@/theme/Box';
 import Text from '@/theme/Text';
 import { useStorage } from '@/hooks/useStorage';
 import { useState } from 'react';
+import { router } from 'expo-router';
 
 export default function SettingsScreen() {
   const { clearStorage } = useStorage<boolean>('onboarding', false);
@@ -12,6 +13,7 @@ export default function SettingsScreen() {
 
   const handleResetDataDebug = () => {
     clearStorage();
+    router.replace('/onboarding');
   };
 
   return (

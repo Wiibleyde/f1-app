@@ -1,22 +1,20 @@
 import { useEvent } from 'expo';
 import { useVideoPlayer, VideoView } from 'expo-video';
-import { StyleSheet, Dimensions, Animated, ScrollView, Image, StatusBar } from 'react-native';
+import { StyleSheet, Dimensions, Animated, ScrollView, Image } from 'react-native';
 import { useState, useRef, useEffect } from 'react';
 import Button from '@/components/ui/Button';
 import { logo, sliderInformations, videoSource } from '@/constants/OnBoarding';
 import Box from '@/theme/Box';
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import RenderSlide from '@/components/RenderSlider';
+import { useStorage } from '@/hooks/useStorage';
 
-export default function OnBoardingScreen({ onboardingComplete }: { onboardingComplete: any }) {
-  // Set status bar to transparent
-  useEffect(() => {
-    StatusBar.setTranslucent(true);
-    StatusBar.setBackgroundColor('transparent');
-    return () => {
-      StatusBar.setTranslucent(false);
-    };
-  }, []);
+export default function OnBoardingScreen() {
+
+  const scrollX = useRef(new Animated.Value(0)).current;
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const { saveStorageItem: setIsOnBoarding } = useStorage<boolean>('onboarding', true);
 
   const player = useVideoPlayer(videoSource, (player) => {
     player.loop = true;
@@ -31,10 +29,6 @@ export default function OnBoardingScreen({ onboardingComplete }: { onboardingCom
       player.play();
     }
   }, [isPlaying]);
-
-  const scrollX = useRef(new Animated.Value(0)).current;
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const scrollViewRef = useRef<ScrollView>(null);
 
   const dotAnimations = useRef(
     sliderInformations.map((_, index) => ({
@@ -79,8 +73,9 @@ export default function OnBoardingScreen({ onboardingComplete }: { onboardingCom
     };
   }, [currentIndex, width]);
 
-  const handleSkip = () => {
-    onboardingComplete();
+  const handlePress = () => {
+    setIsOnBoarding(false);
+    router.replace('/');
   };
 
   // Modified handleScroll to use Animated.event for native driver benefits
@@ -99,7 +94,7 @@ export default function OnBoardingScreen({ onboardingComplete }: { onboardingCom
 
   const handleContinue = () => {
     if (currentIndex === sliderInformations.length - 1) {
-      onboardingComplete();
+      handlePress();
     } else {
       // Smooth scroll to next slide
       scrollViewRef.current?.scrollTo({
@@ -152,7 +147,7 @@ export default function OnBoardingScreen({ onboardingComplete }: { onboardingCom
 
       {currentIndex === 0 && (
         <Box style={styles.passContainer}>
-          <Button onPress={handleSkip}>Passer</Button>
+          <Button onPress={handlePress}>Passer</Button>
         </Box>
       )}
 
