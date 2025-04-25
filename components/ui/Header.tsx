@@ -4,6 +4,7 @@ import { Image } from 'expo-image'
 import { router } from 'expo-router'
 import React from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
+import * as Haptics from 'expo-haptics'
 
 interface HeaderProps {
     backButton?: boolean
@@ -14,9 +15,15 @@ const Header = ({
     title,
     backButton = false
 }: HeaderProps) => {
+
+    const handlePress = () => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+        router.back()
+    }
+
     return (
         <Box style={styles.header}>
-            {backButton && <TouchableOpacity onPress={() => router.back()}>
+            {backButton && <TouchableOpacity onPress={handlePress}>
                 <Image
                     source={require('@/assets/images/back.svg')}
                     style={{

@@ -4,6 +4,7 @@ import Text from '@/theme/Text'
 import React from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { formatDate, getDay, getMonthThreeLetters } from '@/utils/date'
+import * as Haptics from 'expo-haptics'
 
 interface RenderSessionProps {
     item: RaceSession
@@ -13,8 +14,12 @@ const RenderSession = ({
     item
 }: RenderSessionProps) => {
 
+    const handlePress = () => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    }
+
     return (
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={handlePress}>
             <Box style={styles.sessionInfosContainer}>
                 <Text variant="date" style={styles.sessionDate}>
                     {getDay(item.date_start)}

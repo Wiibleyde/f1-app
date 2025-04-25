@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { getDay, getLastDay, getMonthThreeLetters } from '@/utils/date';
+import * as Haptics from 'expo-haptics';
 
 interface RenderRaceProps {
   item: Race;
@@ -14,6 +15,7 @@ interface RenderRaceProps {
 const RenderRace = ({ item, index }: RenderRaceProps) => {
 
   const handlePress = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     router.push({ pathname: '/racesessions/[meeting_key]', params: { meeting_key: item.meeting_key } });
   }
 
