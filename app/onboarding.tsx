@@ -6,6 +6,7 @@ import Button from '@/components/ui/Button';
 import { logo, sliderInformations, videoSource } from '@/constants/OnBoarding';
 import Box from '@/theme/Box';
 import { Stack } from 'expo-router';
+import RenderSlide from '@/components/renderSlider';
 
 export default function OnBoardingScreen({ onboardingComplete }: { onboardingComplete: any }) {
   // Set status bar to transparent
@@ -129,8 +130,7 @@ export default function OnBoardingScreen({ onboardingComplete }: { onboardingCom
         decelerationRate="fast" // Improves scrolling performance
       >
         {sliderInformations.map((item, index) => (
-          // <RenderSlide key={index} item={item} />
-          null
+          <RenderSlide key={index} item={item} />
         ))}
       </ScrollView>
 
