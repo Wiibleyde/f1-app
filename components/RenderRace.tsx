@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   raceBorder: {
     width: 2,
     height: '100%',
-    backgroundColor: '#30302f',
+    backgroundColor: '#ee0000',
     borderRadius: 50,
   },
   raceInfosText: {

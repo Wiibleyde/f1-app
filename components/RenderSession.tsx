@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     sessionBorder: {
         width: 2,
         height: '100%',
-        backgroundColor: '#30302f',
+        backgroundColor: '#ee0000',
         borderRadius: 50,
     },
     raceTrackerInfosContainer: {
