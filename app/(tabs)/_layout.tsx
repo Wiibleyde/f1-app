@@ -17,14 +17,18 @@ export default function TabLayout() {
 
   if (isOnBoarding) {
     return (
-      <OnBoardingScreen onboardingComplete={() => { setIsOnBoarding(false); }} />
+      <OnBoardingScreen
+        onboardingComplete={() => {
+          setIsOnBoarding(false);
+        }}
+      />
     );
   }
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "red",
+        tabBarActiveTintColor: 'red',
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
@@ -35,29 +39,30 @@ export default function TabLayout() {
             },
             default: {},
           }),
-          backgroundColor: "black",
+          backgroundColor: 'black',
           height: 60,
           paddingBottom: 10,
         },
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: "Courses",
+          title: 'Courses',
           tabBarIcon: ({ color }) => <Fontisto size={28} name="calendar" color={color} />,
         }}
       />
       <Tabs.Screen
         name="pilots"
         options={{
-          title: "Pilotes",
+          title: 'Pilotes',
           tabBarIcon: ({ color }) => <Fontisto size={28} name="persons" color={color} />,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
-          title: "Paramètres",
+          title: 'Paramètres',
           tabBarIcon: ({ color }) => <Fontisto size={28} name="spinner-cog" color={color} />,
         }}
       />
@@ -67,7 +72,7 @@ export default function TabLayout() {
 
 const style = StyleSheet.create({
   tabBar: {
-    backgroundColor: "black",
+    backgroundColor: 'black',
     borderTopWidth: 0,
     height: 60,
     paddingBottom: 10,

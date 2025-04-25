@@ -1,249 +1,235 @@
-import { useEvent } from "expo";
-import { useVideoPlayer, VideoView } from "expo-video";
-import { StyleSheet, Dimensions, Animated, ScrollView, Image, StatusBar } from "react-native";
-import { useState, useRef, useEffect } from "react";
-import Button from "@/components/ui/Button";
-import { logo, sliderInformations, videoSource } from "@/constants/OnBoarding";
-import RenderSlide from "@/components/RenderSlider";
-import Box from "@/theme/Box";
-import { Stack } from "expo-router";
+import { useEvent } from 'expo';
+import { useVideoPlayer, VideoView } from 'expo-video';
+import { StyleSheet, Dimensions, Animated, ScrollView, Image, StatusBar } from 'react-native';
+import { useState, useRef, useEffect } from 'react';
+import Button from '@/components/ui/Button';
+import { logo, sliderInformations, videoSource } from '@/constants/OnBoarding';
+import RenderSlide from '@/components/RenderSlider';
+import Box from '@/theme/Box';
+import { Stack } from 'expo-router';
 
 export default function OnBoardingScreen({ onboardingComplete }: { onboardingComplete: any }) {
-    // Set status bar to transparent
-    useEffect(() => {
-        StatusBar.setTranslucent(true);
-        StatusBar.setBackgroundColor('transparent');
-        return () => {
-            StatusBar.setTranslucent(false);
-        };
-    }, []);
+  // Set status bar to transparent
+  useEffect(() => {
+    StatusBar.setTranslucent(true);
+    StatusBar.setBackgroundColor('transparent');
+    return () => {
+      StatusBar.setTranslucent(false);
+    };
+  }, []);
 
-    const player = useVideoPlayer(videoSource, player => {
-        player.loop = true;
-        player.volume = 0;
-        player.play();
+  const player = useVideoPlayer(videoSource, (player) => {
+    player.loop = true;
+    player.volume = 0;
+    player.play();
+  });
+
+  const { isPlaying } = useEvent(player, 'playingChange', { isPlaying: player.playing });
+
+  useEffect(() => {
+    if (!isPlaying) {
+      player.play();
+    }
+  }, [isPlaying]);
+
+  const scrollX = useRef(new Animated.Value(0)).current;
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const scrollViewRef = useRef<ScrollView>(null);
+
+  const dotAnimations = useRef(
+    sliderInformations.map((_, index) => ({
+      width: new Animated.Value(index === 0 ? 40 : 10),
+      opacity: new Animated.Value(index === 0 ? 1 : 0.5),
+    }))
+  ).current;
+
+  useEffect(() => {
+    // Set initial value for scrollX to ensure it's in sync
+    scrollX.setValue(0);
+
+    // Ensure first dot is correctly sized
+    dotAnimations[0].width.setValue(40);
+    dotAnimations[0].opacity.setValue(1);
+  }, []);
+
+  useEffect(() => {
+    const listener = scrollX.addListener(({ value }) => {
+      const exactPosition = value / width;
+
+      sliderInformations.forEach((_, index) => {
+        const distance = Math.abs(exactPosition - index);
+
+        // Width calculation
+        const calculatedWidth = distance < 1 ? 40 - distance * 30 : 10;
+        dotAnimations[index].width.setValue(calculatedWidth);
+
+        // Opacity calculation
+        const calculatedOpacity = distance < 1 ? 1 - distance * 0.5 : 0.5;
+        dotAnimations[index].opacity.setValue(calculatedOpacity);
+      });
+
+      const newIndex = Math.round(exactPosition);
+      if (newIndex !== currentIndex && newIndex >= 0 && newIndex < sliderInformations.length) {
+        setCurrentIndex(newIndex);
+      }
     });
 
-    const { isPlaying } = useEvent(player, 'playingChange', { isPlaying: player.playing });
-
-    useEffect(() => {
-        if (!isPlaying) {
-            player.play();
-        }
-    }, [isPlaying]);
-
-    const scrollX = useRef(new Animated.Value(0)).current;
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const scrollViewRef = useRef<ScrollView>(null);
-
-    const dotAnimations = useRef(
-        sliderInformations.map((_, index) => ({
-            width: new Animated.Value(index === 0 ? 40 : 10),
-            opacity: new Animated.Value(index === 0 ? 1 : 0.5)
-        }))
-    ).current;
-
-    useEffect(() => {
-        // Set initial value for scrollX to ensure it's in sync
-        scrollX.setValue(0);
-        
-        // Ensure first dot is correctly sized
-        dotAnimations[0].width.setValue(40);
-        dotAnimations[0].opacity.setValue(1);
-    }, []);
-
-    useEffect(() => {
-        const listener = scrollX.addListener(({ value }) => {
-            const exactPosition = value / width;
-
-            sliderInformations.forEach((_, index) => {
-                const distance = Math.abs(exactPosition - index);
-
-                // Width calculation
-                const calculatedWidth = distance < 1 ? 40 - (distance * 30) : 10;
-                dotAnimations[index].width.setValue(calculatedWidth);
-
-                // Opacity calculation
-                const calculatedOpacity = distance < 1 ? 1 - (distance * 0.5) : 0.5;
-                dotAnimations[index].opacity.setValue(calculatedOpacity);
-            });
-
-            const newIndex = Math.round(exactPosition);
-            if (newIndex !== currentIndex && newIndex >= 0 && newIndex < sliderInformations.length) {
-                setCurrentIndex(newIndex);
-            }
-        });
-
-        return () => {
-            scrollX.removeListener(listener);
-        };
-    }, [currentIndex, width]);
-
-    const handleSkip = () => {
-        onboardingComplete();
+    return () => {
+      scrollX.removeListener(listener);
     };
+  }, [currentIndex, width]);
 
-    // Modified handleScroll to use Animated.event for native driver benefits
-    const handleScroll = Animated.event(
-        [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-        { useNativeDriver: false } // Must be false because we animate width which is a layout property
-    );
+  const handleSkip = () => {
+    onboardingComplete();
+  };
 
-    const handleMomentumScrollEnd = (event: any) => {
-        const offsetX = event.nativeEvent.contentOffset.x;
-        const index = Math.round(offsetX / width);
-        if (index >= 0 && index < sliderInformations.length) {
-            setCurrentIndex(index);
-        }
-    };
+  // Modified handleScroll to use Animated.event for native driver benefits
+  const handleScroll = Animated.event(
+    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+    { useNativeDriver: false } // Must be false because we animate width which is a layout property
+  );
 
-    const handleContinue = () => {
-        if (currentIndex === sliderInformations.length - 1) {
-            onboardingComplete();
-        } else {
-            // Smooth scroll to next slide
-            scrollViewRef.current?.scrollTo({
-                x: (currentIndex + 1) * width,
-                animated: true
-            });
-            setCurrentIndex(currentIndex + 1);
-        }
-    };
+  const handleMomentumScrollEnd = (event: any) => {
+    const offsetX = event.nativeEvent.contentOffset.x;
+    const index = Math.round(offsetX / width);
+    if (index >= 0 && index < sliderInformations.length) {
+      setCurrentIndex(index);
+    }
+  };
 
-    return (
-        <Box style={styles.container}>
-            <Stack.Screen options={{ headerShown: false }} />
-            
-            <VideoView
-                style={styles.backgroundVideo}
-                player={player}
-                contentFit="cover"
-            />
-            <Box style={styles.logoContainer}>
-                <Image
-                    source={logo}
-                    style={styles.logo}
-                    resizeMode="contain"
-                />
-            </Box>
-            <ScrollView
-                ref={scrollViewRef}
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-                onScroll={handleScroll}
-                scrollEventThrottle={16} 
-                onMomentumScrollEnd={handleMomentumScrollEnd}
-                contentContainerStyle={{ flexGrow: 1 }}
-                decelerationRate="fast" // Improves scrolling performance
-            >
-                {sliderInformations.map((item, index) => (
-                    <RenderSlide key={index} item={item} />
-                ))}
-            </ScrollView>
+  const handleContinue = () => {
+    if (currentIndex === sliderInformations.length - 1) {
+      onboardingComplete();
+    } else {
+      // Smooth scroll to next slide
+      scrollViewRef.current?.scrollTo({
+        x: (currentIndex + 1) * width,
+        animated: true,
+      });
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
 
-            <Box style={styles.paginationContainer}>
-                {sliderInformations.map((_, index) => (
-                    <Animated.View
-                        key={index}
-                        style={[
-                            styles.paginationDot,
-                            {
-                                width: dotAnimations[index].width,
-                                backgroundColor: index === currentIndex 
-                                    ? '#FF0000' 
-                                    : 'rgba(255, 255, 255, 0.5)',
-                                opacity: dotAnimations[index].opacity
-                            }
-                        ]}
-                    />
-                ))}
-            </Box>
+  return (
+    <Box style={styles.container}>
+      <Stack.Screen options={{ headerShown: false }} />
 
-            {currentIndex === 0 && (
-                <Box style={styles.passContainer}>
-                    <Button onPress={handleSkip}>
-                        Passer
-                    </Button>
-                </Box>
-            )}
+      <VideoView style={styles.backgroundVideo} player={player} contentFit="cover" />
+      <Box style={styles.logoContainer}>
+        <Image source={logo} style={styles.logo} resizeMode="contain" />
+      </Box>
+      <ScrollView
+        ref={scrollViewRef}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+        onMomentumScrollEnd={handleMomentumScrollEnd}
+        contentContainerStyle={{ flexGrow: 1 }}
+        decelerationRate="fast" // Improves scrolling performance
+      >
+        {sliderInformations.map((item, index) => (
+          <RenderSlide key={index} item={item} />
+        ))}
+      </ScrollView>
 
-            {currentIndex === sliderInformations.length - 1 && (
-                <Box style={styles.continueContainer}>
-                    <Button onPress={handleContinue}>
-                        Commencer
-                    </Button>
-                </Box>
-            )}
+      <Box style={styles.paginationContainer}>
+        {sliderInformations.map((_, index) => (
+          <Animated.View
+            key={index}
+            style={[
+              styles.paginationDot,
+              {
+                width: dotAnimations[index].width,
+                backgroundColor: index === currentIndex ? '#FF0000' : 'rgba(255, 255, 255, 0.5)',
+                opacity: dotAnimations[index].opacity,
+              },
+            ]}
+          />
+        ))}
+      </Box>
+
+      {currentIndex === 0 && (
+        <Box style={styles.passContainer}>
+          <Button onPress={handleSkip}>Passer</Button>
         </Box>
-    );
+      )}
+
+      {currentIndex === sliderInformations.length - 1 && (
+        <Box style={styles.continueContainer}>
+          <Button onPress={handleContinue}>Commencer</Button>
+        </Box>
+      )}
+    </Box>
+  );
 }
 
 const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    stepContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    backgroundVideo: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-        width: "auto",
-    },
-    paginationContainer: {
-        flexDirection: 'row',
-        position: 'absolute',
-        bottom: 100,
-        alignSelf: 'center',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    paginationDot: {
-        height: 10,
-        borderRadius: 5,
-        marginHorizontal: 5,
-    },
-    passContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '80%',
-        position: 'absolute',
-        bottom: 40,
-    },
-    continueContainer: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        width: '80%',
-        position: 'absolute',
-        bottom: 40,
-    },
-    navButton: {
-        padding: 15,
-        borderRadius: 10,
-        backgroundColor: '#ee0000',
-    },
-    navButtonText: {
-        color: '#FFFFFF',
-        fontWeight: 'bold',
-    },
-    logoContainer: {
-        position: 'absolute',
-        top: 60,
-        left: 20,
-        zIndex: 10,
-    },
-    logo: {
-        width: 110,
-        height: 40,
-    },
+  container: {
+    display: 'flex',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  stepContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  backgroundVideo: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    width: 'auto',
+  },
+  paginationContainer: {
+    flexDirection: 'row',
+    position: 'absolute',
+    bottom: 100,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  paginationDot: {
+    height: 10,
+    borderRadius: 5,
+    marginHorizontal: 5,
+  },
+  passContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
+    position: 'absolute',
+    bottom: 40,
+  },
+  continueContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    width: '80%',
+    position: 'absolute',
+    bottom: 40,
+  },
+  navButton: {
+    padding: 15,
+    borderRadius: 10,
+    backgroundColor: '#ee0000',
+  },
+  navButtonText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
+  logoContainer: {
+    position: 'absolute',
+    top: 60,
+    left: 20,
+    zIndex: 10,
+  },
+  logo: {
+    width: 110,
+    height: 40,
+  },
 });

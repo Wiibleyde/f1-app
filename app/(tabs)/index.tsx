@@ -6,10 +6,9 @@ import { useFetchRacesFromYear } from '@/query/hook';
 import RenderRace from '@/components/RenderRace';
 
 export default function HomeScreen() {
-
   const currentYear = new Date().getFullYear();
 
-  const { data, isLoading, refetch, isRefetching } = useFetchRacesFromYear(currentYear)
+  const { data, isLoading, refetch, isRefetching } = useFetchRacesFromYear(currentYear);
 
   return (
     <Box style={styles.container}>
@@ -21,12 +20,7 @@ export default function HomeScreen() {
         <ActivityIndicator size="large" color="#ee0000" />
       ) : (
         <FlatList
-          refreshControl={
-            <RefreshControl
-              refreshing={isRefetching}
-              onRefresh={refetch}
-              tintColor={"#ee0000"} />
-          }
+          refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={'#ee0000'} />}
           data={data}
           renderItem={({ item, index }) => <RenderRace item={item} index={index} />}
           contentContainerStyle={styles.listContainer}
@@ -44,7 +38,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     paddingTop: 50,
-    paddingHorizontal: "5%",
+    paddingHorizontal: '5%',
     backgroundColor: '#000000',
   },
   title: {
@@ -60,5 +54,5 @@ const styles = StyleSheet.create({
   emptyText: {
     color: '#FFFFFF',
     fontSize: 16,
-  }
+  },
 });
