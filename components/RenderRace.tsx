@@ -1,6 +1,7 @@
 import { Race } from '@/query/hook';
 import Box from '@/theme/Box';
 import Text from '@/theme/Text';
+import { router } from 'expo-router';
 import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 
@@ -24,8 +25,12 @@ const RenderRace = ({ item, index }: RenderRaceProps) => {
     return lastDay.getDate().toString().padStart(2, '0');
   };
 
+  const handlePress = () => {
+    router.push({ pathname: '/racesessions/[meeting_key]', params: { meeting_key: item.meeting_key } });
+  }
+
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={handlePress}>
       <Box style={styles.raceInfosContainer}>
         <Box style={styles.raceInfosDateContainer}>
           <Text variant="date" style={styles.raceDate}>

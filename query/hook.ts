@@ -52,6 +52,18 @@ const fetchDrivers = async (): Promise<Driver[]> => {
   return Array.from(uniqueDriversMap.values());
 };
 
+const fetchRaceSessions = async (meeting_key: string): Promise<any> => {
+  const response = await fetch(`https://api.openf1.org/v1/sessions?meeting_key=${meeting_key}`);
+  return response.json();
+}
+
+export const useFetchRaceSessions = (meeting_key: string) => {
+  return useQuery({
+    queryKey: ['sessions', meeting_key],
+    queryFn: () => fetchRaceSessions(meeting_key),
+  });
+};
+
 export const useFetchRacesFromYear = (year: number) => {
   return useQuery({
     queryKey: ['year', year],
