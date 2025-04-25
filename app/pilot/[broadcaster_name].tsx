@@ -60,9 +60,6 @@ export default function PilotScreen() {
             colors={[teamColorLight, '#00000000']}
             style={styles.heroGradient}
           >
-            <Box style={styles.driverNumberBox}>
-            </Box>
-            
             <Box style={styles.driverInfoContainer}>
               <Box style={styles.driverInfo}>
                 <Text variant="title" style={styles.driverName}>
@@ -163,12 +160,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginTop: 20,
     marginHorizontal: 15,
-  },
-  driverNumberBox: {
-    position: 'absolute',
-    top: 10,
-    left: 20,
-    zIndex: 10,
   },
   driverNumber: {
     fontSize: 64,
