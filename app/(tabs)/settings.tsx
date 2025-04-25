@@ -1,11 +1,9 @@
-import { Pressable, StyleSheet, Switch, TouchableOpacity } from 'react-native';
+import { StyleSheet, Switch, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
 import Box from '@/theme/Box';
 import Text from '@/theme/Text';
 import { useStorage } from '@/hooks/useStorage';
 import { useState } from 'react';
-import { router } from 'expo-router';
 
 export default function SettingsScreen() {
   const { clearStorage } = useStorage<boolean>('onboarding', false);

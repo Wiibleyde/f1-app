@@ -1,18 +1,15 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform } from 'react-native';
 
 import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
-import { useColorScheme } from '@/hooks/useColorScheme';
 import OnBoardingScreen from '../onboarding';
 import { useStorage } from '@/hooks/useStorage';
 
 import Fontisto from '@expo/vector-icons/Fontisto';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
   const { storageItem: isOnBoarding, saveStorageItem: setIsOnBoarding } = useStorage<boolean>('onboarding', true);
 
   if (isOnBoarding) {
@@ -69,12 +66,3 @@ export default function TabLayout() {
     </Tabs>
   );
 }
-
-const style = StyleSheet.create({
-  tabBar: {
-    backgroundColor: 'black',
-    borderTopWidth: 0,
-    height: 60,
-    paddingBottom: 10,
-  },
-});
