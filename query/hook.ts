@@ -64,6 +64,12 @@ export const useFetchRaceSessions = (meeting_key: string) => {
   });
 };
 
+const fetchDriverByBroadcasterName = async (broadcasterName: string): Promise<Driver | null> => {
+  const response = await fetch(`https://api.openf1.org/v1/drivers?broadcast_name=${broadcasterName}`);
+  const drivers = await response.json();
+  return drivers.length > 0 ? drivers[0] : null;
+}
+
 export const useFetchRacesFromYear = (year: number) => {
   return useQuery({
     queryKey: ['year', year],
@@ -75,5 +81,12 @@ export const useFetchDrivers = () => {
   return useQuery({
     queryKey: ['drivers'],
     queryFn: () => fetchDrivers(),
+  });
+};
+
+export const useFetchDriverByBroadcasterName = (broadcasterName: string) => {
+  return useQuery({
+    queryKey: ['driver', broadcasterName],
+    queryFn: () => fetchDriverByBroadcasterName(broadcasterName),
   });
 };

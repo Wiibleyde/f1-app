@@ -2,11 +2,16 @@ import { Driver } from '@/query/hook';
 import Box from '@/theme/Box';
 import Text from '@/theme/Text';
 import { Image } from 'expo-image';
+import { router } from 'expo-router';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
 export function DriverItem({ item }: { item: Driver }) {
+  const handlePress = () => {
+    router.push({ pathname: '/pilot/[broadcaster_name]', params: { broadcaster_name: item.broadcast_name } });
+  }
+
   return (
-    <TouchableOpacity style={[styles.pilotItem, { borderLeftColor: `#${item.team_colour}` }]}>
+    <TouchableOpacity style={[styles.pilotItem, { borderLeftColor: `#${item.team_colour}` }]} onPress={handlePress}>
       <Box style={styles.pilotContent}>
         <Box style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
           <Box style={{ flexDirection: 'row', alignItems: 'center' }}>
