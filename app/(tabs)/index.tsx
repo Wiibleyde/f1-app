@@ -1,53 +1,16 @@
-import { StyleSheet, FlatList, ActivityIndicator, Pressable, TouchableOpacity } from 'react-native';
+import { StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, RefreshControl } from 'react-native';
 
 import Box from '@/theme/Box';
 import Text from '@/theme/Text';
-import { useEffect, useState } from 'react';
-import { useStorage } from '@/hooks/useStorage';
-
-const url = 'https://api.openf1.org/v1/meetings?year='
-
-// Type pour les courses
-interface IRace {
-  circuit_key: string;
-  circuit_short_name: string;
-  country_code: string;
-  country_key: string;
-  country_name: string;
-  date_start: string;
-  gmt_offset: string;
-  location: string;
-  meeting_key: string;
-  meeting_name: string;
-  meeting_official_name: string;
-  year: number;
-}
+import { Race, useFetchRacesFromYear } from '@/query/hook';
 
 export default function HomeScreen() {
-  const [races, setRaces] = useState<IRace[]>([]);
-  const [loading, setLoading] = useState(true);
 
   const currentYear = new Date().getFullYear();
-  const urlWithYear = `${url}${currentYear}`;
 
-  const fetchRaces = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(urlWithYear);
-      const data: IRace[] = (await response.json());
-      setRaces(data.reverse());
-    } catch (error) {
-      console.error('Error fetching races:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data, isLoading, refetch, isRefetching } = useFetchRacesFromYear(currentYear)
 
-  useEffect(() => {
-    fetchRaces();
-  }, []);
-
-  const renderRaceItem = ({ item }: { item: IRace }) => (
+  const renderRaceItem = ({ item }: { item: Race }) => (
     <TouchableOpacity style={styles.raceItem}>
       <Box style={styles.raceContent}>
         <Text style={styles.raceName}>{item.meeting_name}</Text>
@@ -71,11 +34,17 @@ export default function HomeScreen() {
         Courses F1 2025
       </Text>
 
-      {loading ? (
-        <ActivityIndicator size="large" color="#FF1801" />
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#ee0000" />
       ) : (
         <FlatList
-          data={races}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefetching}
+              onRefresh={refetch}
+              tintColor={"#ee0000"} />
+          }
+          data={data}
           renderItem={renderRaceItem}
           keyExtractor={(item) => item.meeting_key.toString()}
           contentContainerStyle={styles.listContainer}

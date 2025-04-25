@@ -8,9 +8,17 @@ import 'react-native-reanimated';
 
 import Splash from './splash';
 import theme from '@/theme/default';
+import { queryClient } from '@/query';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+const asyncStoragePersister = createAsyncStoragePersister({
+  storage: AsyncStorage,
+});
 
 export default function RootLayout() {
   const [isLoading, setIsLoading] = useState(true);
@@ -34,11 +42,16 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
+      <PersistQueryClientProvider
+        client={queryClient}
+        persistOptions={{ persister: asyncStoragePersister }}
+      >
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <StatusBar style="auto" />
+      </PersistQueryClientProvider>
     </ThemeProvider>
   );
 }
