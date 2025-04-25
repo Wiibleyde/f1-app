@@ -9,6 +9,8 @@ import { router, Stack } from 'expo-router';
 import RenderSlide from '@/components/RenderSlider';
 import { useStorage } from '@/hooks/useStorage';
 
+const { width } = Dimensions.get('window');
+
 export default function OnBoardingScreen() {
 
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -92,19 +94,6 @@ export default function OnBoardingScreen() {
     }
   };
 
-  const handleContinue = () => {
-    if (currentIndex === sliderInformations.length - 1) {
-      handlePress();
-    } else {
-      // Smooth scroll to next slide
-      scrollViewRef.current?.scrollTo({
-        x: (currentIndex + 1) * width,
-        animated: true,
-      });
-      setCurrentIndex(currentIndex + 1);
-    }
-  };
-
   return (
     <Box style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
@@ -153,14 +142,12 @@ export default function OnBoardingScreen() {
 
       {currentIndex === sliderInformations.length - 1 && (
         <Box style={styles.continueContainer}>
-          <Button onPress={handleContinue}>Commencer</Button>
+          <Button onPress={handlePress}>Commencer</Button>
         </Box>
       )}
     </Box>
   );
 }
-
-const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
