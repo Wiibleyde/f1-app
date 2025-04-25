@@ -86,7 +86,35 @@ export const useFetchRaceSessions = (meeting_key: string) => {
 const fetchDriverByBroadcasterName = async (broadcasterName: string): Promise<Driver | null> => {
   const response = await fetch(`https://api.openf1.org/v1/drivers?broadcast_name=${broadcasterName}`);
   const drivers = await response.json();
-  return drivers.length > 0 ? drivers[0] : null;
+
+  if (!drivers || drivers.length === 0) {
+    return null;
+  }
+
+  // Sort by session_key to get the most recent data first
+  const sortedDrivers = [...drivers].sort((a, b) => b.session_key - a.session_key);
+  
+  // Find all drivers with the requested broadcast_name
+  const matchingDrivers = sortedDrivers.filter(driver => 
+    driver.broadcast_name === broadcasterName);
+  
+  if (matchingDrivers.length === 0) {
+    return null;
+  }
+  
+  // Start with the first driver as base
+  const mergedDriver = { ...matchingDrivers[0] };
+  
+  // Create a complete driver object by taking the first non-null value for each property
+  for (const driver of matchingDrivers) {
+    Object.keys(driver).forEach(key => {
+      if (mergedDriver[key] === null || mergedDriver[key] === undefined) {
+        mergedDriver[key] = driver[key];
+      }
+    });
+  }
+  
+  return mergedDriver;
 }
 
 export const useFetchRacesFromYear = (year: number) => {
