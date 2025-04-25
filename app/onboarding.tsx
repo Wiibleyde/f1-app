@@ -22,48 +22,80 @@ export default function OnBoardingScreen({ onboardingComplete }: { onboardingCom
         }
     }, [isPlaying]);
 
+    const scrollX = useRef(new Animated.Value(0)).current;
     const [currentIndex, setCurrentIndex] = useState(0);
+    const scrollViewRef = useRef<ScrollView>(null);
 
-    // Create animated values for each dot
     const dotAnimations = useRef(
-        sliderInformations.map(() => ({
-            width: new Animated.Value(10),
-            opacity: new Animated.Value(0.5)
+        sliderInformations.map((_, index) => ({
+            width: new Animated.Value(index === 0 ? 40 : 10),
+            opacity: new Animated.Value(index === 0 ? 1 : 0.5)
         }))
     ).current;
 
-    // Update animations when current index changes
     useEffect(() => {
-        sliderInformations.forEach((_, index) => {
-            Animated.parallel([
-                Animated.timing(dotAnimations[index].width, {
-                    toValue: index === currentIndex ? 40 : 10,
-                    duration: 150,
-                    useNativeDriver: false,
-                }),
-                Animated.timing(dotAnimations[index].opacity, {
-                    toValue: index === currentIndex ? 1 : 0.5,
-                    duration: 150,
-                    useNativeDriver: false,
-                }),
-            ]).start();
+        // Set initial value for scrollX to ensure it's in sync
+        scrollX.setValue(0);
+        
+        // Ensure first dot is correctly sized
+        dotAnimations[0].width.setValue(40);
+        dotAnimations[0].opacity.setValue(1);
+    }, []);
+
+    useEffect(() => {
+        const listener = scrollX.addListener(({ value }) => {
+            const exactPosition = value / width;
+
+            sliderInformations.forEach((_, index) => {
+                const distance = Math.abs(exactPosition - index);
+
+                // Width calculation
+                const calculatedWidth = distance < 1 ? 40 - (distance * 30) : 10;
+                dotAnimations[index].width.setValue(calculatedWidth);
+
+                // Opacity calculation
+                const calculatedOpacity = distance < 1 ? 1 - (distance * 0.5) : 0.5;
+                dotAnimations[index].opacity.setValue(calculatedOpacity);
+            });
+
+            const newIndex = Math.round(exactPosition);
+            if (newIndex !== currentIndex && newIndex >= 0 && newIndex < sliderInformations.length) {
+                setCurrentIndex(newIndex);
+            }
         });
-    }, [currentIndex]);
 
-
+        return () => {
+            scrollX.removeListener(listener);
+        };
+    }, [currentIndex, width]);
 
     const handleSkip = () => {
+        onboardingComplete();
     };
 
-    const handleScroll = (event: any) => {
-        const slideIndex = Math.round(event.nativeEvent.contentOffset.x / width);
-        setCurrentIndex(slideIndex);
+    // Modified handleScroll to use Animated.event for native driver benefits
+    const handleScroll = Animated.event(
+        [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+        { useNativeDriver: false } // Must be false because we animate width which is a layout property
+    );
+
+    const handleMomentumScrollEnd = (event: any) => {
+        const offsetX = event.nativeEvent.contentOffset.x;
+        const index = Math.round(offsetX / width);
+        if (index >= 0 && index < sliderInformations.length) {
+            setCurrentIndex(index);
+        }
     };
 
     const handleContinue = () => {
         if (currentIndex === sliderInformations.length - 1) {
             onboardingComplete();
         } else {
+            // Smooth scroll to next slide
+            scrollViewRef.current?.scrollTo({
+                x: (currentIndex + 1) * width,
+                animated: true
+            });
             setCurrentIndex(currentIndex + 1);
         }
     };
@@ -83,18 +115,22 @@ export default function OnBoardingScreen({ onboardingComplete }: { onboardingCom
                 />
             </Box>
             <ScrollView
+                ref={scrollViewRef}
                 horizontal
                 pagingEnabled
                 showsHorizontalScrollIndicator={false}
-                onMomentumScrollEnd={handleScroll}
+                onScroll={handleScroll}
+                scrollEventThrottle={16} 
+                onMomentumScrollEnd={handleMomentumScrollEnd}
                 contentContainerStyle={{ flexGrow: 1 }}
+                decelerationRate="fast" // Improves scrolling performance
             >
                 {sliderInformations.map((item, index) => (
                     <RenderSlide key={index} item={item} />
                 ))}
             </ScrollView>
 
-            <ScrollView pagingEnabled horizontal style={styles.paginationContainer} showsHorizontalScrollIndicator={false} contentContainerStyle={{ alignItems: 'center' }}>
+            <Box style={styles.paginationContainer}>
                 {sliderInformations.map((_, index) => (
                     <Animated.View
                         key={index}
@@ -102,15 +138,15 @@ export default function OnBoardingScreen({ onboardingComplete }: { onboardingCom
                             styles.paginationDot,
                             {
                                 width: dotAnimations[index].width,
-                                backgroundColor: currentIndex === index
-                                    ? '#FF0000'
+                                backgroundColor: index === currentIndex 
+                                    ? '#FF0000' 
                                     : 'rgba(255, 255, 255, 0.5)',
                                 opacity: dotAnimations[index].opacity
                             }
                         ]}
                     />
                 ))}
-            </ScrollView>
+            </Box>
 
             {currentIndex === 0 && (
                 <Box style={styles.passContainer}>
@@ -154,8 +190,11 @@ const styles = StyleSheet.create({
     },
     paginationContainer: {
         flexDirection: 'row',
+        position: 'absolute',
         bottom: 100,
         alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     paginationDot: {
         height: 10,
