@@ -10,6 +10,7 @@ import Box from "@/theme/Box";
 export default function OnBoardingScreen({ onboardingComplete }: { onboardingComplete: any }) {
     const player = useVideoPlayer(videoSource, player => {
         player.loop = true;
+        player.volume = 0;
         player.play();
     });
 

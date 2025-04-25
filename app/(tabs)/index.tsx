@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 const url = 'https://api.openf1.org/v1/meetings?year='
 
 // Type pour les courses
-interface Race {
+interface IRace {
   circuit_key: string;
   circuit_short_name: string;
   country_code: string;
@@ -23,7 +23,7 @@ interface Race {
 }
 
 export default function HomeScreen() {
-  const [races, setRaces] = useState<Race[]>([]);
+  const [races, setRaces] = useState<IRace[]>([]);
   const [loading, setLoading] = useState(true);
 
   const currentYear = new Date().getFullYear();
@@ -33,7 +33,7 @@ export default function HomeScreen() {
     try {
       setLoading(true);
       const response = await fetch(urlWithYear);
-      const data: any[] = (await response.json());
+      const data: IRace[] = (await response.json());
       setRaces(data.reverse());
     } catch (error) {
       console.error('Error fetching races:', error);
@@ -46,7 +46,7 @@ export default function HomeScreen() {
     fetchRaces();
   }, []);
 
-  const renderRaceItem = ({ item }: { item: Race }) => (
+  const renderRaceItem = ({ item }: { item: IRace }) => (
     <TouchableOpacity style={styles.raceItem}>
       <Box style={styles.raceContent}>
         <Text style={styles.raceName}>{item.meeting_name}</Text>
@@ -69,7 +69,7 @@ export default function HomeScreen() {
       <Text variant="title" textAlign="center" style={styles.title}>
         Courses F1 2025
       </Text>
-      
+
       {loading ? (
         <ActivityIndicator size="large" color="#FF1801" />
       ) : (
