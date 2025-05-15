@@ -58,7 +58,7 @@ export default function TabLayout() {
                 // Ajouter un indicateur personnalisé en fonction si l'onglet est actif
                 tabBarIcon: ({ color, size, focused }) => {
                     let iconName: React.ComponentProps<typeof MaterialCommunityIcons>['name'] = 'home';
-                    
+
                     if (route.name === 'index') {
                         iconName = 'flag-checkered';
                     } else if (route.name === 'pilots') {
@@ -69,9 +69,7 @@ export default function TabLayout() {
 
                     return (
                         <View style={{ alignItems: 'center', width: '100%' }}>
-                            {focused && (
-                                <View style={styles.activeTabIndicator} />
-                            )}
+                            {focused && <View style={styles.activeTabIndicator} />}
                             {focused ? (
                                 <LinearGradient
                                     colors={[F1_RED_TRANSPARENT, 'transparent']}
@@ -127,5 +125,5 @@ const styles = StyleSheet.create({
         height: 40,
         alignItems: 'center',
         justifyContent: 'center',
-    }
+    },
 });
