@@ -12,7 +12,6 @@ import { useStorage } from '@/hooks/useStorage';
 const { width } = Dimensions.get('window');
 
 export default function OnBoardingScreen() {
-
   const scrollX = useRef(new Animated.Value(0)).current;
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollViewRef = useRef<ScrollView>(null);
@@ -131,7 +130,6 @@ export default function OnBoardingScreen() {
               },
             ]}
           />
-
         ))}
       </Box>
 
@@ -195,5 +193,5 @@ const styles = StyleSheet.create({
     width: '90%',
     position: 'absolute',
     bottom: 40,
-  }
+  },
 });

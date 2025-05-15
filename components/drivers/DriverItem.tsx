@@ -10,7 +10,7 @@ export function DriverItem({ item }: { item: Driver }) {
   const handlePress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     router.push({ pathname: '/pilot/[broadcaster_name]', params: { broadcaster_name: item.broadcast_name } });
-  }
+  };
 
   return (
     <TouchableOpacity style={[styles.pilotItem, { borderLeftColor: `#${item.team_colour}` }]} onPress={handlePress}>

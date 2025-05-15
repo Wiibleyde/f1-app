@@ -13,9 +13,7 @@ export default function TabLayout() {
   const { storageItem: isOnBoarding } = useStorage<boolean>('onboarding', true);
 
   if (isOnBoarding) {
-    return (
-      <OnBoardingScreen />
-    );
+    return <OnBoardingScreen />;
   }
 
   return (

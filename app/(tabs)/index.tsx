@@ -11,7 +11,6 @@ export default function HomeScreen() {
 
   return (
     <Layout>
-      
       <Header title={`Races ${currentYear}`} />
 
       {isLoading ? (

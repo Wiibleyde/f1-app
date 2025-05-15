@@ -30,9 +30,7 @@ export type Driver = {
   team_name: string;
 };
 
-
 export type RaceSession = {
-
   meeting_key: number;
   session_key: number;
   location: string;
@@ -47,7 +45,7 @@ export type RaceSession = {
   circuit_short_name: string;
   gmt_offset: string;
   year: number;
-}
+};
 
 export type PositionResult = {
   date: string;
@@ -55,7 +53,7 @@ export type PositionResult = {
   meeting_key: number;
   driver_number: number;
   position: number;
-}
+};
 
 const fecthRacesFromYear = async (year: number): Promise<Race[]> => {
   const response = await fetch(`https://api.openf1.org/v1/meetings?year=${year}`);
@@ -82,7 +80,7 @@ const fetchDrivers = async (): Promise<Driver[]> => {
 const fetchRaceSessions = async (meeting_key: string): Promise<RaceSession[]> => {
   const response = await fetch(`https://api.openf1.org/v1/sessions?meeting_key=${meeting_key}`);
   return response.json();
-}
+};
 
 export const useFetchRaceSessions = (meeting_key: string) => {
   return useQuery({
@@ -101,29 +99,28 @@ const fetchDriverByBroadcasterName = async (broadcasterName: string): Promise<Dr
 
   // Sort by session_key to get the most recent data first
   const sortedDrivers = [...drivers].sort((a, b) => b.session_key - a.session_key);
-  
+
   // Find all drivers with the requested broadcast_name
-  const matchingDrivers = sortedDrivers.filter(driver => 
-    driver.broadcast_name === broadcasterName);
-  
+  const matchingDrivers = sortedDrivers.filter((driver) => driver.broadcast_name === broadcasterName);
+
   if (matchingDrivers.length === 0) {
     return null;
   }
-  
+
   // Start with the first driver as base
   const mergedDriver = { ...matchingDrivers[0] };
-  
+
   // Create a complete driver object by taking the first non-null value for each property
   for (const driver of matchingDrivers) {
-    Object.keys(driver).forEach(key => {
+    Object.keys(driver).forEach((key) => {
       if (mergedDriver[key] === null || mergedDriver[key] === undefined) {
         mergedDriver[key] = driver[key];
       }
     });
   }
-  
+
   return mergedDriver;
-}
+};
 
 const fetchPositionBySessionKey = async (session_key: string): Promise<PositionResult[]> => {
   const response = await fetch(`https://api.openf1.org/v1/position?session_key=${session_key}`);
@@ -139,18 +136,17 @@ const fetchPositionBySessionKey = async (session_key: string): Promise<PositionR
   });
 
   // Retourner un tableau trié par position croissante
-  const uniquePositions = Array.from(latestPositionsMap.values())
-    .sort((a, b) => a.position - b.position);
+  const uniquePositions = Array.from(latestPositionsMap.values()).sort((a, b) => a.position - b.position);
 
   return uniquePositions;
-}
+};
 
 export const useFetchPositionBySessionKey = (session_key: string) => {
   return useQuery({
     queryKey: ['session_key', session_key],
     queryFn: () => fetchPositionBySessionKey(session_key),
   });
-}
+};
 
 export const useFetchRacesFromYear = (year: number) => {
   return useQuery({

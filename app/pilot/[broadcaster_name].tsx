@@ -14,11 +14,11 @@ export default function PilotScreen() {
   const { broadcaster_name } = useLocalSearchParams();
   const { data } = useFetchDriverByBroadcasterName(broadcaster_name as string);
   const [colorCopied, setColorCopied] = useState(false);
-  
+
   // Animation values
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(50)).current;
-  
+
   useEffect(() => {
     Animated.parallel([
       Animated.timing(fadeAnim, {
@@ -30,7 +30,7 @@ export default function PilotScreen() {
         toValue: 0,
         duration: 600,
         useNativeDriver: true,
-      })
+      }),
     ]).start();
   }, [data]);
 
@@ -58,42 +58,42 @@ export default function PilotScreen() {
   }
 
   // Dynamic team color for styling
-  const teamColor = `#${data.team_colour || "ff0000"}`;
+  const teamColor = `#${data.team_colour || 'ff0000'}`;
   const teamColorLight = `${teamColor}50`;
 
   return (
     <Layout>
       <Stack.Screen options={{ headerShown: false }} />
       <Header title={`${data.first_name} ${data.last_name}`} backButton />
-      
+
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Hero section with driver image and number */}
         <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }}>
-          <LinearGradient
-            colors={[teamColorLight, '#00000000']}
-            style={styles.heroGradient}
-          >
+          <LinearGradient colors={[teamColorLight, '#00000000']} style={styles.heroGradient}>
             <Box style={styles.driverInfoContainer}>
               <Box style={styles.driverInfo}>
                 <Text variant="title" style={styles.driverName}>
                   {data.first_name}
-                  <Text variant="title" style={{ color: teamColor }}> {data.last_name}</Text>
+                  <Text variant="title" style={{ color: teamColor }}>
+                    {' '}
+                    {data.last_name}
+                  </Text>
                 </Text>
-                
+
                 <Box style={styles.teamBox}>
                   <Box style={[styles.teamColorIndicator, { backgroundColor: teamColor }]} />
                   <Text variant="text" style={styles.teamName}>
                     {data.team_name}
                   </Text>
                 </Box>
-                
+
                 <Box style={styles.countryBox}>
                   <Text variant="text" style={styles.countryCode}>
                     {data.country_code ? `${data.country_code} ${getFlagEmoji(data.country_code)}` : 'Non spécifié'}
                   </Text>
                 </Box>
               </Box>
-              
+
               <Image
                 source={{ uri: data.headshot_url }}
                 style={styles.driverImage}
@@ -103,69 +103,96 @@ export default function PilotScreen() {
             </Box>
           </LinearGradient>
         </Animated.View>
-        
+
         {/* Driver details cards */}
         <Animated.View style={[styles.statsContainer, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
-          <Text variant="title" style={styles.sectionTitle}>Informations</Text>
+          <Text variant="title" style={styles.sectionTitle}>
+            Informations
+          </Text>
           <Box style={styles.statsGrid}>
             <Box style={[styles.statCard, { borderColor: teamColorLight }]}>
-              <Text variant="title" style={styles.statTitle}>Driver number</Text>
-              <Text variant="text" style={[styles.statValue, { color: teamColor }]}>{data.driver_number}</Text>
+              <Text variant="title" style={styles.statTitle}>
+                Driver number
+              </Text>
+              <Text variant="text" style={[styles.statValue, { color: teamColor }]}>
+                {data.driver_number}
+              </Text>
             </Box>
-            
+
             <Box style={[styles.statCard, { borderColor: teamColorLight }]}>
-              <Text variant="title" style={styles.statTitle}>Acronym</Text>
-              <Text variant="text" style={styles.statValue}>{data.name_acronym}</Text>
+              <Text variant="title" style={styles.statTitle}>
+                Acronym
+              </Text>
+              <Text variant="text" style={styles.statValue}>
+                {data.name_acronym}
+              </Text>
             </Box>
-            
+
             <Box style={[styles.statCard, { borderColor: teamColorLight }]}>
-              <Text variant="title" style={styles.statTitle}>Country</Text>
+              <Text variant="title" style={styles.statTitle}>
+                Country
+              </Text>
               <Text variant="text" style={styles.statValue}>
                 {data.country_code ? `${data.country_code} ${getFlagEmoji(data.country_code)}` : 'Non spécifié'}
               </Text>
             </Box>
-            
+
             <Box style={[styles.statCard, { borderColor: teamColorLight }]}>
-              <Text variant="title" style={styles.statTitle}>Team</Text>
-              <Text variant="text" style={[styles.statValue, { color: teamColor }]}>{data.team_name}</Text>
+              <Text variant="title" style={styles.statTitle}>
+                Team
+              </Text>
+              <Text variant="text" style={[styles.statValue, { color: teamColor }]}>
+                {data.team_name}
+              </Text>
             </Box>
           </Box>
-          
+
           {/* Extra section */}
-          <Text variant="title" style={styles.sectionTitle}>Last race</Text>
+          <Text variant="title" style={styles.sectionTitle}>
+            Last race
+          </Text>
           <Box style={[styles.fullWidthCard, { borderColor: teamColorLight }]}>
             <Box style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Box>
-                <Text variant="title" style={styles.statTitle}>Broadcaster name</Text>
-                <Text variant="text" style={styles.statValue}>{data.broadcast_name}</Text>
+                <Text variant="title" style={styles.statTitle}>
+                  Broadcaster name
+                </Text>
+                <Text variant="text" style={styles.statValue}>
+                  {data.broadcast_name}
+                </Text>
               </Box>
               <Box>
-                <Text variant="title" style={styles.statTitle}>Session</Text>
-                <Text variant="text" style={styles.statValue}>#{data.session_key}</Text>
+                <Text variant="title" style={styles.statTitle}>
+                  Session
+                </Text>
+                <Text variant="text" style={styles.statValue}>
+                  #{data.session_key}
+                </Text>
               </Box>
               <Box>
-                <Text variant="title" style={styles.statTitle}>Meeting</Text>
-                <Text variant="text" style={styles.statValue}>#{data.meeting_key}</Text>
+                <Text variant="title" style={styles.statTitle}>
+                  Meeting
+                </Text>
+                <Text variant="text" style={styles.statValue}>
+                  #{data.meeting_key}
+                </Text>
               </Box>
             </Box>
           </Box>
-          
+
           {/* Team color indicator */}
           <Box style={[styles.teamColorCard, { borderColor: teamColorLight }]}>
-            <Text variant="title" style={styles.statTitle}>Team color</Text>
+            <Text variant="title" style={styles.statTitle}>
+              Team color
+            </Text>
             <Box style={styles.colorRow}>
               <Box style={[styles.colorSquare, { backgroundColor: teamColor }]} />
-              <TouchableOpacity
-                onPress={() => copyColorToClipboard(teamColor)}
-                activeOpacity={0.7}
-              >
+              <TouchableOpacity onPress={() => copyColorToClipboard(teamColor)} activeOpacity={0.7}>
                 <Box style={styles.colorValueContainer}>
-                  <Text variant="text" style={styles.statValue}>{teamColor}</Text>
-                  {colorCopied && (
-                    <Animated.Text style={styles.copiedText}>
-                      Copied!
-                    </Animated.Text>
-                  )}
+                  <Text variant="text" style={styles.statValue}>
+                    {teamColor}
+                  </Text>
+                  {colorCopied && <Animated.Text style={styles.copiedText}>Copied!</Animated.Text>}
                 </Box>
               </TouchableOpacity>
             </Box>
