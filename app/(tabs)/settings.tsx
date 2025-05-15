@@ -1,17 +1,12 @@
-import { StyleSheet, Switch, TouchableOpacity } from 'react-native';
+import { StyleSheet, Switch } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Box from '@/theme/Box';
 import Text from '@/theme/Text';
-import { useStorage } from '@/hooks/useStorage';
-import { router } from 'expo-router';
+import Section from '@/components/settings/Section';
+import Item from '@/components/settings/Item';
+import ResetButton from '@/components/settings/ResetButton';
 
 export default function SettingsScreen() {
-    const { clearStorage } = useStorage<boolean>('onboarding', false);
-
-    const handleResetDataDebug = () => {
-        clearStorage();
-        router.replace('/onboarding');
-    };
 
     return (
         <Box style={styles.container}>
@@ -22,65 +17,40 @@ export default function SettingsScreen() {
             </Box>
 
             <Box style={styles.content}>
-                <Box style={styles.section}>
-                    <Text style={styles.sectionTitle}>Preferences</Text>
+                <Section title="Preferences">
 
-                    <Box style={styles.settingItem}>
-                        <Box style={styles.settingInfo}>
-                            <Ionicons name="moon" size={24} color="#FF1801" />
-                            <Text style={styles.settingText}>Dark Mode</Text>
-                        </Box>
+                    <Item icon='moon' text='Dark Mode'>
                         <Switch
                             value={true}
                             trackColor={{ true: '#FF1801' }}
                             thumbColor="#f4f3f4"
                             disabled={true}
                         />
-                    </Box>
+                    </Item>
 
-                    <Box style={styles.settingItem}>
-                        <Box style={styles.settingInfo}>
-                            <Ionicons name="notifications" size={24} color="#FF1801" />
-                            <Text style={styles.settingText}>Notifications</Text>
-                        </Box>
+                    <Item icon='notifications' text='Notifications'>
                         <Switch
                             value={false}
                             trackColor={{ false: '#767577' }}
                             thumbColor="#f4f3f4"
                             disabled={true}
                         />
-                    </Box>
-                </Box>
+                    </Item>
+                </Section>
 
-                {/* Section À propos */}
-                <Box style={styles.section}>
-                    <Text style={styles.sectionTitle}>About</Text>
-
-                    <TouchableOpacity style={styles.settingItem}>
-                        <Box style={styles.settingInfo}>
-                            <Ionicons name="information-circle" size={24} color="#FF1801" />
-                            <Text style={styles.settingText}>Application version</Text>
-                        </Box>
+                <Section title="About">
+                    <Item icon='information-circle' text='Application version'>
                         <Text style={styles.versionText}>1.0.0</Text>
-                    </TouchableOpacity>
+                    </Item>
 
-                    <TouchableOpacity style={styles.settingItem}>
-                        <Box style={styles.settingInfo}>
-                            <Ionicons name="document-text" size={24} color="#FF1801" />
-                            <Text style={styles.settingText}>Terms of Use</Text>
-                        </Box>
+                    <Item icon='document-text' text='Terms of Use'>
                         <Ionicons name="chevron-forward" size={20} color="#888" />
-                    </TouchableOpacity>
-                </Box>
+                    </Item>
+                </Section>
 
-                {/* Section Développeur */}
-                <Box style={[styles.section, styles.lastSection]}>
-                    <Text style={styles.sectionTitle}>Developer</Text>
-                    <TouchableOpacity style={styles.resetButton} onPress={handleResetDataDebug}>
-                        <Ionicons name="refresh-circle" size={20} color="#fff" />
-                        <Text style={styles.resetButtonText}>Reset data</Text>
-                    </TouchableOpacity>
-                </Box>
+                <Section title="Developer">
+                    <ResetButton />
+                </Section>
             </Box>
         </Box>
     );
@@ -110,59 +80,8 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
         paddingHorizontal: 16,
     },
-    section: {
-        backgroundColor: '#1C1C1E',
-        borderRadius: 12,
-        marginBottom: 24,
-        padding: 16,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3,
-    },
-    lastSection: {
-        marginBottom: 0,
-    },
-    sectionTitle: {
-        fontSize: 18,
-        fontWeight: '600',
-        color: '#FFF',
-        marginBottom: 16,
-    },
-    settingItem: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingVertical: 12,
-        borderBottomWidth: 1,
-        borderBottomColor: '#333',
-    },
-    settingInfo: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    settingText: {
-        color: '#FFF',
-        fontSize: 16,
-        marginLeft: 12,
-    },
     versionText: {
         color: '#888',
         fontSize: 16,
-    },
-    resetButton: {
-        backgroundColor: '#FF1801',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: 12,
-        borderRadius: 8,
-    },
-    resetButtonText: {
-        color: '#FFF',
-        fontSize: 16,
-        fontWeight: '600',
-        marginLeft: 8,
     },
 });
