@@ -4,7 +4,7 @@ import Layout from '@/components/ui/Layout';
 import { Driver, useFetchDrivers, useFetchPositionBySessionKey } from '@/query/hook';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import React from 'react';
-import { ActivityIndicator, FlatList, RefreshControl } from 'react-native';
+import { ActivityIndicator, FlatList, RefreshControl, StyleSheet } from 'react-native';
 
 const SessionScreen = () => {
     const { session_key } = useLocalSearchParams<{ session_key: string }>();
@@ -28,7 +28,7 @@ const SessionScreen = () => {
                 <FlatList
                     data={classement}
                     renderItem={({ item }) => <DriverItem item={item} />}
-                    contentContainerStyle={{ paddingBottom: 70 }}
+                    contentContainerStyle={styles.listContainer}
                     showsVerticalScrollIndicator={false}
                     refreshControl={
                         <RefreshControl
@@ -46,3 +46,10 @@ const SessionScreen = () => {
 };
 
 export default SessionScreen;
+
+const styles = StyleSheet.create({
+    listContainer: {
+        gap: 6,
+        paddingBottom: 70,
+    },
+});
