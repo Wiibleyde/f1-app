@@ -5,6 +5,7 @@ import React from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { formatDate, getDay, getMonthThreeLetters } from '@/utils/date'
 import * as Haptics from 'expo-haptics'
+import { router } from 'expo-router'
 
 interface RenderSessionProps {
     item: RaceSession
@@ -16,6 +17,10 @@ const RenderSession = ({
 
     const handlePress = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+        router.push({
+            pathname: '/sessionresult/[session_key]',
+            params: { session_key: item.session_key }
+        })
     }
 
     return (

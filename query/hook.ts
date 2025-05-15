@@ -49,6 +49,14 @@ export type RaceSession = {
   year: number;
 }
 
+export type PositionResult = {
+  date: string;
+  session_key: number;
+  meeting_key: number;
+  driver_number: number;
+  position: number;
+}
+
 const fecthRacesFromYear = async (year: number): Promise<Race[]> => {
   const response = await fetch(`https://api.openf1.org/v1/meetings?year=${year}`);
   return response.json();
@@ -115,6 +123,33 @@ const fetchDriverByBroadcasterName = async (broadcasterName: string): Promise<Dr
   }
   
   return mergedDriver;
+}
+
+const fetchPositionBySessionKey = async (session_key: string): Promise<PositionResult[]> => {
+  const response = await fetch(`https://api.openf1.org/v1/position?session_key=${session_key}`);
+  const positions: PositionResult[] = await response.json();
+
+  // Pour chaque pilote, garder la position la plus récente (date la plus grande)
+  const latestPositionsMap = new Map<number, PositionResult>();
+  positions.forEach((pos) => {
+    const current = latestPositionsMap.get(pos.driver_number);
+    if (!current || new Date(pos.date) > new Date(current.date)) {
+      latestPositionsMap.set(pos.driver_number, pos);
+    }
+  });
+
+  // Retourner un tableau trié par position croissante
+  const uniquePositions = Array.from(latestPositionsMap.values())
+    .sort((a, b) => a.position - b.position);
+
+  return uniquePositions;
+}
+
+export const useFetchPositionBySessionKey = (session_key: string) => {
+  return useQuery({
+    queryKey: ['session_key', session_key],
+    queryFn: () => fetchPositionBySessionKey(session_key),
+  });
 }
 
 export const useFetchRacesFromYear = (year: number) => {

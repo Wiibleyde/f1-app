@@ -12,7 +12,7 @@ export default function HomeScreen() {
   return (
     <Layout>
       
-      <Header title={`Courses ${currentYear}`} />
+      <Header title={`Races ${currentYear}`} />
 
       {isLoading ? (
         <ActivityIndicator size="large" color="#ee0000" />
