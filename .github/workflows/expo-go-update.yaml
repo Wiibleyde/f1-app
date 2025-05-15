@@ -4,7 +4,7 @@ name: EAS continous deployment
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   update:
