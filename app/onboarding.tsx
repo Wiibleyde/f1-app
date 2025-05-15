@@ -1,8 +1,8 @@
 import { useVideoPlayer, VideoView } from 'expo-video';
-import { StyleSheet, Dimensions, Animated, ScrollView, Image } from 'react-native';
+import { StyleSheet, Dimensions, Animated, ScrollView } from 'react-native';
 import { useState, useRef, useEffect } from 'react';
 import Button from '@/components/ui/Button';
-import { logo, sliderInformations, videoSource } from '@/constants/OnBoarding';
+import { sliderInformations, videoSource } from '@/constants/OnBoarding';
 import Box from '@/theme/Box';
 import { router, Stack } from 'expo-router';
 import RenderSlide from '@/components/RenderSlider';
@@ -38,7 +38,7 @@ export default function OnBoardingScreen() {
             dot.width.setValue(i === 0 ? 40 : 10);
             dot.opacity.setValue(i === 0 ? 1 : 0.5);
         });
-    }, []);
+    }, [dotAnimations, player, scrollX]);
 
     useEffect(() => {
         const listener = scrollX.addListener(({ value }) => {
@@ -56,7 +56,7 @@ export default function OnBoardingScreen() {
         });
 
         return () => scrollX.removeListener(listener);
-    }, [currentIndex]);
+    }, [currentIndex, dotAnimations, scrollX]);
 
     const handlePress = () => {
         setIsOnBoarding(false);
