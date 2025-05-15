@@ -1,0 +1,38 @@
+name: EAS continous deployment
+
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🏗️ Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🚧 Setup Node
+        uses: actions/setup-node@v3
+      
+      - name: 🪛 Setup cache
+        uses: actions/cache@v4
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+      - name: 🛒 Install dependencies
+        run: npm ci
+        shell: bash
+
+      - name: 🚧 Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EAS_TOKEN }}
+
+      - name: 🚚 Build and deploy 📦
+        run: eas update --auto
+        shell: bash
