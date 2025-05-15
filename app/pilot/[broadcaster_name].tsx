@@ -74,7 +74,7 @@ export default function PilotScreen() {
                             <Box style={styles.driverInfo}>
                                 <Text variant="title" style={styles.driverName}>
                                     {data.first_name}
-                                    <Text variant="title" style={{ color: teamColor }}>
+                                    <Text variant="title" style={{ color: teamColor, fontSize: 22 }}>
                                         {' '}
                                         {data.last_name}
                                     </Text>
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
         paddingRight: 10,
     },
     driverName: {
-        fontSize: 28,
+        fontSize: 22,
         color: 'white',
         fontWeight: 'bold',
     },
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
         marginRight: 5,
     },
     teamName: {
-        fontSize: 16,
+        fontSize: 15,
         color: '#FFFFFF',
     },
     countryBox: {
