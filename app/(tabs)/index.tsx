@@ -21,7 +21,7 @@ export default function HomeScreen() {
                         <RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={'#ee0000'} />
                     }
                     data={data}
-                    renderItem={({ item, index }) => <RenderRace item={item} index={index} />}
+                    renderItem={({ item }) => <RenderRace item={item} index={item.meeting_key} />}
                     contentContainerStyle={styles.listContainer}
                     showsVerticalScrollIndicator={false}
                 />

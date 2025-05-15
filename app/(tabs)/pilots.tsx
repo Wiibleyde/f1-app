@@ -4,15 +4,14 @@ import Box from '@/theme/Box';
 import Text from '@/theme/Text';
 import { useFetchDrivers } from '@/query/hook';
 import { DriverItem } from '@/components/drivers/DriverItem';
+import Header from '@/components/ui/Header';
 
 export default function HomeScreen() {
     const { data, isLoading, refetch, isRefetching } = useFetchDrivers();
 
     return (
         <Box style={styles.container}>
-            <Text variant="title" textAlign="center" style={styles.title}>
-                Pilots F1
-            </Text>
+            <Header title="F1 Drivers" backButton={false} />
 
             {isLoading ? (
                 <ActivityIndicator size="large" color="#ee0000" />
@@ -21,9 +20,8 @@ export default function HomeScreen() {
                     refreshControl={
                         <RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={'#ee0000'} />
                     }
-                    //Get the 20 first drivers ordered by driver_number
                     data={data?.slice(0, 20).sort((a, b) => a.driver_number - b.driver_number)}
-                    renderItem={({ item }) => <DriverItem item={item} />}
+                    renderItem={({ item }) => <DriverItem item={item} key={item.full_name} />}
                     keyExtractor={(item) => item.broadcast_name}
                     contentContainerStyle={styles.listContainer}
                     showsVerticalScrollIndicator={false}

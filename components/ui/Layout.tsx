@@ -2,12 +2,16 @@ import Box from '@/theme/Box';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-interface LayoutProps {
+interface LayoutProps extends React.ComponentProps<typeof Box> {
     children: React.ReactNode;
 }
 
-const Layout = ({ children }: LayoutProps) => {
-    return <Box style={styles.container}>{children}</Box>;
+const Layout = ({
+    children,
+    style,
+    ...props
+}: LayoutProps) => {
+    return <Box style={[styles.container, style]} {...props}>{children}</Box>;
 };
 
 export default Layout;

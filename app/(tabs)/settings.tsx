@@ -3,13 +3,10 @@ import { Ionicons } from '@expo/vector-icons';
 import Box from '@/theme/Box';
 import Text from '@/theme/Text';
 import { useStorage } from '@/hooks/useStorage';
-import { useState } from 'react';
 import { router } from 'expo-router';
 
 export default function SettingsScreen() {
     const { clearStorage } = useStorage<boolean>('onboarding', false);
-    const [notifications, setNotifications] = useState(true);
-    const [darkMode, setDarkMode] = useState(true);
 
     const handleResetDataDebug = () => {
         clearStorage();
@@ -19,27 +16,25 @@ export default function SettingsScreen() {
     return (
         <Box style={styles.container}>
             <Box style={styles.title}>
-                <Text variant="title" color="text">
-                    Paramètres
+                <Text variant="title" color="text" textAlign="left">
+                    Settings
                 </Text>
             </Box>
 
             <Box style={styles.content}>
-                {/* Section Préférences */}
                 <Box style={styles.section}>
-                    <Text style={styles.sectionTitle}>Préférences</Text>
+                    <Text style={styles.sectionTitle}>Preferences</Text>
 
                     <Box style={styles.settingItem}>
                         <Box style={styles.settingInfo}>
                             <Ionicons name="moon" size={24} color="#FF1801" />
-                            <Text style={styles.settingText}>Mode sombre</Text>
+                            <Text style={styles.settingText}>Dark Mode</Text>
                         </Box>
                         <Switch
-                            value={darkMode}
-                            onValueChange={setDarkMode}
-                            trackColor={{ false: '#767577', true: '#FF1801' }}
+                            value={true}
+                            trackColor={{ true: '#FF1801' }}
                             thumbColor="#f4f3f4"
-                            disabled={true} // Disable the switch for now
+                            disabled={true}
                         />
                     </Box>
 
@@ -49,23 +44,22 @@ export default function SettingsScreen() {
                             <Text style={styles.settingText}>Notifications</Text>
                         </Box>
                         <Switch
-                            value={notifications}
-                            onValueChange={setNotifications}
-                            trackColor={{ false: '#767577', true: '#FF1801' }}
+                            value={false}
+                            trackColor={{ false: '#767577' }}
                             thumbColor="#f4f3f4"
-                            disabled={true} // Disable the switch for now
+                            disabled={true}
                         />
                     </Box>
                 </Box>
 
                 {/* Section À propos */}
                 <Box style={styles.section}>
-                    <Text style={styles.sectionTitle}>À propos</Text>
+                    <Text style={styles.sectionTitle}>About</Text>
 
                     <TouchableOpacity style={styles.settingItem}>
                         <Box style={styles.settingInfo}>
                             <Ionicons name="information-circle" size={24} color="#FF1801" />
-                            <Text style={styles.settingText}>Version de l&apos;application</Text>
+                            <Text style={styles.settingText}>Application version</Text>
                         </Box>
                         <Text style={styles.versionText}>1.0.0</Text>
                     </TouchableOpacity>
@@ -73,7 +67,7 @@ export default function SettingsScreen() {
                     <TouchableOpacity style={styles.settingItem}>
                         <Box style={styles.settingInfo}>
                             <Ionicons name="document-text" size={24} color="#FF1801" />
-                            <Text style={styles.settingText}>Conditions d&apos;utilisation</Text>
+                            <Text style={styles.settingText}>Terms of Use</Text>
                         </Box>
                         <Ionicons name="chevron-forward" size={20} color="#888" />
                     </TouchableOpacity>
@@ -81,10 +75,10 @@ export default function SettingsScreen() {
 
                 {/* Section Développeur */}
                 <Box style={[styles.section, styles.lastSection]}>
-                    <Text style={styles.sectionTitle}>Développeur</Text>
+                    <Text style={styles.sectionTitle}>Developer</Text>
                     <TouchableOpacity style={styles.resetButton} onPress={handleResetDataDebug}>
                         <Ionicons name="refresh-circle" size={20} color="#fff" />
-                        <Text style={styles.resetButtonText}>Réinitialiser les données</Text>
+                        <Text style={styles.resetButtonText}>Reset data</Text>
                     </TouchableOpacity>
                 </Box>
             </Box>
@@ -103,7 +97,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#000000',
     },
     title: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
         color: '#FFFFFF',
+        marginLeft: "5%",
         marginBottom: 20,
     },
     content: {
