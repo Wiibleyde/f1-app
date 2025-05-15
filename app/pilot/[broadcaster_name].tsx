@@ -6,12 +6,14 @@ import Text from '@/theme/Text';
 import { Image } from 'expo-image';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { ScrollView, Animated, StyleSheet } from 'react-native';
-import { useRef, useEffect } from 'react';
+import { ScrollView, Animated, StyleSheet, TouchableOpacity } from 'react-native';
+import * as Clipboard from 'expo-clipboard';
+import { useRef, useEffect, useState } from 'react';
 
 export default function PilotScreen() {
   const { broadcaster_name } = useLocalSearchParams();
   const { data } = useFetchDriverByBroadcasterName(broadcaster_name as string);
+  const [colorCopied, setColorCopied] = useState(false);
   
   // Animation values
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -32,13 +34,24 @@ export default function PilotScreen() {
     ]).start();
   }, [data]);
 
+  const copyColorToClipboard = async (color: string) => {
+    try {
+      await Clipboard.setStringAsync(color);
+      setColorCopied(true);
+      setTimeout(() => setColorCopied(false), 2000);
+    } catch (error) {
+      console.error('Failed to copy to clipboard:', error);
+      // Show error state if needed
+    }
+  };
+
   if (!data) {
     return (
       <Layout>
         <Stack.Screen options={{ headerShown: false }} />
         <Header title="Détails du pilote" backButton />
         <Box style={styles.loadingContainer}>
-          <Text style={styles.loadingText}>Chargement...</Text>
+          <Text style={styles.loadingText}>Loading...</Text>
         </Box>
       </Layout>
     );
@@ -96,34 +109,34 @@ export default function PilotScreen() {
           <Text variant="title" style={styles.sectionTitle}>Informations</Text>
           <Box style={styles.statsGrid}>
             <Box style={[styles.statCard, { borderColor: teamColorLight }]}>
-              <Text variant="title" style={styles.statTitle}>Numéro</Text>
+              <Text variant="title" style={styles.statTitle}>Driver number</Text>
               <Text variant="text" style={[styles.statValue, { color: teamColor }]}>{data.driver_number}</Text>
             </Box>
             
             <Box style={[styles.statCard, { borderColor: teamColorLight }]}>
-              <Text variant="title" style={styles.statTitle}>Acronyme</Text>
+              <Text variant="title" style={styles.statTitle}>Acronym</Text>
               <Text variant="text" style={styles.statValue}>{data.name_acronym}</Text>
             </Box>
             
             <Box style={[styles.statCard, { borderColor: teamColorLight }]}>
-              <Text variant="title" style={styles.statTitle}>Pays</Text>
+              <Text variant="title" style={styles.statTitle}>Country</Text>
               <Text variant="text" style={styles.statValue}>
                 {data.country_code ? `${data.country_code} ${getFlagEmoji(data.country_code)}` : 'Non spécifié'}
               </Text>
             </Box>
             
             <Box style={[styles.statCard, { borderColor: teamColorLight }]}>
-              <Text variant="title" style={styles.statTitle}>Écurie</Text>
+              <Text variant="title" style={styles.statTitle}>Team</Text>
               <Text variant="text" style={[styles.statValue, { color: teamColor }]}>{data.team_name}</Text>
             </Box>
           </Box>
           
           {/* Extra section */}
-          <Text variant="title" style={styles.sectionTitle}>Session</Text>
+          <Text variant="title" style={styles.sectionTitle}>Last race</Text>
           <Box style={[styles.fullWidthCard, { borderColor: teamColorLight }]}>
             <Box style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Box>
-                <Text variant="title" style={styles.statTitle}>Diffusion</Text>
+                <Text variant="title" style={styles.statTitle}>Broadcaster name</Text>
                 <Text variant="text" style={styles.statValue}>{data.broadcast_name}</Text>
               </Box>
               <Box>
@@ -139,10 +152,22 @@ export default function PilotScreen() {
           
           {/* Team color indicator */}
           <Box style={[styles.teamColorCard, { borderColor: teamColorLight }]}>
-            <Text variant="title" style={styles.statTitle}>Couleur de l'écurie</Text>
+            <Text variant="title" style={styles.statTitle}>Team color</Text>
             <Box style={styles.colorRow}>
               <Box style={[styles.colorSquare, { backgroundColor: teamColor }]} />
-              <Text variant="text" style={styles.statValue}>#{data.team_colour}</Text>
+              <TouchableOpacity
+                onPress={() => copyColorToClipboard(teamColor)}
+                activeOpacity={0.7}
+              >
+                <Box style={styles.colorValueContainer}>
+                  <Text variant="text" style={styles.statValue}>{teamColor}</Text>
+                  {colorCopied && (
+                    <Animated.Text style={styles.copiedText}>
+                      Copied!
+                    </Animated.Text>
+                  )}
+                </Box>
+              </TouchableOpacity>
             </Box>
           </Box>
         </Animated.View>
@@ -267,6 +292,15 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 5,
     marginRight: 10,
+  },
+  colorValueContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  copiedText: {
+    color: '#4CAF50',
+    fontSize: 14,
   },
   loadingContainer: {
     flex: 1,

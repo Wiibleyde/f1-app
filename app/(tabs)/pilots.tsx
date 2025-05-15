@@ -11,7 +11,7 @@ export default function HomeScreen() {
   return (
     <Box style={styles.container}>
       <Text variant="title" textAlign="center" style={styles.title}>
-        Pilotes F1
+        Pilots F1
       </Text>
 
       {isLoading ? (
