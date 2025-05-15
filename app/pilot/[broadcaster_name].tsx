@@ -4,10 +4,11 @@ import { useFetchDriverByBroadcasterName } from '@/query/hook';
 import Box from '@/theme/Box';
 import Text from '@/theme/Text';
 import { Image } from 'expo-image';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScrollView, Animated, StyleSheet, TouchableOpacity } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
+import * as Haptics from 'expo-haptics';
 import { useRef, useEffect, useState } from 'react';
 
 export default function PilotScreen() {
@@ -43,6 +44,11 @@ export default function PilotScreen() {
             console.error('Failed to copy to clipboard:', error);
             // Show error state if needed
         }
+    };
+
+    const handleLastRacePress = () => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+        router.push({ pathname: '/sessionresult/[session_key]', params: { session_key: data?.session_key?.toString() || '' } });
     };
 
     if (!data) {
@@ -153,39 +159,6 @@ export default function PilotScreen() {
                         </Box>
                     </Box>
 
-                    {/* Extra section */}
-                    <Text variant="title" style={styles.sectionTitle}>
-                        Last race
-                    </Text>
-                    <Box style={[styles.fullWidthCard, { borderColor: teamColorLight }]}>
-                        <Box style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <Box>
-                                <Text variant="title" style={styles.statTitle}>
-                                    Broadcaster name
-                                </Text>
-                                <Text variant="text" style={styles.statValue}>
-                                    {data.broadcast_name}
-                                </Text>
-                            </Box>
-                            <Box>
-                                <Text variant="title" style={styles.statTitle}>
-                                    Session
-                                </Text>
-                                <Text variant="text" style={styles.statValue}>
-                                    #{data.session_key}
-                                </Text>
-                            </Box>
-                            <Box>
-                                <Text variant="title" style={styles.statTitle}>
-                                    Meeting
-                                </Text>
-                                <Text variant="text" style={styles.statValue}>
-                                    #{data.meeting_key}
-                                </Text>
-                            </Box>
-                        </Box>
-                    </Box>
-
                     {/* Team color indicator */}
                     <Box style={[styles.teamColorCard, { borderColor: teamColorLight }]}>
                         <Text variant="title" style={styles.statTitle}>
@@ -202,6 +175,20 @@ export default function PilotScreen() {
                                 </Box>
                             </TouchableOpacity>
                         </Box>
+                    </Box>
+
+                    {/* Extra section */}
+                    <Box style={[styles.fullWidthCard, { borderColor: teamColorLight }]}>
+                        <TouchableOpacity onPress={handleLastRacePress} activeOpacity={0.7}>
+                            <Text variant="title" style={styles.statTitle}>
+                                Last race
+                            </Text>
+                            <Box style={styles.colorRow}>
+                                <Text variant="text" style={styles.statValue}>
+                                    Go to the last race
+                                </Text>
+                            </Box>
+                        </TouchableOpacity>
                     </Box>
                 </Animated.View>
             </ScrollView>
