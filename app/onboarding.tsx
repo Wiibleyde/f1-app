@@ -134,8 +134,8 @@ export default function OnBoardingScreen() {
             </Box>
 
             <Box style={[styles.stepContainer, { justifyContent: currentIndex === 0 ? 'flex-start' : 'flex-end' }]}>
-                {currentIndex === 0 && <Button onPress={handlePress}>Passer</Button>}
-                {currentIndex === sliderInformations.length - 1 && <Button onPress={handlePress}>Commencer</Button>}
+                {currentIndex === 0 && <Button onPress={handlePress}>Skip</Button>}
+                {currentIndex === sliderInformations.length - 1 && <Button onPress={handlePress}>Start</Button>}
             </Box>
         </Box>
     );
