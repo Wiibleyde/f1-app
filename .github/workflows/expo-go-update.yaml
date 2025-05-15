@@ -37,6 +37,6 @@ jobs:
         run: eas update --auto
         shell: bash
 
-      # - name: 🏗️ Build android APK
-      #   run: eas build --platform android --profile develop
-      #   shell: bash
+      - name: 🏗️ Build android APK
+        run: eas build --platform android --profile develop
+        shell: bash

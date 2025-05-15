@@ -2,6 +2,7 @@
   "expo": {
     "name": "f1-app",
     "slug": "f1-app",
+    "owner": "f1-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/f1.png",
