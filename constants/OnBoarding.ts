@@ -1,19 +1,19 @@
 export const sliderInformations = [
     {
-        title: 'Bienvenue sur F1 App',
-        subtitle: 'Plongez au coeur des courses de F1',
+        title: 'Welcome to F1 App',
+        subtitle: 'Dive into the world of Formula 1',
     },
     {
-        title: 'Suivez les courses en direct',
-        subtitle: 'Ne ratez plus aucune course',
+        title: 'Stay updated',
+        subtitle: 'Never miss a race or event',
     },
     {
-        title: 'Découvrez les pilotes',
-        subtitle: 'Apprenez à connaître vos pilotes préférés',
+        title: 'Discover the drivers',
+        subtitle: 'Learn about your favorite drivers',
     },
     {
-        title: 'Explorez les circuits',
-        subtitle: 'Visitez les circuits de F1',
+        title: 'Explore the circuits',
+        subtitle: 'Visit iconic circuits around the world',
     },
 ];
 

@@ -36,7 +36,7 @@ export default function TabLayout() {
                         default: {},
                     }),
                     backgroundColor: '#000',
-                    height: 60,
+                    height: 80,
                     paddingBottom: 10,
                     borderTopWidth: 0, // Supprimé la bordure rouge du haut
                     shadowColor: '#000',
@@ -114,9 +114,9 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
     activeTabIndicator: {
         position: 'absolute',
-        top: -1,
+        top: -3,
         width: 60,
-        height: 3,
+        height: 4,
         backgroundColor: F1_RED,
         borderRadius: 1.5,
     },

@@ -55,9 +55,22 @@ export type PositionResult = {
     position: number;
 };
 
+export type RadioData = {
+    meeting_key: number;
+    session_key: number;
+    driver_number: number;
+    date: string;
+    recording_url: string;
+};
+
 const fecthRacesFromYear = async (year: number): Promise<Race[]> => {
     const response = await fetch(`https://api.openf1.org/v1/meetings?year=${year}`);
-    return response.json();
+    let data = await response.json();
+    if (!data || data.length === 0) {
+        return [];
+    }
+    data = data.reverse();
+    return data
 };
 
 const fetchDrivers = async (): Promise<Driver[]> => {
@@ -86,6 +99,23 @@ export const useFetchRaceSessions = (meeting_key: string) => {
     return useQuery({
         queryKey: ['sessions', meeting_key],
         queryFn: () => fetchRaceSessions(meeting_key),
+    });
+};
+
+const fetchSessionByKey = async (session_key: string): Promise<RaceSession | null> => {
+    const response = await fetch(`https://api.openf1.org/v1/sessions?session_key=${session_key}`);
+    const sessions = await response.json();
+    if (!sessions || sessions.length === 0) {
+        return null;
+    }
+    return sessions[0];
+}
+
+export const useFetchSessionByKey = (session_key: string, options?: { enabled?: boolean }) => {
+    return useQuery({
+        queryKey: ['session', session_key],
+        queryFn: () => fetchSessionByKey(session_key),
+        enabled: options?.enabled !== undefined ? options.enabled : Boolean(session_key),
     });
 };
 
@@ -166,5 +196,19 @@ export const useFetchDriverByBroadcasterName = (broadcasterName: string) => {
     return useQuery({
         queryKey: ['driver', broadcasterName],
         queryFn: () => fetchDriverByBroadcasterName(broadcasterName),
+    });
+};
+
+const fetchRadioBySessionKey = async (session_key: string): Promise<RadioData[]> => {
+    const response = await fetch(`https://api.openf1.org/v1/team_radio?session_key=${session_key}`);
+    const radioData: RadioData[] = await response.json();
+
+    return radioData;
+}
+
+export const useFetchRadioBySessionKey = (session_key: string) => {
+    return useQuery({
+        queryKey: ['radio', session_key],
+        queryFn: () => fetchRadioBySessionKey(session_key),
     });
 };
