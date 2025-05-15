@@ -55,6 +55,14 @@ export type PositionResult = {
     position: number;
 };
 
+export type RadioData = {
+    meeting_key: number;
+    session_key: number;
+    driver_number: number;
+    date: string;
+    recording_url: string;
+};
+
 const fecthRacesFromYear = async (year: number): Promise<Race[]> => {
     const response = await fetch(`https://api.openf1.org/v1/meetings?year=${year}`);
     let data = await response.json();
@@ -188,5 +196,19 @@ export const useFetchDriverByBroadcasterName = (broadcasterName: string) => {
     return useQuery({
         queryKey: ['driver', broadcasterName],
         queryFn: () => fetchDriverByBroadcasterName(broadcasterName),
+    });
+};
+
+const fetchRadioBySessionKey = async (session_key: string): Promise<RadioData[]> => {
+    const response = await fetch(`https://api.openf1.org/v1/team_radio?session_key=${session_key}`);
+    const radioData: RadioData[] = await response.json();
+
+    return radioData;
+}
+
+export const useFetchRadioBySessionKey = (session_key: string) => {
+    return useQuery({
+        queryKey: ['radio', session_key],
+        queryFn: () => fetchRadioBySessionKey(session_key),
     });
 };
