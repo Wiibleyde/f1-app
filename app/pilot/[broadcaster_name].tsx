@@ -1,6 +1,6 @@
 import Header from '@/components/ui/Header';
 import Layout from '@/components/ui/Layout';
-import { useFetchDriverByBroadcasterName } from '@/query/hook';
+import { useFetchDriverByBroadcasterName, useFetchSessionByKey } from '@/query/hook';
 import Box from '@/theme/Box';
 import Text from '@/theme/Text';
 import { Image } from 'expo-image';
@@ -15,6 +15,18 @@ export default function PilotScreen() {
     const { broadcaster_name } = useLocalSearchParams();
     const { data } = useFetchDriverByBroadcasterName(broadcaster_name as string);
     const [colorCopied, setColorCopied] = useState(false);
+
+    const [sessionKey, setSessionKey] = useState<string | null>(null);
+
+    const { data: sessionData } = useFetchSessionByKey(sessionKey || '', {
+        enabled: Boolean(sessionKey)
+    });
+
+    useEffect(() => {
+        if (data?.session_key) {
+            setSessionKey(data.session_key.toString());
+        }
+    }, [data]);
 
     // Animation values
     const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -42,7 +54,6 @@ export default function PilotScreen() {
             setTimeout(() => setColorCopied(false), 2000);
         } catch (error) {
             console.error('Failed to copy to clipboard:', error);
-            // Show error state if needed
         }
     };
 
@@ -177,23 +188,51 @@ export default function PilotScreen() {
                         </Box>
                     </Box>
 
-                    {/* Extra section */}
-                    <Box style={[styles.fullWidthCard, { borderColor: teamColorLight }]}>
-                        <TouchableOpacity onPress={handleLastRacePress} activeOpacity={0.7}>
-                            <Text variant="title" style={styles.statTitle}>
-                                Last race
+                    {/* Extra section - styled as a button */}
+                    <TouchableOpacity 
+                        onPress={handleLastRacePress} 
+                        activeOpacity={0.7}
+                        style={[styles.buttonContainer, { backgroundColor: teamColor }]}
+                    >
+                        <Box style={styles.buttonContent}>
+                            <Text variant="title" style={styles.buttonTitle}>
+                                Last event
                             </Text>
-                            <Box style={styles.colorRow}>
-                                <Text variant="text" style={styles.statValue}>
-                                    Go to the last race
-                                </Text>
-                            </Box>
-                        </TouchableOpacity>
-                    </Box>
+                            <Text variant="text" style={styles.buttonText}>
+                                {sessionData ?
+                                    `${sessionData.session_type || ''}, ${sessionData.location || ''} (${formatDate(sessionData.date_start)})` :
+                                    'Loading race information...'}
+                            </Text>
+                        </Box>
+                        <Text style={styles.buttonIcon}>→</Text>
+                    </TouchableOpacity>
                 </Animated.View>
             </ScrollView>
         </Layout>
     );
+}
+
+// Fonction pour formater la date ISO en format lisible
+function formatDate(dateString: string | undefined): string {
+    if (!dateString) return '';
+    
+    try {
+        const date = new Date(dateString);
+        
+        // Options de formatage pour afficher la date
+        const options: Intl.DateTimeFormatOptions = {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        };
+        
+        return date.toLocaleDateString(undefined, options);
+    } catch (error) {
+        console.error('Error formatting date:', error);
+        return '';
+    }
 }
 
 const styles = StyleSheet.create({
@@ -330,6 +369,38 @@ const styles = StyleSheet.create({
     loadingText: {
         color: 'white',
         fontSize: 18,
+    },
+    buttonContainer: {
+        borderRadius: 12,
+        padding: 15,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        elevation: 3,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+    },
+    buttonContent: {
+        flex: 1,
+    },
+    buttonTitle: {
+        color: '#FFFFFF',
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 5,
+    },
+    buttonText: {
+        color: '#FFFFFF',
+        fontSize: 14,
+        opacity: 0.9,
+    },
+    buttonIcon: {
+        color: '#FFFFFF',
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginLeft: 10,
     },
 });
 

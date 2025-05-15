@@ -89,6 +89,23 @@ export const useFetchRaceSessions = (meeting_key: string) => {
     });
 };
 
+const fetchSessionByKey = async (session_key: string): Promise<RaceSession | null> => {
+    const response = await fetch(`https://api.openf1.org/v1/sessions?session_key=${session_key}`);
+    const sessions = await response.json();
+    if (!sessions || sessions.length === 0) {
+        return null;
+    }
+    return sessions[0];
+}
+
+export const useFetchSessionByKey = (session_key: string, options?: { enabled?: boolean }) => {
+    return useQuery({
+        queryKey: ['session', session_key],
+        queryFn: () => fetchSessionByKey(session_key),
+        enabled: options?.enabled !== undefined ? options.enabled : Boolean(session_key),
+    });
+};
+
 const fetchDriverByBroadcasterName = async (broadcasterName: string): Promise<Driver | null> => {
     const response = await fetch(`https://api.openf1.org/v1/drivers?broadcast_name=${broadcasterName}`);
     const drivers = await response.json();
