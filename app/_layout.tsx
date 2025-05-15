@@ -17,38 +17,38 @@ import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persi
 SplashScreen.preventAutoHideAsync();
 
 const asyncStoragePersister = createAsyncStoragePersister({
-  storage: AsyncStorage,
+    storage: AsyncStorage,
 });
 
 export default function RootLayout() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [loaded] = useFonts({
-    Formula1Regular: require('../assets/fonts/Formula1-Regular.ttf'),
-    Formula1Bold: require('../assets/fonts/Formula1-Bold.ttf'),
-  });
+    const [isLoading, setIsLoading] = useState(true);
+    const [loaded] = useFonts({
+        Formula1Regular: require('../assets/fonts/Formula1-Regular.ttf'),
+        Formula1Bold: require('../assets/fonts/Formula1-Bold.ttf'),
+    });
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+    useEffect(() => {
+        if (loaded) {
+            SplashScreen.hideAsync();
+        }
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 1000);
+    }, [loaded, isLoading]);
+
+    if (!loaded || isLoading) {
+        return <Splash />;
     }
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-  }, [loaded, isLoading]);
 
-  if (!loaded || isLoading) {
-    return <Splash />;
-  }
-
-  return (
-    <ThemeProvider theme={theme}>
-      <PersistQueryClientProvider client={queryClient} persistOptions={{ persister: asyncStoragePersister }}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
-      </PersistQueryClientProvider>
-    </ThemeProvider>
-  );
+    return (
+        <ThemeProvider theme={theme}>
+            <PersistQueryClientProvider client={queryClient} persistOptions={{ persister: asyncStoragePersister }}>
+                <Stack>
+                    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                    <Stack.Screen name="+not-found" />
+                </Stack>
+                <StatusBar style="auto" />
+            </PersistQueryClientProvider>
+        </ThemeProvider>
+    );
 }

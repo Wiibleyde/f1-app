@@ -1,22 +1,24 @@
-import { RaceSession } from '@/query/hook'
-import Box from '@/theme/Box'
-import Text from '@/theme/Text'
-import React from 'react'
-import { StyleSheet, TouchableOpacity } from 'react-native'
-import { formatDate, getDay, getMonthThreeLetters } from '@/utils/date'
-import * as Haptics from 'expo-haptics'
+import { RaceSession } from '@/query/hook';
+import Box from '@/theme/Box';
+import Text from '@/theme/Text';
+import React from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { formatDate, getDay, getMonthThreeLetters } from '@/utils/date';
+import * as Haptics from 'expo-haptics';
+import { router } from 'expo-router';
 
 interface RenderSessionProps {
-    item: RaceSession
+    item: RaceSession;
 }
 
-const RenderSession = ({
-    item
-}: RenderSessionProps) => {
-
+const RenderSession = ({ item }: RenderSessionProps) => {
     const handlePress = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-    }
+        router.push({
+            pathname: '/sessionresult/[session_key]',
+            params: { session_key: item.session_key },
+        });
+    };
 
     return (
         <TouchableOpacity style={styles.container} onPress={handlePress}>
@@ -47,12 +49,11 @@ const RenderSession = ({
                     {formatDate(item)}
                 </Text>
             </Box>
-
         </TouchableOpacity>
-    )
-}
+    );
+};
 
-export default RenderSession
+export default RenderSession;
 
 const styles = StyleSheet.create({
     container: {
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         paddingHorizontal: 20,
         paddingVertical: 16,
-        gap: 6
+        gap: 6,
     },
     sessionInfosMonthContainer: {
         backgroundColor: '#30302f',
@@ -110,4 +111,4 @@ const styles = StyleSheet.create({
         color: '#ffffff',
         fontFamily: 'Formula1Bold',
     },
-})
+});
