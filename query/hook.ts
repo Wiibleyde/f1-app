@@ -57,7 +57,12 @@ export type PositionResult = {
 
 const fecthRacesFromYear = async (year: number): Promise<Race[]> => {
     const response = await fetch(`https://api.openf1.org/v1/meetings?year=${year}`);
-    return response.json();
+    let data = await response.json();
+    if (!data || data.length === 0) {
+        return [];
+    }
+    data = data.reverse();
+    return data
 };
 
 const fetchDrivers = async (): Promise<Driver[]> => {
