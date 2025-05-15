@@ -29,7 +29,7 @@ export default function OnBoardingScreen() {
         if (!isPlaying) {
             player.play();
         }
-    }, [isPlaying]);
+    }, [isPlaying, player]);
 
     const dotAnimations = useRef(
         sliderInformations.map((_, index) => ({
@@ -45,7 +45,7 @@ export default function OnBoardingScreen() {
         // Ensure first dot is correctly sized
         dotAnimations[0].width.setValue(40);
         dotAnimations[0].opacity.setValue(1);
-    }, []);
+    }, [dotAnimations, scrollX]);
 
     useEffect(() => {
         const listener = scrollX.addListener(({ value }) => {
@@ -72,7 +72,7 @@ export default function OnBoardingScreen() {
         return () => {
             scrollX.removeListener(listener);
         };
-    }, [currentIndex, width]);
+    }, [currentIndex, dotAnimations, scrollX]);
 
     const handlePress = () => {
         setIsOnBoarding(false);
@@ -134,8 +134,8 @@ export default function OnBoardingScreen() {
             </Box>
 
             <Box style={[styles.stepContainer, { justifyContent: currentIndex === 0 ? 'flex-start' : 'flex-end' }]}>
-                {currentIndex == 0 && <Button onPress={handlePress}>Passer</Button>}
-                {currentIndex == sliderInformations.length - 1 && <Button onPress={handlePress}>Commencer</Button>}
+                {currentIndex === 0 && <Button onPress={handlePress}>Passer</Button>}
+                {currentIndex === sliderInformations.length - 1 && <Button onPress={handlePress}>Commencer</Button>}
             </Box>
         </Box>
     );

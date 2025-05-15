@@ -32,7 +32,7 @@ export default function PilotScreen() {
                 useNativeDriver: true,
             }),
         ]).start();
-    }, [data]);
+    }, [data, fadeAnim, slideAnim]);
 
     const copyColorToClipboard = async (color: string) => {
         try {

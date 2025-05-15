@@ -1,8 +1,7 @@
 import { DriverItem } from '@/components/drivers/DriverItem';
 import Header from '@/components/ui/Header';
 import Layout from '@/components/ui/Layout';
-import { Driver, PositionResult, useFetchDrivers, useFetchPositionBySessionKey } from '@/query/hook';
-import Text from '@/theme/Text';
+import { Driver, useFetchDrivers, useFetchPositionBySessionKey } from '@/query/hook';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { ActivityIndicator, FlatList, RefreshControl } from 'react-native';
@@ -35,7 +34,7 @@ const SessionScreen = () => {
                         <RefreshControl
                             refreshing={isRefetching}
                             onRefresh={() => {
-                                refetch;
+                                refetch();
                             }}
                             tintColor={'#ee0000'}
                         />

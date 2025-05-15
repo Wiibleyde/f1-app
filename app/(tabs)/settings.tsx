@@ -65,7 +65,7 @@ export default function SettingsScreen() {
                     <TouchableOpacity style={styles.settingItem}>
                         <Box style={styles.settingInfo}>
                             <Ionicons name="information-circle" size={24} color="#FF1801" />
-                            <Text style={styles.settingText}>Version de l'application</Text>
+                            <Text style={styles.settingText}>Version de l&apos;application</Text>
                         </Box>
                         <Text style={styles.versionText}>1.0.0</Text>
                     </TouchableOpacity>
@@ -73,7 +73,7 @@ export default function SettingsScreen() {
                     <TouchableOpacity style={styles.settingItem}>
                         <Box style={styles.settingInfo}>
                             <Ionicons name="document-text" size={24} color="#FF1801" />
-                            <Text style={styles.settingText}>Conditions d'utilisation</Text>
+                            <Text style={styles.settingText}>Conditions d&apos;utilisation</Text>
                         </Box>
                         <Ionicons name="chevron-forward" size={20} color="#888" />
                     </TouchableOpacity>
