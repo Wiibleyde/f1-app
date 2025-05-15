@@ -14,12 +14,6 @@ const SessionScreen = () => {
 
     const { data: drivers, isLoading: isDriverLoading } = useFetchDrivers()
 
-    if (isLoading || isDriverLoading || !positions || !drivers) {
-        return (
-            <ActivityIndicator size="large" color="#ee0000" />
-        )
-    }
-
     const classement: Driver[] = (positions ?? []).map(pos => {
         const driver = drivers?.find(d => d.driver_number === pos.driver_number);
         // Provide default values for required fields to satisfy Driver type
@@ -31,16 +25,20 @@ const SessionScreen = () => {
         <Layout>
             <Stack.Screen options={{ headerShown: false }} />
             <Header title='Session' backButton />
+            {isLoading || isDriverLoading || !positions || !drivers ? (
+                <ActivityIndicator size="large" color="#ee0000" />
+            ) : (
 
-            <FlatList
-                data={classement}
-                renderItem={({ item }) => <DriverItem item={item} />}
-                contentContainerStyle={{ paddingBottom: 70 }}
-                showsVerticalScrollIndicator={false}
-                refreshControl={
-                    <RefreshControl refreshing={isRefetching} onRefresh={() => { refetch }} tintColor={'#ee0000'} />
-                }
-            />
+                <FlatList
+                    data={classement}
+                    renderItem={({ item }) => <DriverItem item={item} />}
+                    contentContainerStyle={{ paddingBottom: 70 }}
+                    showsVerticalScrollIndicator={false}
+                    refreshControl={
+                        <RefreshControl refreshing={isRefetching} onRefresh={() => { refetch }} tintColor={'#ee0000'} />
+                    }
+                />
+            )}
         </Layout>
     )
 }
