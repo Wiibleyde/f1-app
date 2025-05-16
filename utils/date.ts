@@ -31,3 +31,25 @@ export const formatDate = (item: RaceSession): string => {
 
     return `${startTime} - ${endTime}`;
 };
+
+export function formatLastSessionDate(dateString: string | undefined): string {
+    if (!dateString) return '';
+
+    try {
+        const date = new Date(dateString);
+
+        // Options de formatage pour afficher la date
+        const options: Intl.DateTimeFormatOptions = {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        };
+
+        return date.toLocaleDateString(undefined, options);
+    } catch (error) {
+        console.error('Error formatting date:', error);
+        return '';
+    }
+}

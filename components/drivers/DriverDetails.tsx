@@ -6,6 +6,8 @@ import { Animated, StyleSheet, TouchableOpacity } from 'react-native'
 import * as Clipboard from 'expo-clipboard';
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router'
+import DriverInformation from './DriverInformation'
+import { formatLastSessionDate } from '@/utils/date'
 
 interface DriverDetailsProps {
     driver_number: number
@@ -78,63 +80,55 @@ const DriverDetails = ({
             <Text variant="title" style={styles.sectionTitle}>
                 Informations
             </Text>
+
             <Box style={styles.statsGrid}>
-                <Box style={[styles.statCard, { borderColor: teamColorLight }]}>
-                    <Text variant="title" style={styles.statTitle}>
-                        Driver number
-                    </Text>
-                    <Text variant="text" style={[styles.statValue, { color: teamColor }]}>
-                        {driver_number}
-                    </Text>
-                </Box>
 
-                <Box style={[styles.statCard, { borderColor: teamColorLight }]}>
-                    <Text variant="title" style={styles.statTitle}>
-                        Acronym
-                    </Text>
-                    <Text variant="text" style={styles.statValue}>
-                        {name_acronym}
-                    </Text>
-                </Box>
+                <DriverInformation
+                    teamColorLight={teamColorLight}
+                    teamColor={teamColor}
+                    title="Driver number"
+                    value={driver_number}
+                />
 
-                <Box style={[styles.statCard, { borderColor: teamColorLight }]}>
-                    <Text variant="title" style={styles.statTitle}>
-                        Country
-                    </Text>
-                    <Text variant="text" style={styles.statValue}>
-                        {country_code
-                            ? `${country_code} ${getFlagEmoji(country_code)}`
-                            : 'Non spécifié'}
-                    </Text>
-                </Box>
+                <DriverInformation
+                    teamColorLight={teamColorLight}
+                    title="Acronym"
+                    value={name_acronym}
+                />
 
-                <Box style={[styles.statCard, { borderColor: teamColorLight }]}>
-                    <Text variant="title" style={styles.statTitle}>
-                        Team
-                    </Text>
-                    <Text variant="text" style={[styles.statValue, { color: teamColor }]}>
-                        {team_name}
-                    </Text>
-                </Box>
+                <DriverInformation
+                    teamColorLight={teamColorLight}
+                    title="Country"
+                    value={country_code ? `${country_code} ${getFlagEmoji(country_code)}` : 'Non spécifié'}
+                />
+
+                <DriverInformation
+                    teamColorLight={teamColorLight}
+                    title="Team"
+                    value={team_name}
+                    teamColor={teamColor}
+                />
             </Box>
 
             {/* Team color indicator */}
-            <Box style={[styles.teamColorCard, { borderColor: teamColorLight }]}>
+            <TouchableOpacity
+                style={[styles.teamColorCard, { borderColor: teamColorLight }]}
+                onPress={() => copyColorToClipboard(teamColor)}
+                activeOpacity={0.7}
+            >
                 <Text variant="title" style={styles.statTitle}>
                     Team color
                 </Text>
                 <Box style={styles.colorRow}>
                     <Box style={[styles.colorSquare, { backgroundColor: teamColor }]} />
-                    <TouchableOpacity onPress={() => copyColorToClipboard(teamColor)} activeOpacity={0.7}>
-                        <Box style={styles.colorValueContainer}>
-                            <Text variant="text" style={styles.statValue}>
-                                {teamColor}
-                            </Text>
-                            {colorCopied && <Animated.Text style={styles.copiedText}>Copied!</Animated.Text>}
-                        </Box>
-                    </TouchableOpacity>
+                    <Box style={styles.colorValueContainer}>
+                        <Text variant="text" style={styles.statValue}>
+                            {teamColor}
+                        </Text>
+                        {colorCopied && <Animated.Text style={styles.copiedText}>Copied!</Animated.Text>}
+                    </Box>
                 </Box>
-            </Box>
+            </TouchableOpacity>
 
             {/* Extra section - styled as a button */}
             <TouchableOpacity
@@ -148,7 +142,7 @@ const DriverDetails = ({
                     </Text>
                     <Text variant="text" style={styles.buttonText}>
                         {sessionData ?
-                            `${session_type || ''}, ${location || ''} (${formatDate(date_start)})` :
+                            `${session_type || ''}, ${location || ''} (${formatLastSessionDate(date_start)})` :
                             'Loading race information...'}
                     </Text>
                 </Box>
@@ -175,14 +169,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-    },
-    statCard: {
-        width: '48%',
-        backgroundColor: '#FFFFFF10',
-        borderRadius: 15,
-        padding: 15,
-        marginBottom: 15,
-        borderWidth: 1,
     },
     fullWidthCard: {
         backgroundColor: '#FFFFFF10',
@@ -262,24 +248,3 @@ const styles = StyleSheet.create({
     },
 })
 
-function formatDate(dateString: string | undefined): string {
-    if (!dateString) return '';
-
-    try {
-        const date = new Date(dateString);
-
-        // Options de formatage pour afficher la date
-        const options: Intl.DateTimeFormatOptions = {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        };
-
-        return date.toLocaleDateString(undefined, options);
-    } catch (error) {
-        console.error('Error formatting date:', error);
-        return '';
-    }
-}
