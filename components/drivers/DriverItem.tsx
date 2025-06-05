@@ -13,7 +13,7 @@ export function DriverItem({ item, position, isLoading }: { item: Driver, positi
         router.push({ pathname: '/driver/[broadcaster_name]', params: { broadcaster_name: item.broadcast_name } });
     };
 
-    if (!isLoading) {
+    if (isLoading) {
         return (
             <DriverSkeleton />
         );
