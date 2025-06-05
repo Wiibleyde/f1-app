@@ -5,6 +5,7 @@ import { useFetchDrivers } from '@/query/hook';
 import { DriverItem } from '@/components/drivers/DriverItem';
 import Header from '@/components/ui/Header';
 import Text from '@/theme/Text';
+import { Skeleton } from '@/components/Skeleton';
 
 export default function HomeScreen() {
     const { data, isLoading, refetch, isRefetching } = useFetchDrivers();
@@ -26,7 +27,11 @@ export default function HomeScreen() {
                 maxToRenderPerBatch={8}
                 ListEmptyComponent={
                     isLoading ? (
-                        <ActivityIndicator size="large" color="#ee0000" />
+                        <Skeleton
+                            width="100%"
+                            height={20}
+                            borderRadius={4}
+                        />
                     ) : (
                         <Box>
                             <Text>
