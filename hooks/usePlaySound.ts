@@ -1,5 +1,5 @@
 import { Audio } from 'expo-av';
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 
 interface usePlaySoundProps {
     recording_url: string
@@ -22,10 +22,13 @@ const usePlaySound = ({
             if (recording_url) {
                 const { sound: newSound } = await Audio.Sound.createAsync({ uri: recording_url }, { shouldPlay: false });
                 loadedSound = newSound;
+                // Ajout : met à jour l'intervalle de progression à 50ms
+                await newSound.setProgressUpdateIntervalAsync(50);
                 const status = await newSound.getStatusAsync();
                 if (isMounted) {
                     setSound(newSound);
                     setDuration(status.isLoaded && status.durationMillis ? status.durationMillis : 1);
+                    setPosition(status.isLoaded && status.positionMillis ? status.positionMillis : 0);
                 } else {
                     await newSound.unloadAsync();
                 }
@@ -43,44 +46,22 @@ const usePlaySound = ({
     }, [recording_url]);
 
     useEffect(() => {
-        return () => {
-            if (sound) {
-                sound.unloadAsync();
-            }
-        };
-    }, [sound, recording_url]);
-
-    useEffect(() => {
-        let interval: number | null = null;
-        let subscription: any = null;
-        if (sound) {
-            subscription = sound.setOnPlaybackStatusUpdate((status: any) => {
-                if (status.isLoaded) {
-                    setPosition(status.positionMillis);
-                    setDuration(status.durationMillis || 1);
-                    if (status.didJustFinish) {
-                        setIsPlaying(false);
-                        sound.setPositionAsync(0);
-                    }
+        if (!sound) return;
+        const onStatusUpdate = (status: any) => {
+            if (status.isLoaded) {
+                setPosition(status.positionMillis);
+                setDuration(status.durationMillis || 1);
+                if (status.didJustFinish) {
+                    setIsPlaying(false);
+                    sound.setPositionAsync(0);
                 }
-            });
-            if (isPlaying) {
-                interval = setInterval(async () => {
-                    const status = await sound.getStatusAsync();
-                    if (status.isLoaded) {
-                        setPosition(status.positionMillis);
-                        setDuration(status.durationMillis || 1);
-                    }
-                }, 500);
-            }
-        }
-        return () => {
-            if (interval) clearInterval(interval);
-            if (sound && subscription) {
-                sound.setOnPlaybackStatusUpdate(null);
             }
         };
-    }, [sound, isPlaying]);
+        sound.setOnPlaybackStatusUpdate(onStatusUpdate);
+        return () => {
+            sound.setOnPlaybackStatusUpdate(null);
+        };
+    }, [sound]);
 
     const handlePlay = async () => {
         if (sound) {
@@ -113,7 +94,6 @@ const usePlaySound = ({
     };
 
     return { sound, isPlaying, position, duration, handlePlay, handlePause, handleStop, handleSeek }
-
 }
 
 export default usePlaySound

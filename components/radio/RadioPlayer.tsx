@@ -2,10 +2,10 @@ import usePlaySound from '@/hooks/usePlaySound';
 import { Driver, RadioData, useFetchDrivers } from '@/query/hook';
 import Text from '@/theme/Text';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import Slider from '@react-native-community/slider';
 import { memo, useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, ViewToken } from 'react-native';
-import Animated, { SharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import Animated, { SharedValue, useAnimatedStyle, withTiming, useSharedValue } from 'react-native-reanimated';
+import Slider from '@react-native-community/slider';
 
 interface RadioPlayerProps {
     radioData: RadioData;
@@ -30,6 +30,25 @@ const RadioPlayer = memo(({
         }
     }, [drivers, radioData.driver_number]);
 
+    // Ajout des shared values pour position et duration
+    const positionSV = useSharedValue(position);
+    const durationSV = useSharedValue(duration);
+
+    useEffect(() => {
+        positionSV.value = position;
+    }, [position, positionSV]);
+
+    useEffect(() => {
+        durationSV.value = duration;
+    }, [duration, durationSV]);
+
+    const progressSV = useSharedValue(duration > 0 ? position / duration : 0);
+
+    useEffect(() => {
+        const progress = duration > 0 ? position / duration : 0;
+        progressSV.value = withTiming(progress, { duration: 300 });
+    }, [position, duration, progressSV]);
+
     const rStyle = useAnimatedStyle(() => {
         const isViewable = Boolean(
             viewableItems.value
@@ -46,6 +65,14 @@ const RadioPlayer = memo(({
         }
     }, [])
 
+    const [sliderValue, setSliderValue] = useState(position);
+    const [isSliding, setIsSliding] = useState(false);
+
+    useEffect(() => {
+        if (!isSliding) {
+            setSliderValue(position);
+        }
+    }, [position, isSliding]);
 
     return (
         <Animated.View style={[rStyle, styles.radioItem]}>
@@ -53,20 +80,32 @@ const RadioPlayer = memo(({
                 {currentDriver ? `${currentDriver.first_name} ${currentDriver.last_name}` : 'Extrait radio'}
             </Text>
             {radioData.date && <Text style={styles.dateText}>{new Date(radioData.date).toLocaleString('fr-FR')}</Text>}
+            {/* Suppression du point animé */}
             <Slider
                 style={styles.slider}
                 minimumValue={0}
                 maximumValue={duration}
-                value={position}
-                onSlidingComplete={handleSeek}
+                value={sliderValue}
                 minimumTrackTintColor="#e10600"
-                maximumTrackTintColor="#333"
+                maximumTrackTintColor="#555"
                 thumbTintColor="#e10600"
-                disabled={!sound}
+                onValueChange={value => {
+                    setIsSliding(true);
+                    setSliderValue(value);
+                }}
+                onSlidingComplete={value => {
+                    setIsSliding(false);
+                    handleSeek(value);
+                }}
+                disabled={duration <= 1}
             />
             <View style={styles.timeRow}>
-                <Text style={styles.timeText}>{Math.floor(position / 1000)}s</Text>
-                <Text style={styles.timeText}>{Math.floor(duration / 1000)}s</Text>
+                <Text style={styles.timeText}>
+                    {(duration > 0 ? (sliderValue / duration) * 100 : 0).toFixed(1)}%
+                </Text>
+                <Text style={styles.timeText}>
+                    {(sliderValue / 1000).toFixed(2)}s / {(duration / 1000).toFixed(2)}s
+                </Text>
             </View>
             <View style={styles.controls}>
                 <TouchableOpacity
@@ -92,6 +131,8 @@ const RadioPlayer = memo(({
         </Animated.View>
     );
 })
+
+RadioPlayer.displayName = 'RadioPlayer';
 
 export default RadioPlayer;
 
@@ -127,8 +168,8 @@ const styles = StyleSheet.create({
     },
     slider: {
         width: '100%',
-        height: 8,
-        marginBottom: 0,
+        height: 30,
+        marginVertical: 8,
     },
     timeRow: {
         flexDirection: 'row',
