@@ -29,7 +29,9 @@ const SessionScreen = () => {
             return (
                 <FlatList
                     data={classement}
-                    renderItem={({ item }) => <DriverItem item={item} />}
+                    renderItem={({ item, index }) => (
+                        <DriverItem item={item} position={index + 1} />
+                    )}
                     contentContainerStyle={styles.listContainer}
                     showsVerticalScrollIndicator={false}
                     refreshControl={

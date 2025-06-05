@@ -6,17 +6,27 @@ import { router } from 'expo-router';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import * as Haptics from 'expo-haptics';
 
-export function DriverItem({ item }: { item: Driver }) {
+export function DriverItem({ item, position }: { item: Driver, position?: number }) {
     const handlePress = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         router.push({ pathname: '/driver/[broadcaster_name]', params: { broadcaster_name: item.broadcast_name } });
     };
+
+    // Détermine la couleur selon la position
+    let positionColor = '#ee0000';
+    if (position === 1) positionColor = '#FFD700'; // or
+    else if (position === 2) positionColor = '#C0C0C0'; // argent
+    else if (position === 3) positionColor = '#CD7F32'; // bronze
+    else if (position && position < 11) positionColor = '#FFFFFF'; // blanc pour les autres positions
 
     return (
         <TouchableOpacity style={[styles.pilotItem, { borderLeftColor: `#${item.team_colour}` }]} onPress={handlePress}>
             <Box style={styles.pilotContent}>
                 <Box style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
                     <Box style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        {position !== undefined && (
+                            <Text style={[styles.positionText, { color: positionColor }]}>{position}</Text>
+                        )}
                         <Text style={{ color: `#b5b5b5`, fontSize: 12 }}>{item.name_acronym}</Text>
                         <Text style={{ color: `#b5b5b5`, fontSize: 12, marginLeft: 8 }}>{item.driver_number}</Text>
                         <Text style={styles.pilotName}>{item.broadcast_name}</Text>
@@ -55,5 +65,10 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontSize: 16,
         padding: 10,
+    },
+    positionText: {
+        fontWeight: 'bold',
+        fontSize: 16,
+        marginRight: 12,
     },
 });
