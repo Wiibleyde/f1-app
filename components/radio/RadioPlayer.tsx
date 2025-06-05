@@ -1,8 +1,8 @@
+import usePlaySound from '@/hooks/usePlaySound';
 import { Driver, RadioData, useFetchDrivers } from '@/query/hook';
 import Text from '@/theme/Text';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Slider from '@react-native-community/slider';
-import { Audio } from 'expo-av';
 import { memo, useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, ViewToken } from 'react-native';
 import Animated, { SharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
@@ -16,15 +16,12 @@ const RadioPlayer = memo(({
     radioData,
     viewableItems
 }: RadioPlayerProps) => {
-    const audioSource = radioData.recording_url;
-    const [sound, setSound] = useState<Audio.Sound | null>(null);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [position, setPosition] = useState(0);
-    const [duration, setDuration] = useState(1);
 
     const [currentDriver, setCurrentDriver] = useState<Driver | null>(null);
 
     const { data: drivers } = useFetchDrivers();
+
+    const { duration, handlePause, handlePlay, handleSeek, handleStop, isPlaying, position, sound } = usePlaySound({ recording_url: radioData.recording_url });
 
     useEffect(() => {
         if (drivers) {
@@ -32,104 +29,6 @@ const RadioPlayer = memo(({
             setCurrentDriver(driver || null);
         }
     }, [drivers, radioData.driver_number]);
-
-    useEffect(() => {
-        let isMounted = true;
-        let loadedSound: Audio.Sound | null = null;
-
-        async function loadSound() {
-            if (audioSource) {
-                const { sound: newSound } = await Audio.Sound.createAsync({ uri: audioSource }, { shouldPlay: false });
-                loadedSound = newSound;
-                const status = await newSound.getStatusAsync();
-                if (isMounted) {
-                    setSound(newSound);
-                    setDuration(status.isLoaded && status.durationMillis ? status.durationMillis : 1);
-                } else {
-                    await newSound.unloadAsync();
-                }
-            }
-        }
-
-        loadSound();
-
-        return () => {
-            isMounted = false;
-            if (loadedSound) {
-                loadedSound.unloadAsync();
-            }
-        };
-    }, [audioSource]);
-
-    useEffect(() => {
-        return () => {
-            if (sound) {
-                sound.unloadAsync();
-            }
-        };
-    }, [sound, audioSource]);
-
-    useEffect(() => {
-        let interval: number | null = null;
-        let subscription: any = null;
-        if (sound) {
-            subscription = sound.setOnPlaybackStatusUpdate((status: any) => {
-                if (status.isLoaded) {
-                    setPosition(status.positionMillis);
-                    setDuration(status.durationMillis || 1);
-                    if (status.didJustFinish) {
-                        setIsPlaying(false);
-                        sound.setPositionAsync(0);
-                    }
-                }
-            });
-            if (isPlaying) {
-                interval = setInterval(async () => {
-                    const status = await sound.getStatusAsync();
-                    if (status.isLoaded) {
-                        setPosition(status.positionMillis);
-                        setDuration(status.durationMillis || 1);
-                    }
-                }, 500);
-            }
-        }
-        return () => {
-            if (interval) clearInterval(interval);
-            if (sound && subscription) {
-                sound.setOnPlaybackStatusUpdate(null);
-            }
-        };
-    }, [sound, isPlaying]);
-
-    const handlePlay = async () => {
-        if (sound) {
-            await sound.playAsync();
-            setIsPlaying(true);
-        }
-    };
-
-    const handlePause = async () => {
-        if (sound) {
-            await sound.pauseAsync();
-            setIsPlaying(false);
-        }
-    };
-
-    const handleStop = async () => {
-        if (sound) {
-            await sound.stopAsync();
-            await sound.setPositionAsync(0);
-            setIsPlaying(false);
-            setPosition(0);
-        }
-    };
-
-    const handleSeek = async (value: number) => {
-        if (sound) {
-            await sound.setPositionAsync(value);
-            setPosition(value);
-        }
-    };
 
     const rStyle = useAnimatedStyle(() => {
         const isViewable = Boolean(
@@ -146,6 +45,7 @@ const RadioPlayer = memo(({
             ],
         }
     }, [])
+
 
     return (
         <Animated.View style={[rStyle, styles.radioItem]}>
