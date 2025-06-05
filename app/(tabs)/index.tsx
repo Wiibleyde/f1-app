@@ -3,6 +3,8 @@ import { useFetchRacesFromYear } from '@/query/hook';
 import RenderRace from '@/components/RenderRace';
 import Layout from '@/components/ui/Layout';
 import Header from '@/components/ui/Header';
+import Box from '@/theme/Box';
+import Text from '@/theme/Text';
 
 export default function HomeScreen() {
     const currentYear = new Date().getFullYear();
@@ -12,27 +14,34 @@ export default function HomeScreen() {
     return (
         <Layout>
 
-            {isLoading ? (
-                <ActivityIndicator size="large" color="#ee0000" />
-            ) : (
-                <FlatList
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={isRefetching}
-                            onRefresh={refetch}
-                            tintColor={'#ee0000'}
-                        />
-                    }
-                    data={data}
-                    renderItem={({ item }) => <RenderRace item={item} index={item.meeting_key} />}
-                    contentContainerStyle={styles.listContainer}
-                    showsVerticalScrollIndicator={false}
-                    ListHeaderComponent={<Header title={`Races ${currentYear}`} />}
-                    windowSize={1}
-                    initialNumToRender={6}
-                    maxToRenderPerBatch={6}
-                />
-            )}
+            <FlatList
+                refreshControl={
+                    <RefreshControl
+                        refreshing={isRefetching}
+                        onRefresh={refetch}
+                        tintColor={'#ee0000'}
+                    />
+                }
+                data={data}
+                renderItem={({ item }) => <RenderRace item={item} index={item.meeting_key} />}
+                contentContainerStyle={styles.listContainer}
+                showsVerticalScrollIndicator={false}
+                ListHeaderComponent={<Header title={`Races ${currentYear}`} />}
+                windowSize={1}
+                initialNumToRender={6}
+                maxToRenderPerBatch={6}
+                ListEmptyComponent={
+                    isLoading ? (
+                        <ActivityIndicator size="large" color="#ee0000" />
+                    ) : (
+                        <Box>
+                            <Text>
+                                No drivers found.
+                                {'\n'}Please check your internet connection or try again later.
+                            </Text>
+                        </Box>
+                    )}
+            />
         </Layout>
     );
 }

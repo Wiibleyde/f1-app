@@ -4,32 +4,39 @@ import Box from '@/theme/Box';
 import { useFetchDrivers } from '@/query/hook';
 import { DriverItem } from '@/components/drivers/DriverItem';
 import Header from '@/components/ui/Header';
+import Text from '@/theme/Text';
 
 export default function HomeScreen() {
     const { data, isLoading, refetch, isRefetching } = useFetchDrivers();
 
     return (
         <Box style={styles.container}>
-            
-
-            {isLoading ? (
-                <ActivityIndicator size="large" color="#ee0000" />
-            ) : (
-                <FlatList
-                    refreshControl={
-                        <RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={'#ee0000'} />
-                    }
-                    data={data?.slice(0, 20).sort((a, b) => a.driver_number - b.driver_number)}
-                    renderItem={({ item }) => <DriverItem item={item} key={item.full_name} />}
-                    keyExtractor={(item) => item.broadcast_name}
-                    contentContainerStyle={styles.listContainer}
-                    showsVerticalScrollIndicator={false}
-                    ListHeaderComponent={<Header title="F1 Drivers" backButton={false} />}
-                    windowSize={1}
-                    initialNumToRender={8}
-                    maxToRenderPerBatch={8}
-                />
-            )}
+            <FlatList
+                refreshControl={
+                    <RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={'#ee0000'} />
+                }
+                data={data?.slice(0, 20).sort((a, b) => a.driver_number - b.driver_number)}
+                renderItem={({ item }) => <DriverItem item={item} key={item.full_name} />}
+                keyExtractor={(item) => item.broadcast_name}
+                contentContainerStyle={styles.listContainer}
+                showsVerticalScrollIndicator={false}
+                ListHeaderComponent={<Header title="F1 Drivers" backButton={false} />}
+                windowSize={1}
+                initialNumToRender={8}
+                maxToRenderPerBatch={8}
+                ListEmptyComponent={
+                    isLoading ? (
+                        <ActivityIndicator size="large" color="#ee0000" />
+                    ) : (
+                        <Box>
+                            <Text>
+                                No drivers found.
+                                {'\n'}Please check your internet connection or try again later.
+                            </Text>
+                        </Box>
+                    )
+                }
+            />
         </Box>
     );
 }
