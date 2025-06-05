@@ -4,12 +4,15 @@ import RaceSkeleton from '@/components/skeleton/RaceSkeleton';
 import Header from '@/components/ui/Header';
 import Layout from '@/components/ui/Layout';
 import { useFetchRacesFromYear } from '@/query/hook';
-import { FlatList, RefreshControl, StyleSheet } from 'react-native';
+import { FlatList, RefreshControl, StyleSheet, ViewToken } from 'react-native';
+import { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 export default function HomeScreen() {
     const currentYear = new Date().getFullYear();
 
     const { data, isLoading, refetch, isRefetching } = useFetchRacesFromYear(currentYear);
+
+    const viewableItems = useSharedValue<ViewToken[]>([]);
 
     const renderEmptyRace = () => {
         if (isLoading) {
@@ -19,12 +22,13 @@ export default function HomeScreen() {
         }
     };
 
+    
+
     return (
         <Layout>
             <FlatList
-                refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={'#ee0000'} />}
                 data={data}
-                renderItem={({ item }) => <RenderRace item={item} index={item.meeting_key} />}
+                refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={'#ee0000'} />}
                 contentContainerStyle={styles.listContainer}
                 showsVerticalScrollIndicator={false}
                 ListHeaderComponent={<Header title={`Races ${currentYear}`} />}
@@ -32,6 +36,10 @@ export default function HomeScreen() {
                 initialNumToRender={6}
                 maxToRenderPerBatch={6}
                 ListEmptyComponent={renderEmptyRace}
+                onViewableItemsChanged={({ viewableItems: vItems}) => {
+                    viewableItems.value = vItems;
+                }}
+                renderItem={({ item }) => <RenderRace item={item} index={item.meeting_key} viewableItems={viewableItems} />}
             />
         </Layout>
     );

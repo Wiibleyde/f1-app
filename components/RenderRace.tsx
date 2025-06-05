@@ -2,59 +2,84 @@ import { Race } from '@/query/hook';
 import Box from '@/theme/Box';
 import Text from '@/theme/Text';
 import { router } from 'expo-router';
-import React from 'react';
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import React, { memo } from 'react';
+import { TouchableOpacity, StyleSheet, ViewToken } from 'react-native';
 import { getDay, getLastDay, getMonthThreeLetters } from '@/utils/date';
 import * as Haptics from 'expo-haptics';
+import Animated, { SharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 interface RenderRaceProps {
     item: Race;
     index: number;
+    viewableItems: SharedValue<ViewToken[]>;
 }
 
-const RenderRace = ({ item, index }: RenderRaceProps) => {
+const RenderRace = memo(({
+    viewableItems,
+    item,
+    index
+}: RenderRaceProps) => {
     const handlePress = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         router.push({ pathname: '/racesessions/[meeting_key]', params: { meeting_key: item.meeting_key } });
     };
 
+    const rStyle = useAnimatedStyle(() => {
+        const isViewable = Boolean(
+            viewableItems.value
+                .filter((item) => item.isViewable)
+                .find((viewableItem) => viewableItem.item.meeting_key === item.meeting_key));
+
+        return {
+            opacity: withTiming(isViewable ? 1 : 0),
+            transform: [
+                {
+                    scale: withTiming(isViewable ? 1 : 0.6),
+                },
+            ],
+        }
+    }, [])
+
     return (
-        <TouchableOpacity style={styles.container} onPress={handlePress}>
-            <Box style={styles.raceInfosContainer}>
-                <Box style={styles.raceInfosDateContainer}>
-                    <Text variant="date" style={styles.raceDate}>
-                        {getDay(item.date_start)}
+        <Animated.View style={rStyle}>
+
+            <TouchableOpacity style={styles.container} onPress={handlePress}>
+                <Box style={styles.raceInfosContainer}>
+                    <Box style={styles.raceInfosDateContainer}>
+                        <Text variant="date" style={styles.raceDate}>
+                            {getDay(item.date_start)}
+                        </Text>
+                        <Text variant="date" style={styles.raceDate}>
+                            -
+                        </Text>
+                        <Text variant="date" style={styles.raceDate}>
+                            {getLastDay(item.date_start)}
+                        </Text>
+                    </Box>
+                    <Box style={styles.raceInfosMonthContainer}>
+                        <Text variant="date" style={styles.raceDate}>
+                            {getMonthThreeLetters(item.date_start)}
+                        </Text>
+                    </Box>
+                </Box>
+
+                <Box style={styles.raceBorder} />
+
+                <Box style={styles.raceTrackerInfosContainer}>
+                    <Text variant="date" style={styles.raceInfosText}>
+                        Course {(index + 1).toString().padStart(2, '0')}
                     </Text>
-                    <Text variant="date" style={styles.raceDate}>
-                        -
+                    <Text variant="text" style={styles.raceInfosCountry}>
+                        {item.country_name}
                     </Text>
-                    <Text variant="date" style={styles.raceDate}>
-                        {getLastDay(item.date_start)}
+                    <Text variant="date" style={styles.raceName}>
+                        {item.meeting_name}
                     </Text>
                 </Box>
-                <Box style={styles.raceInfosMonthContainer}>
-                    <Text variant="date" style={styles.raceDate}>
-                        {getMonthThreeLetters(item.date_start)}
-                    </Text>
-                </Box>
-            </Box>
-
-            <Box style={styles.raceBorder} />
-
-            <Box style={styles.raceTrackerInfosContainer}>
-                <Text variant="date" style={styles.raceInfosText}>
-                    Course {(index + 1).toString().padStart(2, '0')}
-                </Text>
-                <Text variant="text" style={styles.raceInfosCountry}>
-                    {item.country_name}
-                </Text>
-                <Text variant="date" style={styles.raceName}>
-                    {item.meeting_name}
-                </Text>
-            </Box>
-        </TouchableOpacity>
+            </TouchableOpacity>
+        </Animated.View>
     );
-};
+});
 
 export default RenderRace;
 
