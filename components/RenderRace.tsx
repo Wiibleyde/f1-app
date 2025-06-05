@@ -77,7 +77,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        gap: 8,
     },
     raceInfosDateContainer: {
         display: 'flex',
@@ -87,8 +86,11 @@ const styles = StyleSheet.create({
     raceInfosMonthContainer: {
         backgroundColor: '#30302f',
         borderRadius: 8,
-        paddingHorizontal: 8,
-        paddingVertical: 3,
+        paddingHorizontal: 7,
+        paddingVertical: 4,
+        marginTop: 4,
+        alignSelf: 'flex-start',
+        flexShrink: 0,
     },
     raceTrackerInfosContainer: {
         width: '71%',
