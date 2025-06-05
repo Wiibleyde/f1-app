@@ -1,11 +1,11 @@
+import Leaderboard from '@/components/session/Leaderboard';
+import Radios from '@/components/session/Radios';
+import Button from '@/components/ui/Button';
 import Header from '@/components/ui/Header';
 import Layout from '@/components/ui/Layout';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import Leaderboard from '@/components/session/Leaderboard';
-import Radios from '@/components/session/Radios';
-import Button from '@/components/ui/Button';
+import { StyleSheet, View } from 'react-native';
 
 const SessionScreen = () => {
     const { session_key } = useLocalSearchParams<{ session_key: string }>();

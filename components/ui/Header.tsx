@@ -1,10 +1,10 @@
 import Box from '@/theme/Box';
 import Text from '@/theme/Text';
+import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import * as Haptics from 'expo-haptics';
 
 interface HeaderProps {
     backButton?: boolean;

@@ -1,11 +1,11 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 
 import { HapticTab } from '@/components/HapticTab';
-import OnBoardingScreen from '../onboarding';
 import { useStorage } from '@/hooks/useStorage';
+import OnBoardingScreen from '../onboarding';
 
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 

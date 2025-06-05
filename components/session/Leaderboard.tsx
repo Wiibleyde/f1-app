@@ -1,9 +1,9 @@
-import React from 'react'
+import { Driver, useFetchDrivers, useFetchPositionBySessionKey } from '@/query/hook';
+import React from 'react';
 import { FlatList, RefreshControl, StyleSheet } from 'react-native';
 import { DriverItem } from '../drivers/DriverItem';
-import { Driver, useFetchDrivers, useFetchPositionBySessionKey } from '@/query/hook';
-import { DriverSkeleton } from '../skeleton/DriverSkeleton';
 import NoDataFound from '../NoDataFound';
+import { DriverSkeleton } from '../skeleton/DriverSkeleton';
 
 interface Props {
     session_key: string;

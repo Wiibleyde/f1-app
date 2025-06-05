@@ -1,7 +1,7 @@
 import Box from '@/theme/Box';
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withTiming, Easing, withRepeat } from 'react-native-reanimated';
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
 
 const SessionSkeleton = () => {
     // Animation de l'opacité en boucle

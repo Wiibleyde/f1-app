@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react'
-import { Animated, StyleSheet } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
 import Box from '@/theme/Box'
 import Text from '@/theme/Text'
-import { Image } from 'expo-image'
 import { getFlagEmoji } from '@/utils/flag'
+import { Image } from 'expo-image'
+import { LinearGradient } from 'expo-linear-gradient'
+import React, { useEffect, useRef } from 'react'
+import { Animated, StyleSheet } from 'react-native'
 
 interface DriverIdentityProps {
     first_name: string

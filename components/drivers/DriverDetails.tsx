@@ -1,13 +1,13 @@
 import Box from '@/theme/Box'
 import Text from '@/theme/Text'
+import { formatLastSessionDate } from '@/utils/date'
 import { getFlagEmoji } from '@/utils/flag'
+import * as Clipboard from 'expo-clipboard'
+import * as Haptics from 'expo-haptics'
+import { router } from 'expo-router'
 import React, { useEffect, useRef, useState } from 'react'
 import { Animated, StyleSheet, TouchableOpacity } from 'react-native'
-import * as Clipboard from 'expo-clipboard';
-import * as Haptics from 'expo-haptics';
-import { router } from 'expo-router'
 import DriverInformation from './DriverInformation'
-import { formatLastSessionDate } from '@/utils/date'
 
 interface DriverDetailsProps {
     driver_number: number

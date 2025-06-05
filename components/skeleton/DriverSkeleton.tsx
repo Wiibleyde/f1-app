@@ -1,6 +1,6 @@
-import { StyleSheet, View } from "react-native";
-import Animated, { useSharedValue, useAnimatedStyle, withTiming, withRepeat } from "react-native-reanimated";
 import { useEffect } from "react";
+import { StyleSheet, View } from "react-native";
+import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming } from "react-native-reanimated";
 
 export function DriverSkeleton() {
     const opacity = useSharedValue(0.4);

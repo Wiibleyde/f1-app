@@ -1,10 +1,10 @@
-import { StyleSheet, FlatList, RefreshControl } from 'react-native';
-import { useFetchRacesFromYear } from '@/query/hook';
-import RenderRace from '@/components/RenderRace';
-import Layout from '@/components/ui/Layout';
-import Header from '@/components/ui/Header';
 import NoDataFound from '@/components/NoDataFound';
+import RenderRace from '@/components/RenderRace';
 import RaceSkeleton from '@/components/skeleton/RaceSkeleton';
+import Header from '@/components/ui/Header';
+import Layout from '@/components/ui/Layout';
+import { useFetchRacesFromYear } from '@/query/hook';
+import { FlatList, RefreshControl, StyleSheet } from 'react-native';
 
 export default function HomeScreen() {
     const currentYear = new Date().getFullYear();

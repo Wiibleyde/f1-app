@@ -1,10 +1,10 @@
 import { Driver } from '@/query/hook';
 import Box from '@/theme/Box';
 import Text from '@/theme/Text';
+import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import * as Haptics from 'expo-haptics';
 
 interface DriverItemProps {
     item: Driver;

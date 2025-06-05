@@ -1,13 +1,13 @@
+import DriverDetails from '@/components/drivers/DriverDetails';
+import DriverIdentity from '@/components/drivers/DriverIdentity';
 import Header from '@/components/ui/Header';
 import Layout from '@/components/ui/Layout';
 import { useFetchDriverByBroadcasterName, useFetchSessionByKey } from '@/query/hook';
 import Box from '@/theme/Box';
 import Text from '@/theme/Text';
 import { Stack, useLocalSearchParams } from 'expo-router';
-import { ScrollView, StyleSheet } from 'react-native';
 import { useEffect, useState } from 'react';
-import DriverIdentity from '@/components/drivers/DriverIdentity';
-import DriverDetails from '@/components/drivers/DriverDetails';
+import { ScrollView, StyleSheet } from 'react-native';
 
 export default function PilotScreen() {
     const { broadcaster_name } = useLocalSearchParams();

@@ -1,7 +1,7 @@
+import Text from '@/theme/Text';
+import * as Haptics from 'expo-haptics';
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import * as Haptics from 'expo-haptics';
-import Text from '@/theme/Text';
 
 interface ButtonProps {
     children: React.ReactNode;
