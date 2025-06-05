@@ -13,7 +13,7 @@ const MeetingScreen = () => {
     const { data, refetch, isRefetching, isLoading } = useFetchRaceSessions(meeting_key);
 
     const renderEmptyComponent = () => {
-        if (!isLoading) {
+        if (isLoading) {
             return <SessionSkeleton />;
         } else {
             return (
