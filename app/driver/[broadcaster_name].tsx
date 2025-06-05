@@ -48,7 +48,6 @@ export default function PilotScreen() {
             <Header title={`${data.first_name} ${data.last_name}`} backButton />
 
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-                {/* Hero section with driver image and number */}
 
                 <DriverIdentity
                     first_name={data.first_name}

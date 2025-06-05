@@ -6,24 +6,16 @@ import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { getDay, getLastDay, getMonthThreeLetters } from '@/utils/date';
 import * as Haptics from 'expo-haptics';
-import RaceSkeleton from './skeleton/RaceSkeleton';
 
 interface RenderRaceProps {
     item: Race;
     index: number;
-    isLoading: boolean;
 }
 
 const RenderRace = ({
     item,
-    index,
-    isLoading
+    index
 }: RenderRaceProps) => {
-
-    if (isLoading) {
-        return <RaceSkeleton key={item.meeting_key} />;
-    }
-
 
     const handlePress = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);

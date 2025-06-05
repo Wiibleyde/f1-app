@@ -5,9 +5,18 @@ import { useFetchDrivers } from '@/query/hook';
 import { DriverItem } from '@/components/drivers/DriverItem';
 import Header from '@/components/ui/Header';
 import NoDataFound from '@/components/NoDataFound';
+import { DriverSkeleton } from '@/components/skeleton/DriverSkeleton';
 
 export default function HomeScreen() {
     const { data, isLoading, refetch, isRefetching } = useFetchDrivers();
+
+    const emptyDriver = () => {
+        if (isLoading) {
+            return <DriverSkeleton />;
+        } else {
+            return <NoDataFound entiyName='drivers' />;
+        }
+    };
 
     return (
         <Box style={styles.container}>
@@ -25,7 +34,6 @@ export default function HomeScreen() {
                     <DriverItem
                         item={item}
                         key={item.full_name}
-                        isLoading={isLoading}
                     />
                 }
                 keyExtractor={(item) => item.broadcast_name}
@@ -35,11 +43,7 @@ export default function HomeScreen() {
                 windowSize={1}
                 initialNumToRender={8}
                 maxToRenderPerBatch={8}
-                ListEmptyComponent={
-                    <NoDataFound
-                        entiyName='drivers'
-                    />
-                }
+                ListEmptyComponent={emptyDriver}
             />
         </Box>
     );

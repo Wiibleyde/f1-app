@@ -10,8 +10,8 @@ const NoDataFound = ({
     entiyName
 }: NoDataFoundProps) => {
     return (
-        <Box>
-            <Text variant='text'>
+        <Box >
+            <Text variant='text' style={{ color: '#FFFFFF' }}>
                 No {entiyName} found.
                 {'\n'}Please check your internet connection or try again later.
             </Text>

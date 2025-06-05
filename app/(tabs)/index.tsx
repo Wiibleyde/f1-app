@@ -4,11 +4,22 @@ import RenderRace from '@/components/RenderRace';
 import Layout from '@/components/ui/Layout';
 import Header from '@/components/ui/Header';
 import NoDataFound from '@/components/NoDataFound';
+import RaceSkeleton from '@/components/skeleton/RaceSkeleton';
 
 export default function HomeScreen() {
     const currentYear = new Date().getFullYear();
 
     const { data, isLoading, refetch, isRefetching } = useFetchRacesFromYear(currentYear);
+
+    const renderEmptyRace = () => {
+        if (isLoading) {
+            return <RaceSkeleton />;
+        } else {
+            return (
+                <NoDataFound entiyName="races" />
+            );
+        }
+    }
 
     return (
         <Layout>
@@ -27,7 +38,6 @@ export default function HomeScreen() {
                     <RenderRace
                         item={item}
                         index={item.meeting_key}
-                        isLoading={isLoading}
                     />
                 }
                 contentContainerStyle={styles.listContainer}
@@ -36,11 +46,7 @@ export default function HomeScreen() {
                 windowSize={1}
                 initialNumToRender={6}
                 maxToRenderPerBatch={6}
-                ListEmptyComponent={
-                    <NoDataFound
-                        entiyName='races'
-                    />
-                }
+                ListEmptyComponent={renderEmptyRace}
             />
         </Layout>
     );
