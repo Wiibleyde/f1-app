@@ -6,6 +6,8 @@ import { Stack, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { RadioPlayer } from '@/components/radio/RadioPlayer';
+import NoDataFound from '@/components/NoDataFound';
+import { DriverSkeleton } from '@/components/skeleton/DriverSkeleton';
 
 const SessionScreen = () => {
     const { session_key } = useLocalSearchParams<{ session_key: string }>();
@@ -20,11 +22,24 @@ const SessionScreen = () => {
         return { ...driver, ...pos } as Driver;
     });
 
+    const renderEmptyLeaderboard = () => {
+        if (!isLoading) {
+            return <DriverSkeleton />;
+        } else {
+            return <NoDataFound entiyName='leaderboard' />;
+        }
+    }
+
+    const renderEmptyRadio = () => {
+        if (!isRadioLoading) {
+            return <NoDataFound entiyName='radio' />;
+        } else {
+            return <ActivityIndicator size="large" color="#ee0000" />;
+        }
+    }
+
     const renderContent = () => {
         if (activeSection === 'classement') {
-            if (isLoading || isDriverLoading || !positions || !drivers) {
-                return <ActivityIndicator size="large" color="#ee0000" />;
-            }
 
             return (
                 <FlatList
@@ -47,6 +62,7 @@ const SessionScreen = () => {
                     windowSize={1}
                     initialNumToRender={8}
                     maxToRenderPerBatch={8}
+                    ListEmptyComponent={renderEmptyLeaderboard}
                 />
             );
         } else {
@@ -75,6 +91,7 @@ const SessionScreen = () => {
                         windowSize={1}
                         initialNumToRender={5}
                         maxToRenderPerBatch={5}
+                        ListEmptyComponent={renderEmptyRadio}
                     />
                 );
             }
