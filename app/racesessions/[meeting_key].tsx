@@ -1,3 +1,4 @@
+import NoDataFound from '@/components/NoDataFound';
 import RenderSession from '@/components/RenderSession';
 import SessionSkeleton from '@/components/skeleton/SessionSkeleton';
 import Header from '@/components/ui/Header';
@@ -9,7 +10,17 @@ import { FlatList, RefreshControl, StyleSheet } from 'react-native';
 
 const MeetingScreen = () => {
     const { meeting_key } = useLocalSearchParams<{ meeting_key: string }>();
-    const { data, refetch, isRefetching } = useFetchRaceSessions(meeting_key);
+    const { data, refetch, isRefetching, isLoading } = useFetchRaceSessions(meeting_key);
+
+    const renderEmptyComponent = () => {
+        if (!isLoading) {
+            return <SessionSkeleton />;
+        } else {
+            return (
+                <NoDataFound entiyName='sessions' />
+            );
+        }
+    };
 
     return (
         <Layout>
@@ -24,6 +35,7 @@ const MeetingScreen = () => {
                 windowSize={1}
                 initialNumToRender={5}
                 maxToRenderPerBatch={5}
+                ListEmptyComponent={renderEmptyComponent}
             />
         </Layout>
     );
