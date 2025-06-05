@@ -5,12 +5,19 @@ import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import * as Haptics from 'expo-haptics';
+import { DriverSkeleton } from '../skeleton/DriverSkeleton';
 
-export function DriverItem({ item, position }: { item: Driver, position?: number }) {
+export function DriverItem({ item, position, isLoading }: { item: Driver, position?: number, isLoading?: boolean }) {
     const handlePress = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         router.push({ pathname: '/driver/[broadcaster_name]', params: { broadcaster_name: item.broadcast_name } });
     };
+
+    if (!isLoading) {
+        return (
+            <DriverSkeleton />
+        );
+    }
 
     // Détermine la couleur selon la position
     let positionColor = '#ee0000';

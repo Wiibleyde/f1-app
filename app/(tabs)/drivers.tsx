@@ -5,24 +5,18 @@ import { useFetchDrivers } from '@/query/hook';
 import { DriverItem } from '@/components/drivers/DriverItem';
 import Header from '@/components/ui/Header';
 import Text from '@/theme/Text';
-import { Skeleton } from '@/components/skeleton/DriverSkeleton';
 
 export default function HomeScreen() {
     const { data, isLoading, refetch, isRefetching } = useFetchDrivers();
 
     return (
         <Box style={styles.container}>
-            <Skeleton
-                            width="100%"
-                            height={40}
-                            borderRadius={10}
-                        />
             <FlatList
                 refreshControl={
                     <RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={'#ee0000'} />
                 }
                 data={data?.slice(0, 20).sort((a, b) => a.driver_number - b.driver_number)}
-                renderItem={({ item }) => <DriverItem item={item} key={item.full_name} />}
+                renderItem={({ item }) => <DriverItem item={item} key={item.full_name} isLoading={isLoading} />}
                 keyExtractor={(item) => item.broadcast_name}
                 contentContainerStyle={styles.listContainer}
                 showsVerticalScrollIndicator={false}
@@ -31,20 +25,12 @@ export default function HomeScreen() {
                 initialNumToRender={8}
                 maxToRenderPerBatch={8}
                 ListEmptyComponent={
-                    isLoading ? (
-                        <Skeleton
-                            width="100%"
-                            height={20}
-                            borderRadius={4}
-                        />
-                    ) : (
-                        <Box>
-                            <Text>
-                                No drivers found.
-                                {'\n'}Please check your internet connection or try again later.
-                            </Text>
-                        </Box>
-                    )
+                    <Box>
+                        <Text>
+                            No drivers found.
+                            {'\n'}Please check your internet connection or try again later.
+                        </Text>
+                    </Box>
                 }
             />
         </Box>
