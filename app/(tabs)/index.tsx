@@ -3,6 +3,7 @@ import RenderRace from '@/components/RenderRace';
 import RaceSkeleton from '@/components/skeleton/RaceSkeleton';
 import Header from '@/components/ui/Header';
 import Layout from '@/components/ui/Layout';
+import useFlatList from '@/hooks/useFlatList';
 import { useFetchRacesFromYear } from '@/query/hook';
 import { FlatList, RefreshControl, StyleSheet, ViewToken } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
@@ -12,7 +13,7 @@ export default function HomeScreen() {
 
     const { data, isLoading, refetch, isRefetching } = useFetchRacesFromYear(currentYear);
 
-    const viewableItems = useSharedValue<ViewToken[]>([]);
+    const {onViewableItemsChanged, viewableItems} = useFlatList();
 
     const renderEmptyRace = () => {
         if (isLoading) {
@@ -35,9 +36,7 @@ export default function HomeScreen() {
                 initialNumToRender={6}
                 maxToRenderPerBatch={6}
                 ListEmptyComponent={renderEmptyRace}
-                onViewableItemsChanged={({ viewableItems: vItems}) => {
-                    viewableItems.value = vItems;
-                }}
+                onViewableItemsChanged={onViewableItemsChanged}
                 renderItem={({ item }) => <RenderRace item={item} index={item.meeting_key} viewableItems={viewableItems} />}
             />
         </Layout>

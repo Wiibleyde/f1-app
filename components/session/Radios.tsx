@@ -5,13 +5,15 @@ import NoDataFound from '../NoDataFound';
 import RadioPlayer from '../radio/RadioPlayer';
 import { RadioSkeleton } from '../skeleton/RadioSkeleton';
 import { useSharedValue } from 'react-native-reanimated';
+import useFlatList from '@/hooks/useFlatList';
 
 interface Props {
     session_key: string;
 }
 
 const Radios = ({ session_key }: Props) => {
-    const viewableItems = useSharedValue<ViewToken[]>([]);
+    const { onViewableItemsChanged, viewableItems } = useFlatList();
+
 
 
     const {
@@ -44,9 +46,7 @@ const Radios = ({ session_key }: Props) => {
             initialNumToRender={5}
             maxToRenderPerBatch={5}
             ListEmptyComponent={renderEmptyRadio}
-            onViewableItemsChanged={({ viewableItems: vItems }) => {
-                viewableItems.value = vItems;
-            }}
+            onViewableItemsChanged={onViewableItemsChanged}
             renderItem={({ item }) => <RadioPlayer radioData={item} viewableItems={viewableItems} />}
         />
     );

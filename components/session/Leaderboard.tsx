@@ -5,15 +5,17 @@ import NoDataFound from '../NoDataFound';
 import { DriverSkeleton } from '../skeleton/DriverSkeleton';
 import { useSharedValue } from 'react-native-reanimated';
 import DriverItem from '../drivers/DriverItem';
+import useFlatList from '@/hooks/useFlatList';
 
 interface Props {
     session_key: string;
 }
 
 const Leaderboard = ({ session_key }: Props) => {
-    const viewableItems = useSharedValue<ViewToken[]>([]);
     const { data: positions, isRefetching, refetch } = useFetchPositionBySessionKey(session_key);
     const { data: drivers, isLoading: isDriverLoading } = useFetchDrivers();
+    const { onViewableItemsChanged, viewableItems } = useFlatList();
+
 
     const classement: Driver[] = (positions ?? []).map((pos) => {
         const driver = drivers?.find((d) => d.driver_number === pos.driver_number);
@@ -44,9 +46,7 @@ const Leaderboard = ({ session_key }: Props) => {
             initialNumToRender={8}
             maxToRenderPerBatch={8}
             ListEmptyComponent={renderEmptyLeaderboard}
-            onViewableItemsChanged={({ viewableItems: vItems }) => {
-                viewableItems.value = vItems;
-            }}
+            onViewableItemsChanged={onViewableItemsChanged}
             renderItem={({ item, index }) => <DriverItem item={item} position={index + 1} viewableItems={viewableItems} />}
         />
     );

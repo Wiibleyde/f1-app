@@ -2,6 +2,7 @@ import DriverItem from '@/components/drivers/DriverItem';
 import NoDataFound from '@/components/NoDataFound';
 import { DriverSkeleton } from '@/components/skeleton/DriverSkeleton';
 import Header from '@/components/ui/Header';
+import useFlatList from '@/hooks/useFlatList';
 import { useFetchDrivers } from '@/query/hook';
 import Box from '@/theme/Box';
 import { FlatList, RefreshControl, StyleSheet, ViewToken } from 'react-native';
@@ -18,7 +19,7 @@ export default function HomeScreen() {
         }
     };
 
-    const viewableItems = useSharedValue<ViewToken[]>([]);
+    const { onViewableItemsChanged, viewableItems } = useFlatList();
 
     return (
         <Box style={styles.container}>
@@ -33,9 +34,7 @@ export default function HomeScreen() {
                 initialNumToRender={8}
                 maxToRenderPerBatch={8}
                 ListEmptyComponent={emptyDriver}
-                onViewableItemsChanged={({ viewableItems: vItems }) => {
-                    viewableItems.value = vItems;
-                }}
+                onViewableItemsChanged={onViewableItemsChanged}
                 renderItem={({ item }) => <DriverItem item={item} key={item.full_name} viewableItems={viewableItems} />}
             />
         </Box>
@@ -60,7 +59,7 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         gap: 8,
-        paddingBottom: 70,
+        paddingBottom: 90,
     },
     emptyText: {
         color: '#FFFFFF',
