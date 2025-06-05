@@ -28,8 +28,7 @@ const SessionSkeleton = () => {
                 <View style={styles.raceInfosDateContainer}>
                     <Animated.View style={[styles.skeletonText, styles.raceDate, animatedStyle]} />
                 </View>
-                <View style={[styles.raceInfosMonthContainer,  { width: 45, height: 16 }, animatedStyle]}>
-                </View>
+                <View style={[styles.raceInfosMonthContainer, { width: 45, height: 16 }, animatedStyle]}></View>
             </View>
 
             <View style={styles.raceTrackerInfosContainer}>
@@ -39,10 +38,10 @@ const SessionSkeleton = () => {
                 <Animated.View style={[styles.skeletonText, styles.raceName, { width: 180 }, animatedStyle]} />
             </View>
         </Box>
-    )
-}
+    );
+};
 
-export default SessionSkeleton
+export default SessionSkeleton;
 
 const styles = StyleSheet.create({
     container: {

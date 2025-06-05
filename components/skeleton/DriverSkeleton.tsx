@@ -1,16 +1,12 @@
-import { useEffect } from "react";
-import { StyleSheet, View } from "react-native";
-import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming } from "react-native-reanimated";
+import { useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
 
 export function DriverSkeleton() {
     const opacity = useSharedValue(0.4);
 
     useEffect(() => {
-        opacity.value = withRepeat(
-            withTiming(0.9, { duration: 800 }),
-            -1,
-            true
-        );
+        opacity.value = withRepeat(withTiming(0.9, { duration: 800 }), -1, true);
     }, [opacity]);
 
     const animatedStyle = useAnimatedStyle(() => ({

@@ -1,20 +1,16 @@
-import Box from '@/theme/Box'
-import Text from '@/theme/Text'
-import { Ionicons } from '@expo/vector-icons'
-import React from 'react'
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import Box from '@/theme/Box';
+import Text from '@/theme/Text';
+import { Ionicons } from '@expo/vector-icons';
+import React from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 
 interface ItemProps {
-    icon: React.ComponentProps<typeof Ionicons>['name']
-    text: string
-    children?: React.ReactNode
+    icon: React.ComponentProps<typeof Ionicons>['name'];
+    text: string;
+    children?: React.ReactNode;
 }
 
-const Item = ({
-    icon,
-    text,
-    children
-}: ItemProps) => {
+const Item = ({ icon, text, children }: ItemProps) => {
     return (
         <TouchableOpacity style={styles.settingItem}>
             <Box style={styles.settingInfo}>
@@ -23,10 +19,10 @@ const Item = ({
             </Box>
             {children}
         </TouchableOpacity>
-    )
-}
+    );
+};
 
-export default Item
+export default Item;
 
 const styles = StyleSheet.create({
     settingItem: {
@@ -45,5 +41,5 @@ const styles = StyleSheet.create({
         color: '#FFF',
         fontSize: 16,
         marginLeft: 12,
-    }
-})
+    },
+});

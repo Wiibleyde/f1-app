@@ -1,21 +1,20 @@
-import Box from '@/theme/Box'
-import Text from '@/theme/Text'
-import { getFlagEmoji } from '@/utils/flag'
-import { Image } from 'expo-image'
-import { LinearGradient } from 'expo-linear-gradient'
-import React, { useEffect, useRef } from 'react'
-import { Animated, StyleSheet } from 'react-native'
+import Box from '@/theme/Box';
+import Text from '@/theme/Text';
+import { getFlagEmoji } from '@/utils/flag';
+import { Image } from 'expo-image';
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { useEffect, useRef } from 'react';
+import { Animated, StyleSheet } from 'react-native';
 
 interface DriverIdentityProps {
-    first_name: string
-    last_name: string
-    team_name: string
-    teamColor: string
-    teamColorLight: string
-    country_code: string
-    headshot_url: string
+    first_name: string;
+    last_name: string;
+    team_name: string;
+    teamColor: string;
+    teamColorLight: string;
+    country_code: string;
+    headshot_url: string;
 }
-
 
 const DriverIdentity = ({
     first_name,
@@ -26,24 +25,23 @@ const DriverIdentity = ({
     country_code,
     headshot_url,
 }: DriverIdentityProps) => {
-
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const slideAnim = useRef(new Animated.Value(50)).current;
 
     useEffect(() => {
-            Animated.parallel([
-                Animated.timing(fadeAnim, {
-                    toValue: 1,
-                    duration: 800,
-                    useNativeDriver: true,
-                }),
-                Animated.timing(slideAnim, {
-                    toValue: 0,
-                    duration: 600,
-                    useNativeDriver: true,
-                }),
-            ]).start();
-        }, [fadeAnim, slideAnim]);
+        Animated.parallel([
+            Animated.timing(fadeAnim, {
+                toValue: 1,
+                duration: 800,
+                useNativeDriver: true,
+            }),
+            Animated.timing(slideAnim, {
+                toValue: 0,
+                duration: 600,
+                useNativeDriver: true,
+            }),
+        ]).start();
+    }, [fadeAnim, slideAnim]);
 
     return (
         <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }}>
@@ -67,9 +65,7 @@ const DriverIdentity = ({
 
                         <Box style={styles.countryBox}>
                             <Text variant="text" style={styles.countryCode}>
-                                {country_code
-                                    ? `${country_code} ${getFlagEmoji(country_code)}`
-                                    : 'Non spécifié'}
+                                {country_code ? `${country_code} ${getFlagEmoji(country_code)}` : 'Non spécifié'}
                             </Text>
                         </Box>
                     </Box>
@@ -83,10 +79,10 @@ const DriverIdentity = ({
                 </Box>
             </LinearGradient>
         </Animated.View>
-    )
-}
+    );
+};
 
-export default DriverIdentity
+export default DriverIdentity;
 
 const styles = StyleSheet.create({
     heroGradient: {
@@ -139,4 +135,4 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         borderColor: '#FFFFFF',
     },
-})
+});

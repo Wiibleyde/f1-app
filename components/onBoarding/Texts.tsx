@@ -1,12 +1,10 @@
-import React from 'react'
-import { ScrollView } from 'react-native'
+import React from 'react';
+import { ScrollView } from 'react-native';
 
 const Texts = () => {
-
-    const handleScroll = Animated.event(
-        [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-        { useNativeDriver: false }
-    );
+    const handleScroll = Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
+        useNativeDriver: false,
+    });
 
     const onScrollEnd = (e: any) => {
         const index = Math.round(e.nativeEvent.contentOffset.x / width);
@@ -29,7 +27,7 @@ const Texts = () => {
                 <RenderSlide key={i} item={item} />
             ))}
         </ScrollView>
-    )
-}
+    );
+};
 
-export default Texts
+export default Texts;

@@ -10,12 +10,7 @@ interface ButtonProps {
     variant?: 'active' | 'inactive';
 }
 
-const Button = ({
-    children,
-    onPress,
-    disabled = false,
-    variant = 'active',
-}: ButtonProps) => {
+const Button = ({ children, onPress, disabled = false, variant = 'active' }: ButtonProps) => {
     const handlePress = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         onPress?.();
@@ -23,10 +18,7 @@ const Button = ({
 
     return (
         <TouchableOpacity
-            style={[
-                styles.button,
-                variant === 'active' ? styles.activeButton : styles.inactiveButton
-            ]}
+            style={[styles.button, variant === 'active' ? styles.activeButton : styles.inactiveButton]}
             onPress={handlePress}
             disabled={disabled}
         >
@@ -54,6 +46,6 @@ const styles = StyleSheet.create({
         borderColor: '#ee0000',
     },
     inactiveButton: {
-        borderColor: "transparent",
-    }
+        borderColor: 'transparent',
+    },
 });

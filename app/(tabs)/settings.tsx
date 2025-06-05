@@ -7,7 +7,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Switch } from 'react-native';
 
 export default function SettingsScreen() {
-
     return (
         <Box style={styles.container}>
             <Box style={styles.title}>
@@ -18,32 +17,21 @@ export default function SettingsScreen() {
 
             <Box style={styles.content}>
                 <Section title="Preferences">
-
-                    <Item icon='moon' text='Dark Mode'>
-                        <Switch
-                            value={true}
-                            trackColor={{ true: '#FF1801' }}
-                            thumbColor="#f4f3f4"
-                            disabled={true}
-                        />
+                    <Item icon="moon" text="Dark Mode">
+                        <Switch value={true} trackColor={{ true: '#FF1801' }} thumbColor="#f4f3f4" disabled={true} />
                     </Item>
 
-                    <Item icon='notifications' text='Notifications'>
-                        <Switch
-                            value={false}
-                            trackColor={{ false: '#767577' }}
-                            thumbColor="#f4f3f4"
-                            disabled={true}
-                        />
+                    <Item icon="notifications" text="Notifications">
+                        <Switch value={false} trackColor={{ false: '#767577' }} thumbColor="#f4f3f4" disabled={true} />
                     </Item>
                 </Section>
 
                 <Section title="About">
-                    <Item icon='information-circle' text='Application version'>
+                    <Item icon="information-circle" text="Application version">
                         <Text style={styles.versionText}>1.0.0</Text>
                     </Item>
 
-                    <Item icon='document-text' text='Terms of Use'>
+                    <Item icon="document-text" text="Terms of Use">
                         <Ionicons name="chevron-forward" size={20} color="#888" />
                     </Item>
                 </Section>
@@ -72,7 +60,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         color: '#FFFFFF',
-        marginLeft: "5%",
+        marginLeft: '5%',
         marginBottom: 20,
     },
     content: {

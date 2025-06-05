@@ -1,18 +1,17 @@
-import { logo } from '@/constants/OnBoarding'
-import Box from '@/theme/Box'
-import React from 'react'
-import { Image, StyleSheet } from 'react-native'
-
+import { logo } from '@/constants/OnBoarding';
+import Box from '@/theme/Box';
+import React from 'react';
+import { Image, StyleSheet } from 'react-native';
 
 const Logo = () => {
     return (
         <Box style={styles.logoContainer}>
             <Image source={logo} style={styles.logo} resizeMode="contain" />
         </Box>
-    )
-}
+    );
+};
 
-export default Logo
+export default Logo;
 
 const styles = StyleSheet.create({
     logoContainer: {
@@ -24,5 +23,5 @@ const styles = StyleSheet.create({
     logo: {
         width: 110,
         height: 40,
-    }
-})
+    },
+});

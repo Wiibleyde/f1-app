@@ -6,12 +6,12 @@ interface LayoutProps extends React.ComponentProps<typeof Box> {
     children: React.ReactNode;
 }
 
-const Layout = ({
-    children,
-    style,
-    ...props
-}: LayoutProps) => {
-    return <Box style={[styles.container, style]} {...props}>{children}</Box>;
+const Layout = ({ children, style, ...props }: LayoutProps) => {
+    return (
+        <Box style={[styles.container, style]} {...props}>
+            {children}
+        </Box>
+    );
 };
 
 export default Layout;

@@ -7,6 +7,7 @@ import { useFetchRaceSessions } from '@/query/hook';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { FlatList, RefreshControl, StyleSheet } from 'react-native';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
 const MeetingScreen = () => {
     const { meeting_key } = useLocalSearchParams<{ meeting_key: string }>();
@@ -16,9 +17,7 @@ const MeetingScreen = () => {
         if (isLoading) {
             return <SessionSkeleton />;
         } else {
-            return (
-                <NoDataFound entityName='sessions' />
-            );
+            return <NoDataFound entityName="sessions" />;
         }
     };
 
@@ -27,7 +26,11 @@ const MeetingScreen = () => {
             <Stack.Screen options={{ headerShown: false }} />
             <FlatList
                 data={data}
-                renderItem={({ item }) => <RenderSession item={item} />}
+                renderItem={({ item, index }) => (
+                    <Animated.View entering={FadeInDown.delay(index * 100)}>
+                        <RenderSession item={item} />
+                    </Animated.View>
+                )}
                 contentContainerStyle={styles.listContainer}
                 showsVerticalScrollIndicator={false}
                 refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={'#ee0000'} />}

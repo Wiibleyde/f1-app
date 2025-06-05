@@ -1,11 +1,12 @@
-import { FlatList, RefreshControl, StyleSheet } from 'react-native';
-
-import { DriverItem } from '@/components/drivers/DriverItem';
+import DriverItem from '@/components/drivers/DriverItem';
 import NoDataFound from '@/components/NoDataFound';
 import { DriverSkeleton } from '@/components/skeleton/DriverSkeleton';
 import Header from '@/components/ui/Header';
+import useFlatList from '@/hooks/useFlatList';
 import { useFetchDrivers } from '@/query/hook';
 import Box from '@/theme/Box';
+import { FlatList, RefreshControl, StyleSheet, ViewToken } from 'react-native';
+import { useSharedValue } from 'react-native-reanimated';
 
 export default function HomeScreen() {
     const { data, isLoading, refetch, isRefetching } = useFetchDrivers();
@@ -14,36 +15,27 @@ export default function HomeScreen() {
         if (isLoading) {
             return <DriverSkeleton />;
         } else {
-            return <NoDataFound entityName='drivers' />;
+            return <NoDataFound entityName="drivers" />;
         }
     };
+
+    const { onViewableItemsChanged, viewableItems } = useFlatList();
 
     return (
         <Box style={styles.container}>
             <FlatList
-                refreshControl={
-                    <RefreshControl
-                        refreshing={isRefetching}
-                        onRefresh={refetch}
-                        tintColor={'#ee0000'}
-                    />
-                }
+                refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={'#ee0000'} />}
                 data={data?.slice(0, 20).sort((a, b) => a.driver_number - b.driver_number)}
-                renderItem={(
-                    { item }) =>
-                    <DriverItem
-                        item={item}
-                        key={item.full_name}
-                    />
-                }
                 keyExtractor={(item) => item.broadcast_name}
                 contentContainerStyle={styles.listContainer}
                 showsVerticalScrollIndicator={false}
                 ListHeaderComponent={<Header title="F1 Drivers" backButton={false} />}
-                windowSize={1}
+                windowSize={8}
                 initialNumToRender={8}
                 maxToRenderPerBatch={8}
                 ListEmptyComponent={emptyDriver}
+                onViewableItemsChanged={onViewableItemsChanged}
+                renderItem={({ item }) => <DriverItem item={item} key={item.full_name} viewableItems={viewableItems} />}
             />
         </Box>
     );
@@ -67,7 +59,7 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         gap: 8,
-        paddingBottom: 70,
+        paddingBottom: 90,
     },
     emptyText: {
         color: '#FFFFFF',
