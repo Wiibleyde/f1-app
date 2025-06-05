@@ -1,10 +1,10 @@
 import { Driver, RadioData, useFetchDrivers } from "@/query/hook";
 import Text from "@/theme/Text";
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import Slider from '@react-native-community/slider';
 import { Audio } from "expo-av";
 import { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import Slider from '@react-native-community/slider';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 export function RadioPlayer({ radioData }: { radioData: RadioData }) {
     const audioSource = radioData.recording_url;

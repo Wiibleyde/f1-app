@@ -1,10 +1,10 @@
-import { StyleSheet, Switch } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import Box from '@/theme/Box';
-import Text from '@/theme/Text';
-import Section from '@/components/settings/Section';
 import Item from '@/components/settings/Item';
 import ResetButton from '@/components/settings/ResetButton';
+import Section from '@/components/settings/Section';
+import Box from '@/theme/Box';
+import Text from '@/theme/Text';
+import { Ionicons } from '@expo/vector-icons';
+import { StyleSheet, Switch } from 'react-native';
 
 export default function SettingsScreen() {
 

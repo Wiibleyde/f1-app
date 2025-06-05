@@ -1,31 +1,53 @@
-import { StyleSheet, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
-import { useFetchRacesFromYear } from '@/query/hook';
+import NoDataFound from '@/components/NoDataFound';
 import RenderRace from '@/components/RenderRace';
-import Layout from '@/components/ui/Layout';
+import RaceSkeleton from '@/components/skeleton/RaceSkeleton';
 import Header from '@/components/ui/Header';
+import Layout from '@/components/ui/Layout';
+import { useFetchRacesFromYear } from '@/query/hook';
+import { FlatList, RefreshControl, StyleSheet } from 'react-native';
 
 export default function HomeScreen() {
     const currentYear = new Date().getFullYear();
 
     const { data, isLoading, refetch, isRefetching } = useFetchRacesFromYear(currentYear);
 
+    const renderEmptyRace = () => {
+        if (isLoading) {
+            return <RaceSkeleton />;
+        } else {
+            return (
+                <NoDataFound entityName="races" />
+            );
+        }
+    }
+
     return (
         <Layout>
-            <Header title={`Races ${currentYear}`} />
 
-            {isLoading ? (
-                <ActivityIndicator size="large" color="#ee0000" />
-            ) : (
-                <FlatList
-                    refreshControl={
-                        <RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={'#ee0000'} />
-                    }
-                    data={data}
-                    renderItem={({ item }) => <RenderRace item={item} index={item.meeting_key} />}
-                    contentContainerStyle={styles.listContainer}
-                    showsVerticalScrollIndicator={false}
-                />
-            )}
+            <FlatList
+                refreshControl={
+                    <RefreshControl
+                        refreshing={isRefetching}
+                        onRefresh={refetch}
+                        tintColor={'#ee0000'}
+                    />
+                }
+                data={data}
+                renderItem={(
+                    { item }) =>
+                    <RenderRace
+                        item={item}
+                        index={item.meeting_key}
+                    />
+                }
+                contentContainerStyle={styles.listContainer}
+                showsVerticalScrollIndicator={false}
+                ListHeaderComponent={<Header title={`Races ${currentYear}`} />}
+                windowSize={1}
+                initialNumToRender={6}
+                maxToRenderPerBatch={6}
+                ListEmptyComponent={renderEmptyRace}
+            />
         </Layout>
     );
 }

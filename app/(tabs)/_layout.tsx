@@ -1,11 +1,11 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 
 import { HapticTab } from '@/components/HapticTab';
-import OnBoardingScreen from '../onboarding';
 import { useStorage } from '@/hooks/useStorage';
+import OnBoardingScreen from '../onboarding';
 
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
@@ -61,11 +61,14 @@ export default function TabLayout() {
 
                     if (route.name === 'index') {
                         iconName = 'flag-checkered';
-                    } else if (route.name === 'pilots') {
+                    } else if (route.name === 'drivers') {
                         iconName = 'racing-helmet';
                     } else if (route.name === 'settings') {
                         iconName = 'cog';
-                    }
+                    } 
+                    // else if (route.name === 'showcar') {
+                    //     iconName = 'car-convertible';
+                    // }
 
                     return (
                         <View style={{ alignItems: 'center', width: '100%' }}>
@@ -101,6 +104,12 @@ export default function TabLayout() {
                     title: 'Drivers',
                 }}
             />
+            {/* <Tabs.Screen
+                name="showcar"
+                options={{
+                    title: 'Show Car',
+                }}
+            /> */}
             <Tabs.Screen
                 name="settings"
                 options={{

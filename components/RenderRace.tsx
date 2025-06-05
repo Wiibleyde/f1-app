@@ -12,7 +12,11 @@ interface RenderRaceProps {
     index: number;
 }
 
-const RenderRace = ({ item, index }: RenderRaceProps) => {
+const RenderRace = ({
+    item,
+    index
+}: RenderRaceProps) => {
+
     const handlePress = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         router.push({ pathname: '/racesessions/[meeting_key]', params: { meeting_key: item.meeting_key } });
@@ -77,7 +81,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        gap: 8,
     },
     raceInfosDateContainer: {
         display: 'flex',
@@ -87,8 +90,11 @@ const styles = StyleSheet.create({
     raceInfosMonthContainer: {
         backgroundColor: '#30302f',
         borderRadius: 8,
-        paddingHorizontal: 8,
-        paddingVertical: 3,
+        paddingHorizontal: 7,
+        paddingVertical: 4,
+        marginTop: 4,
+        alignSelf: 'flex-start',
+        flexShrink: 0,
     },
     raceTrackerInfosContainer: {
         width: '71%',

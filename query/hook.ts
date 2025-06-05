@@ -74,16 +74,23 @@ const fecthRacesFromYear = async (year: number): Promise<Race[]> => {
 };
 
 const fetchDrivers = async (): Promise<Driver[]> => {
-    const response = await fetch('https://api.openf1.org/v1/drivers');
-    const drivers = await response.json();
+    const sessionsRes = await fetch('https://api.openf1.org/v1/sessions?session_type=Race');
+    const sessions = await sessionsRes.json();
+    if (!sessions || sessions.length === 0) {
+        return [];
+    }
+    sessions.sort((a: { date_start: string }, b: { date_start: string }) => new Date(b.date_start).getTime() - new Date(a.date_start).getTime());
+    const lastRaceSessionKey = sessions[0].session_key;
 
-    const sortedDrivers = [...drivers].sort((a, b) => b.session_key - a.session_key);
+    // 2. Récupérer les pilotes de cette session
+    const driversRes = await fetch(`https://api.openf1.org/v1/drivers?session_key=${lastRaceSessionKey}`);
+    const drivers: Driver[] = await driversRes.json();
 
     const uniqueDriversMap = new Map<string, Driver>();
-
-    sortedDrivers.forEach((driver) => {
-        if (!uniqueDriversMap.has(driver.broadcast_name)) {
-            uniqueDriversMap.set(driver.broadcast_name, driver);
+    drivers.forEach((driver) => {
+        const key = `${driver.broadcast_name}_${driver.team_name}`;
+        if (!uniqueDriversMap.has(key)) {
+            uniqueDriversMap.set(key, driver);
         }
     });
 

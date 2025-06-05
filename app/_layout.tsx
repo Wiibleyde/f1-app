@@ -6,12 +6,12 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 
-import Splash from './splash';
-import theme from '@/theme/default';
 import { queryClient } from '@/query';
+import theme from '@/theme/default';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import Splash from './splash';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
