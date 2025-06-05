@@ -1,10 +1,10 @@
 import { Driver, useFetchDrivers, useFetchPositionBySessionKey } from '@/query/hook';
 import React from 'react';
 import { FlatList, RefreshControl, StyleSheet, ViewToken } from 'react-native';
-import { DriverItem } from '../drivers/DriverItem';
 import NoDataFound from '../NoDataFound';
 import { DriverSkeleton } from '../skeleton/DriverSkeleton';
 import { useSharedValue } from 'react-native-reanimated';
+import DriverItem from '../drivers/DriverItem';
 
 interface Props {
     session_key: string;

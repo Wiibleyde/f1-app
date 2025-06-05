@@ -3,7 +3,7 @@ import Text from '@/theme/Text';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Slider from '@react-native-community/slider';
 import { Audio } from 'expo-av';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, ViewToken } from 'react-native';
 import Animated, { SharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
@@ -12,10 +12,10 @@ interface RadioPlayerProps {
     viewableItems: SharedValue<ViewToken[]>;
 }
 
-export function RadioPlayer({
+const RadioPlayer = memo(({
     radioData,
     viewableItems
-}: RadioPlayerProps) {
+}: RadioPlayerProps) => {
     const audioSource = radioData.recording_url;
     const [sound, setSound] = useState<Audio.Sound | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -132,20 +132,20 @@ export function RadioPlayer({
     };
 
     const rStyle = useAnimatedStyle(() => {
-            const isViewable = Boolean(
-                viewableItems.value
-                    .filter((item) => item.isViewable)
-                    .find((viewableItem) => viewableItem.item.recording_url === radioData.recording_url));
-    
-            return {
-                opacity: withTiming(isViewable ? 1 : 0),
-                transform: [
-                    {
-                        scale: withTiming(isViewable ? 1 : 0.6),
-                    },
-                ],
-            }
-        }, [])
+        const isViewable = Boolean(
+            viewableItems.value
+                .filter((item) => item.isViewable)
+                .find((viewableItem) => viewableItem.item.recording_url === radioData.recording_url));
+
+        return {
+            opacity: withTiming(isViewable ? 1 : 0),
+            transform: [
+                {
+                    scale: withTiming(isViewable ? 1 : 0.6),
+                },
+            ],
+        }
+    }, [])
 
     return (
         <Animated.View style={[rStyle, styles.radioItem]}>
@@ -191,7 +191,9 @@ export function RadioPlayer({
             </View>
         </Animated.View>
     );
-}
+})
+
+export default RadioPlayer;
 
 const styles = StyleSheet.create({
     radioItem: {

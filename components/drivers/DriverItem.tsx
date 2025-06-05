@@ -4,6 +4,7 @@ import Text from '@/theme/Text';
 import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
+import { memo } from 'react';
 import { StyleSheet, TouchableOpacity, ViewToken } from 'react-native';
 import Animated, { SharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
@@ -13,11 +14,11 @@ interface DriverItemProps {
     position?: number; // Optionnel pour la position du pilote
 }
 
-export function DriverItem({
+const DriverItem = memo(({
     item,
     position,
     viewableItems
-}: DriverItemProps) {
+}: DriverItemProps) => {
     const handlePress = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         router.push({ pathname: '/driver/[broadcaster_name]', params: { broadcaster_name: item.broadcast_name } });
@@ -78,7 +79,7 @@ export function DriverItem({
             </TouchableOpacity>
         </Animated.View>
     );
-}
+})
 
 const styles = StyleSheet.create({
     pilotItem: {
@@ -105,3 +106,5 @@ const styles = StyleSheet.create({
         marginRight: 12,
     },
 });
+
+export default DriverItem;

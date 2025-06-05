@@ -2,7 +2,7 @@ import { useFetchRadioBySessionKey } from '@/query/hook';
 import React from 'react';
 import { FlatList, RefreshControl, StyleSheet, ViewToken } from 'react-native';
 import NoDataFound from '../NoDataFound';
-import { RadioPlayer } from '../radio/RadioPlayer';
+import RadioPlayer from '../radio/RadioPlayer';
 import { RadioSkeleton } from '../skeleton/RadioSkeleton';
 import { useSharedValue } from 'react-native-reanimated';
 
@@ -13,7 +13,7 @@ interface Props {
 const Radios = ({ session_key }: Props) => {
     const viewableItems = useSharedValue<ViewToken[]>([]);
 
-    
+
     const {
         data: radioData,
         isLoading: isRadioLoading,
@@ -35,9 +35,9 @@ const Radios = ({ session_key }: Props) => {
             showsVerticalScrollIndicator={false}
             refreshControl={
                 <RefreshControl
-                refreshing={false}
-                onRefresh={refetchRadio}
-                tintColor={'#ee0000'}
+                    refreshing={false}
+                    onRefresh={refetchRadio}
+                    tintColor={'#ee0000'}
                 />
             }
             windowSize={1}
@@ -47,7 +47,7 @@ const Radios = ({ session_key }: Props) => {
             onViewableItemsChanged={({ viewableItems: vItems }) => {
                 viewableItems.value = vItems;
             }}
-            renderItem={({ item }) => <RadioPlayer radioData={item} viewableItems={viewableItems} /> }
+            renderItem={({ item }) => <RadioPlayer radioData={item} viewableItems={viewableItems} />}
         />
     );
 };
