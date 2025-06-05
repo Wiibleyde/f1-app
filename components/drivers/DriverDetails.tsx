@@ -1,26 +1,26 @@
-import Box from '@/theme/Box'
-import Text from '@/theme/Text'
-import { formatLastSessionDate } from '@/utils/date'
-import { getFlagEmoji } from '@/utils/flag'
-import * as Clipboard from 'expo-clipboard'
-import * as Haptics from 'expo-haptics'
-import { router } from 'expo-router'
-import React, { useEffect, useRef, useState } from 'react'
-import { Animated, StyleSheet, TouchableOpacity } from 'react-native'
-import DriverInformation from './DriverInformation'
+import Box from '@/theme/Box';
+import Text from '@/theme/Text';
+import { formatLastSessionDate } from '@/utils/date';
+import { getFlagEmoji } from '@/utils/flag';
+import * as Clipboard from 'expo-clipboard';
+import * as Haptics from 'expo-haptics';
+import { router } from 'expo-router';
+import React, { useEffect, useRef, useState } from 'react';
+import { Animated, StyleSheet, TouchableOpacity } from 'react-native';
+import DriverInformation from './DriverInformation';
 
 interface DriverDetailsProps {
-    driver_number: number
-    name_acronym: string
-    country_code: string
-    team_name: string
-    teamColor: string
-    teamColorLight: string
-    sessionData: any
-    session_key: number
-    session_type: string
-    location: string
-    date_start: string
+    driver_number: number;
+    name_acronym: string;
+    country_code: string;
+    team_name: string;
+    teamColor: string;
+    teamColorLight: string;
+    sessionData: any;
+    session_key: number;
+    session_type: string;
+    location: string;
+    date_start: string;
 }
 
 const DriverDetails = ({
@@ -36,7 +36,6 @@ const DriverDetails = ({
     location,
     date_start,
 }: DriverDetailsProps) => {
-
     const [colorCopied, setColorCopied] = useState(false);
 
     // Animation values
@@ -70,19 +69,19 @@ const DriverDetails = ({
 
     const handleLastRacePress = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-        router.push({ pathname: '/sessionresult/[session_key]', params: { session_key: session_key.toString() || '' } });
+        router.push({
+            pathname: '/sessionresult/[session_key]',
+            params: { session_key: session_key.toString() || '' },
+        });
     };
 
     return (
-        <Animated.View
-            style={[styles.statsContainer, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}
-        >
+        <Animated.View style={[styles.statsContainer, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
             <Text variant="title" style={styles.sectionTitle}>
                 Informations
             </Text>
 
             <Box style={styles.statsGrid}>
-
                 <DriverInformation
                     teamColorLight={teamColorLight}
                     teamColor={teamColor}
@@ -90,11 +89,7 @@ const DriverDetails = ({
                     value={driver_number}
                 />
 
-                <DriverInformation
-                    teamColorLight={teamColorLight}
-                    title="Acronym"
-                    value={name_acronym}
-                />
+                <DriverInformation teamColorLight={teamColorLight} title="Acronym" value={name_acronym} />
 
                 <DriverInformation
                     teamColorLight={teamColorLight}
@@ -141,18 +136,18 @@ const DriverDetails = ({
                         Last event
                     </Text>
                     <Text variant="text" style={styles.buttonText}>
-                        {sessionData ?
-                            `${session_type || ''}, ${location || ''} (${formatLastSessionDate(date_start)})` :
-                            'Loading race information...'}
+                        {sessionData
+                            ? `${session_type || ''}, ${location || ''} (${formatLastSessionDate(date_start)})`
+                            : 'Loading race information...'}
                     </Text>
                 </Box>
                 <Text style={styles.buttonIcon}>→</Text>
             </TouchableOpacity>
         </Animated.View>
-    )
-}
+    );
+};
 
-export default DriverDetails
+export default DriverDetails;
 
 const styles = StyleSheet.create({
     statsContainer: {
@@ -221,7 +216,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         elevation: 3,
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
@@ -246,5 +241,4 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginLeft: 10,
     },
-})
-
+});

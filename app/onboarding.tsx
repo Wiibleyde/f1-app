@@ -63,10 +63,9 @@ export default function OnBoardingScreen() {
         router.replace('/');
     };
 
-    const handleScroll = Animated.event(
-        [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-        { useNativeDriver: false }
-    );
+    const handleScroll = Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
+        useNativeDriver: false,
+    });
 
     const onScrollEnd = (e: any) => {
         const index = Math.round(e.nativeEvent.contentOffset.x / width);
@@ -77,11 +76,7 @@ export default function OnBoardingScreen() {
         <Box style={styles.container}>
             <Stack.Screen options={{ headerShown: false }} />
 
-            <VideoView
-                style={styles.backgroundVideo}
-                player={player}
-                contentFit="cover"
-            />
+            <VideoView style={styles.backgroundVideo} player={player} contentFit="cover" />
 
             <Logo />
 
@@ -103,12 +98,7 @@ export default function OnBoardingScreen() {
 
             <Box style={styles.paginationContainer}>
                 {sliderInformations.map((_, i) => (
-                    <Dot
-                        key={i}
-                        index={i}
-                        currentIndex={currentIndex}
-                        dotAnimations={dotAnimations}
-                    />
+                    <Dot key={i} index={i} currentIndex={currentIndex} dotAnimations={dotAnimations} />
                 ))}
             </Box>
 
@@ -128,7 +118,10 @@ const styles = StyleSheet.create({
     },
     backgroundVideo: {
         position: 'absolute',
-        top: 0, left: 0, bottom: 0, right: 0,
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
         width: 'auto',
     },
     paginationContainer: {

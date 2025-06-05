@@ -1,12 +1,11 @@
-import { useStorage } from '@/hooks/useStorage'
-import Text from '@/theme/Text'
-import { Ionicons } from '@expo/vector-icons'
-import { router } from 'expo-router'
-import React from 'react'
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { useStorage } from '@/hooks/useStorage';
+import Text from '@/theme/Text';
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import React from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 
 const ResetButton = () => {
-
     const { clearStorage } = useStorage<boolean>('onboarding', false);
 
     const handleResetDataDebug = () => {
@@ -19,10 +18,10 @@ const ResetButton = () => {
             <Ionicons name="refresh-circle" size={20} color="#fff" />
             <Text style={styles.resetButtonText}>Reset data</Text>
         </TouchableOpacity>
-    )
-}
+    );
+};
 
-export default ResetButton
+export default ResetButton;
 
 const styles = StyleSheet.create({
     resetButton: {
@@ -38,5 +37,5 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '600',
         marginLeft: 8,
-    }
-})
+    },
+});

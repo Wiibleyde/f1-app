@@ -1,21 +1,16 @@
-import Box from '@/theme/Box'
-import Text from '@/theme/Text'
-import React from 'react'
-import { StyleSheet } from 'react-native'
+import Box from '@/theme/Box';
+import Text from '@/theme/Text';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 
 interface DriverInformationProps {
-    teamColorLight: string
-    title: string
-    value: string | number
-    teamColor?: string
+    teamColorLight: string;
+    title: string;
+    value: string | number;
+    teamColor?: string;
 }
 
-const DriverInformation = ({
-    teamColorLight,
-    title,
-    value,
-    teamColor = '#FFFFFF',
-}: DriverInformationProps) => {
+const DriverInformation = ({ teamColorLight, title, value, teamColor = '#FFFFFF' }: DriverInformationProps) => {
     return (
         <Box style={[styles.statCard, { borderColor: teamColorLight }]}>
             <Text variant="title" style={styles.statTitle}>
@@ -25,10 +20,10 @@ const DriverInformation = ({
                 {value}
             </Text>
         </Box>
-    )
-}
+    );
+};
 
-export default DriverInformation
+export default DriverInformation;
 
 const styles = StyleSheet.create({
     statCard: {
@@ -48,5 +43,5 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#FFFFFF',
         fontWeight: '500',
-    }
-})
+    },
+});

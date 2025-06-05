@@ -16,7 +16,7 @@ export default function PilotScreen() {
     const [sessionKey, setSessionKey] = useState<string | null>(null);
 
     const { data: sessionData } = useFetchSessionByKey(sessionKey || '', {
-        enabled: Boolean(sessionKey)
+        enabled: Boolean(sessionKey),
     });
 
     useEffect(() => {
@@ -24,7 +24,6 @@ export default function PilotScreen() {
             setSessionKey(data.session_key.toString());
         }
     }, [data]);
-
 
     if (!data || !sessionData) {
         return (
@@ -48,7 +47,6 @@ export default function PilotScreen() {
             <Header title={`${data.first_name} ${data.last_name}`} backButton />
 
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-
                 <DriverIdentity
                     first_name={data.first_name}
                     last_name={data.last_name}
@@ -73,7 +71,6 @@ export default function PilotScreen() {
                     location={sessionData.location}
                     date_start={sessionData.date_start}
                 />
-                
             </ScrollView>
         </Layout>
     );

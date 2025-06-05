@@ -1,10 +1,10 @@
-import { Driver, RadioData, useFetchDrivers } from "@/query/hook";
-import Text from "@/theme/Text";
+import { Driver, RadioData, useFetchDrivers } from '@/query/hook';
+import Text from '@/theme/Text';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Slider from '@react-native-community/slider';
-import { Audio } from "expo-av";
-import { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Audio } from 'expo-av';
+import { useEffect, useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 export function RadioPlayer({ radioData }: { radioData: RadioData }) {
     const audioSource = radioData.recording_url;
@@ -30,10 +30,7 @@ export function RadioPlayer({ radioData }: { radioData: RadioData }) {
 
         async function loadSound() {
             if (audioSource) {
-                const { sound: newSound } = await Audio.Sound.createAsync(
-                    { uri: audioSource },
-                    { shouldPlay: false }
-                );
+                const { sound: newSound } = await Audio.Sound.createAsync({ uri: audioSource }, { shouldPlay: false });
                 loadedSound = newSound;
                 const status = await newSound.getStatusAsync();
                 if (isMounted) {
@@ -127,12 +124,10 @@ export function RadioPlayer({ radioData }: { radioData: RadioData }) {
 
     return (
         <View style={styles.radioItem}>
-            <Text style={styles.title}>{currentDriver ? `${currentDriver.first_name} ${currentDriver.last_name}` : 'Extrait radio'}</Text>
-            {radioData.date && (
-                <Text style={styles.dateText}>
-                    {new Date(radioData.date).toLocaleString('fr-FR')}
-                </Text>
-            )}
+            <Text style={styles.title}>
+                {currentDriver ? `${currentDriver.first_name} ${currentDriver.last_name}` : 'Extrait radio'}
+            </Text>
+            {radioData.date && <Text style={styles.dateText}>{new Date(radioData.date).toLocaleString('fr-FR')}</Text>}
             <Slider
                 style={styles.slider}
                 minimumValue={0}
@@ -155,11 +150,7 @@ export function RadioPlayer({ radioData }: { radioData: RadioData }) {
                     style={[styles.button, isPlaying && styles.buttonDisabled]}
                     activeOpacity={0.7}
                 >
-                    <MaterialCommunityIcons
-                        name="play"
-                        size={22}
-                        color={isPlaying ? "#555" : "#e10600"}
-                    />
+                    <MaterialCommunityIcons name="play" size={22} color={isPlaying ? '#555' : '#e10600'} />
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={handlePause}
@@ -167,22 +158,10 @@ export function RadioPlayer({ radioData }: { radioData: RadioData }) {
                     style={[styles.button, !isPlaying && styles.buttonDisabled]}
                     activeOpacity={0.7}
                 >
-                    <MaterialCommunityIcons
-                        name="pause"
-                        size={22}
-                        color={!isPlaying ? "#555" : "#e10600"}
-                    />
+                    <MaterialCommunityIcons name="pause" size={22} color={!isPlaying ? '#555' : '#e10600'} />
                 </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={handleStop}
-                    style={styles.button}
-                    activeOpacity={0.7}
-                >
-                    <MaterialCommunityIcons
-                        name="stop"
-                        size={22}
-                        color="#e10600"
-                    />
+                <TouchableOpacity onPress={handleStop} style={styles.button} activeOpacity={0.7}>
+                    <MaterialCommunityIcons name="stop" size={22} color="#e10600" />
                 </TouchableOpacity>
             </View>
         </View>
@@ -197,25 +176,25 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         borderRadius: 10,
         marginBottom: 6,
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.18,
         shadowRadius: 6,
         elevation: 2,
         borderWidth: 1,
-        borderColor: "#23242a",
+        borderColor: '#23242a',
     },
     title: {
         fontSize: 14,
         fontWeight: 'bold',
-        color: "#fff",
+        color: '#fff',
         textAlign: 'center',
         marginBottom: 2,
         letterSpacing: 0.5,
     },
     dateText: {
         fontSize: 11,
-        color: "#e10600",
+        color: '#e10600',
         textAlign: 'center',
         marginBottom: 2,
     },
@@ -233,7 +212,7 @@ const styles = StyleSheet.create({
     },
     timeText: {
         fontSize: 11,
-        color: "#aaa",
+        color: '#aaa',
         fontVariant: ['tabular-nums'],
     },
     controls: {
@@ -246,10 +225,10 @@ const styles = StyleSheet.create({
     button: {
         padding: 7,
         borderRadius: 16,
-        backgroundColor: "#23242a",
+        backgroundColor: '#23242a',
         marginHorizontal: 0,
     },
     buttonDisabled: {
-        backgroundColor: "#23242a",
+        backgroundColor: '#23242a',
     },
 });

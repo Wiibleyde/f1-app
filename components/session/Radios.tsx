@@ -9,27 +9,25 @@ interface Props {
     session_key: string;
 }
 
-const Radios = ({
-    session_key
-}: Props) => {
-
-    const { data: radioData, isLoading: isRadioLoading, refetch: refetchRadio } = useFetchRadioBySessionKey(session_key);
-
+const Radios = ({ session_key }: Props) => {
+    const {
+        data: radioData,
+        isLoading: isRadioLoading,
+        refetch: refetchRadio,
+    } = useFetchRadioBySessionKey(session_key);
 
     const renderEmptyRadio = () => {
         if (isRadioLoading) {
             return <RadioSkeleton />;
         } else {
-            return <NoDataFound entityName='radio' />;
+            return <NoDataFound entityName="radio" />;
         }
-    }
+    };
 
     return (
         <FlatList
             data={radioData}
-            renderItem={({ item }) => (
-                <RadioPlayer radioData={item} />
-            )}
+            renderItem={({ item }) => <RadioPlayer radioData={item} />}
             contentContainerStyle={styles.listContainer}
             showsVerticalScrollIndicator={false}
             refreshControl={
@@ -47,14 +45,14 @@ const Radios = ({
             ListEmptyComponent={renderEmptyRadio}
         />
     );
-}
+};
 
-export default Radios
+export default Radios;
 
 const styles = StyleSheet.create({
     listContainer: {
         gap: 6,
         paddingBottom: 20,
         paddingTop: 10,
-    }
+    },
 });

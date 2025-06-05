@@ -14,28 +14,16 @@ export default function HomeScreen() {
         if (isLoading) {
             return <DriverSkeleton />;
         } else {
-            return <NoDataFound entityName='drivers' />;
+            return <NoDataFound entityName="drivers" />;
         }
     };
 
     return (
         <Box style={styles.container}>
             <FlatList
-                refreshControl={
-                    <RefreshControl
-                        refreshing={isRefetching}
-                        onRefresh={refetch}
-                        tintColor={'#ee0000'}
-                    />
-                }
+                refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={'#ee0000'} />}
                 data={data?.slice(0, 20).sort((a, b) => a.driver_number - b.driver_number)}
-                renderItem={(
-                    { item }) =>
-                    <DriverItem
-                        item={item}
-                        key={item.full_name}
-                    />
-                }
+                renderItem={({ item }) => <DriverItem item={item} key={item.full_name} />}
                 keyExtractor={(item) => item.broadcast_name}
                 contentContainerStyle={styles.listContainer}
                 showsVerticalScrollIndicator={false}

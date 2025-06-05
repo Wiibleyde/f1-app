@@ -1,16 +1,12 @@
-import { useEffect } from "react";
-import { StyleSheet, View } from "react-native";
-import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming } from "react-native-reanimated";
+import { useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
 
 export function RadioSkeleton() {
     const opacity = useSharedValue(0.4);
 
     useEffect(() => {
-        opacity.value = withRepeat(
-            withTiming(0.9, { duration: 800 }),
-            -1,
-            true
-        );
+        opacity.value = withRepeat(withTiming(0.9, { duration: 800 }), -1, true);
     }, [opacity]);
 
     const animatedStyle = useAnimatedStyle(() => ({
@@ -80,13 +76,13 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         borderRadius: 10,
         marginBottom: 6,
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.18,
         shadowRadius: 6,
         elevation: 2,
         borderWidth: 1,
-        borderColor: "#23242a",
+        borderColor: '#23242a',
         marginTop: 10,
     },
     skeletonTitle: {

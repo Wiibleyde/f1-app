@@ -12,11 +12,7 @@ interface RenderRaceProps {
     index: number;
 }
 
-const RenderRace = ({
-    item,
-    index
-}: RenderRaceProps) => {
-
+const RenderRace = ({ item, index }: RenderRaceProps) => {
     const handlePress = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         router.push({ pathname: '/racesessions/[meeting_key]', params: { meeting_key: item.meeting_key } });

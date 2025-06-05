@@ -30,8 +30,7 @@ const RaceSkeleton = () => {
                     <Animated.View style={[styles.skeletonText, styles.raceDate, animatedStyle]} />
                     <Animated.View style={[styles.skeletonText, styles.raceDate, animatedStyle]} />
                 </View>
-                <View style={[styles.raceInfosMonthContainer,  { width: 45, height: 16 }, animatedStyle]}>
-                </View>
+                <View style={[styles.raceInfosMonthContainer, { width: 45, height: 16 }, animatedStyle]}></View>
             </View>
 
             <View style={styles.raceTrackerInfosContainer}>
@@ -40,10 +39,10 @@ const RaceSkeleton = () => {
                 <Animated.View style={[styles.skeletonText, styles.raceName, { width: 180 }, animatedStyle]} />
             </View>
         </Box>
-    )
-}
+    );
+};
 
-export default RaceSkeleton
+export default RaceSkeleton;
 
 const styles = StyleSheet.create({
     container: {

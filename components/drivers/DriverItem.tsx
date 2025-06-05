@@ -11,11 +11,7 @@ interface DriverItemProps {
     position?: number; // Optionnel pour la position du pilote
 }
 
-export function DriverItem({
-    item,
-    position
-}: DriverItemProps) {
-    
+export function DriverItem({ item, position }: DriverItemProps) {
     const handlePress = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         router.push({ pathname: '/driver/[broadcaster_name]', params: { broadcaster_name: item.broadcast_name } });
@@ -23,9 +19,12 @@ export function DriverItem({
 
     // Détermine la couleur selon la position
     let positionColor = '#ee0000';
-    if (position === 1) positionColor = '#FFD700'; // or
-    else if (position === 2) positionColor = '#C0C0C0'; // argent
-    else if (position === 3) positionColor = '#CD7F32'; // bronze
+    if (position === 1)
+        positionColor = '#FFD700'; // or
+    else if (position === 2)
+        positionColor = '#C0C0C0'; // argent
+    else if (position === 3)
+        positionColor = '#CD7F32'; // bronze
     else if (position && position < 11) positionColor = '#FFFFFF'; // blanc pour les autres positions
 
     return (

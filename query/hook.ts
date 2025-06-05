@@ -70,7 +70,7 @@ const fecthRacesFromYear = async (year: number): Promise<Race[]> => {
         return [];
     }
     data = data.reverse();
-    return data
+    return data;
 };
 
 const fetchDrivers = async (): Promise<Driver[]> => {
@@ -79,7 +79,10 @@ const fetchDrivers = async (): Promise<Driver[]> => {
     if (!sessions || sessions.length === 0) {
         return [];
     }
-    sessions.sort((a: { date_start: string }, b: { date_start: string }) => new Date(b.date_start).getTime() - new Date(a.date_start).getTime());
+    sessions.sort(
+        (a: { date_start: string }, b: { date_start: string }) =>
+            new Date(b.date_start).getTime() - new Date(a.date_start).getTime()
+    );
     const lastRaceSessionKey = sessions[0].session_key;
 
     // 2. Récupérer les pilotes de cette session
@@ -116,7 +119,7 @@ const fetchSessionByKey = async (session_key: string): Promise<RaceSession | nul
         return null;
     }
     return sessions[0];
-}
+};
 
 export const useFetchSessionByKey = (session_key: string, options?: { enabled?: boolean }) => {
     return useQuery({
@@ -211,7 +214,7 @@ const fetchRadioBySessionKey = async (session_key: string): Promise<RadioData[]>
     const radioData: RadioData[] = await response.json();
 
     return radioData;
-}
+};
 
 export const useFetchRadioBySessionKey = (session_key: string) => {
     return useQuery({

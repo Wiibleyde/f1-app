@@ -1,29 +1,26 @@
-import Box from '@/theme/Box'
-import Text from '@/theme/Text'
-import React from 'react'
-import { StyleSheet } from 'react-native'
+import Box from '@/theme/Box';
+import Text from '@/theme/Text';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 
 interface SectionProps {
-    title: string
-    children?: React.ReactNode
+    title: string;
+    children?: React.ReactNode;
 }
 
-const Section = ({
-    title,
-    children
-}: SectionProps) => {
+const Section = ({ title, children }: SectionProps) => {
     return (
         <Box style={styles.section}>
             <Text style={styles.sectionTitle}>{title}</Text>
             {children}
         </Box>
-    )
-}
+    );
+};
 
-export default Section
+export default Section;
 
 const styles = StyleSheet.create({
-        section: {
+    section: {
         backgroundColor: '#1C1C1E',
         borderRadius: 12,
         marginBottom: 24,
@@ -40,4 +37,4 @@ const styles = StyleSheet.create({
         color: '#FFF',
         marginBottom: 16,
     },
-})
+});

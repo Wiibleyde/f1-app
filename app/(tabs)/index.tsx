@@ -15,31 +15,16 @@ export default function HomeScreen() {
         if (isLoading) {
             return <RaceSkeleton />;
         } else {
-            return (
-                <NoDataFound entityName="races" />
-            );
+            return <NoDataFound entityName="races" />;
         }
-    }
+    };
 
     return (
         <Layout>
-
             <FlatList
-                refreshControl={
-                    <RefreshControl
-                        refreshing={isRefetching}
-                        onRefresh={refetch}
-                        tintColor={'#ee0000'}
-                    />
-                }
+                refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={'#ee0000'} />}
                 data={data}
-                renderItem={(
-                    { item }) =>
-                    <RenderRace
-                        item={item}
-                        index={item.meeting_key}
-                    />
-                }
+                renderItem={({ item }) => <RenderRace item={item} index={item.meeting_key} />}
                 contentContainerStyle={styles.listContainer}
                 showsVerticalScrollIndicator={false}
                 ListHeaderComponent={<Header title={`Races ${currentYear}`} />}

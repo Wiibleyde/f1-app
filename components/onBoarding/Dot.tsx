@@ -1,20 +1,16 @@
-import React from 'react'
-import { Animated, StyleSheet } from 'react-native'
+import React from 'react';
+import { Animated, StyleSheet } from 'react-native';
 
 interface DotProps {
-    index: number
-    currentIndex: number
+    index: number;
+    currentIndex: number;
     dotAnimations: {
-        width: Animated.Value
-        opacity: Animated.Value
-    }[]
+        width: Animated.Value;
+        opacity: Animated.Value;
+    }[];
 }
 
-const Dot = ({
-    index,
-    currentIndex,
-    dotAnimations
-}: DotProps) => {
+const Dot = ({ index, currentIndex, dotAnimations }: DotProps) => {
     return (
         <Animated.View
             key={index}
@@ -27,15 +23,15 @@ const Dot = ({
                 },
             ]}
         />
-    )
-}
+    );
+};
 
-export default Dot
+export default Dot;
 
 const styles = StyleSheet.create({
     paginationDot: {
         height: 10,
         borderRadius: 5,
         marginHorizontal: 5,
-    }
-})
+    },
+});
