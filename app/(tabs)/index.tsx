@@ -5,6 +5,7 @@ import Layout from '@/components/ui/Layout';
 import Header from '@/components/ui/Header';
 import Box from '@/theme/Box';
 import Text from '@/theme/Text';
+import RaceSkeleton from '@/components/skeleton/RaceSkeleton';
 
 export default function HomeScreen() {
     const currentYear = new Date().getFullYear();
@@ -23,7 +24,7 @@ export default function HomeScreen() {
                     />
                 }
                 data={data}
-                renderItem={({ item }) => <RenderRace item={item} index={item.meeting_key} />}
+                renderItem={({ item }) => <RenderRace item={item} index={item.meeting_key} isLoading={isLoading} />}
                 contentContainerStyle={styles.listContainer}
                 showsVerticalScrollIndicator={false}
                 ListHeaderComponent={<Header title={`Races ${currentYear}`} />}
@@ -31,16 +32,13 @@ export default function HomeScreen() {
                 initialNumToRender={6}
                 maxToRenderPerBatch={6}
                 ListEmptyComponent={
-                    isLoading ? (
-                        <ActivityIndicator size="large" color="#ee0000" />
-                    ) : (
-                        <Box>
-                            <Text>
-                                No drivers found.
-                                {'\n'}Please check your internet connection or try again later.
-                            </Text>
-                        </Box>
-                    )}
+                    <Box>
+                        <Text>
+                            No drivers found.
+                            {'\n'}Please check your internet connection or try again later.
+                        </Text>
+                    </Box>
+                }
             />
         </Layout>
     );

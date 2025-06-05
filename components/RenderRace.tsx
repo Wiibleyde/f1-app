@@ -6,13 +6,25 @@ import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { getDay, getLastDay, getMonthThreeLetters } from '@/utils/date';
 import * as Haptics from 'expo-haptics';
+import RaceSkeleton from './skeleton/RaceSkeleton';
 
 interface RenderRaceProps {
     item: Race;
     index: number;
+    isLoading: boolean;
 }
 
-const RenderRace = ({ item, index }: RenderRaceProps) => {
+const RenderRace = ({
+    item,
+    index,
+    isLoading
+}: RenderRaceProps) => {
+
+    if (isLoading) {
+        return <RaceSkeleton key={item.meeting_key} />;
+    }
+
+
     const handlePress = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         router.push({ pathname: '/racesessions/[meeting_key]', params: { meeting_key: item.meeting_key } });
