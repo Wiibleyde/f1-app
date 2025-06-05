@@ -92,19 +92,19 @@ export default function TabLayout() {
             <Tabs.Screen
                 name="index"
                 options={{
-                    title: 'Courses',
+                    title: 'Races',
                 }}
             />
             <Tabs.Screen
-                name="pilots"
+                name="drivers"
                 options={{
-                    title: 'Pilotes',
+                    title: 'Drivers',
                 }}
             />
             <Tabs.Screen
                 name="settings"
                 options={{
-                    title: 'Paramètres',
+                    title: 'Settings',
                 }}
             />
         </Tabs>

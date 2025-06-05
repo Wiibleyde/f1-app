@@ -1,7 +1,6 @@
 import { StyleSheet, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
 
 import Box from '@/theme/Box';
-import Text from '@/theme/Text';
 import { useFetchDrivers } from '@/query/hook';
 import { DriverItem } from '@/components/drivers/DriverItem';
 import Header from '@/components/ui/Header';
