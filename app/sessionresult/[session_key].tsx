@@ -8,6 +8,8 @@ import Radios from '@/components/session/Radios';
 
 const SessionScreen = () => {
     const { session_key } = useLocalSearchParams<{ session_key: string }>();
+
+    // Pas de top tab car ça rentre en conflit avec le router expo-router
     const [activeSection, setActiveSection] = useState<'classement' | 'radio'>('classement');
 
     return (
