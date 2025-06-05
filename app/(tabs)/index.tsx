@@ -1,11 +1,9 @@
-import { StyleSheet, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
+import { StyleSheet, FlatList, RefreshControl } from 'react-native';
 import { useFetchRacesFromYear } from '@/query/hook';
 import RenderRace from '@/components/RenderRace';
 import Layout from '@/components/ui/Layout';
 import Header from '@/components/ui/Header';
-import Box from '@/theme/Box';
-import Text from '@/theme/Text';
-import RaceSkeleton from '@/components/skeleton/RaceSkeleton';
+import NoDataFound from '@/components/NoDataFound';
 
 export default function HomeScreen() {
     const currentYear = new Date().getFullYear();
@@ -24,7 +22,14 @@ export default function HomeScreen() {
                     />
                 }
                 data={data}
-                renderItem={({ item }) => <RenderRace item={item} index={item.meeting_key} isLoading={isLoading} />}
+                renderItem={(
+                    { item }) =>
+                    <RenderRace
+                        item={item}
+                        index={item.meeting_key}
+                        isLoading={isLoading}
+                    />
+                }
                 contentContainerStyle={styles.listContainer}
                 showsVerticalScrollIndicator={false}
                 ListHeaderComponent={<Header title={`Races ${currentYear}`} />}
@@ -32,12 +37,9 @@ export default function HomeScreen() {
                 initialNumToRender={6}
                 maxToRenderPerBatch={6}
                 ListEmptyComponent={
-                    <Box>
-                        <Text>
-                            No races found.
-                            {'\n'}Please check your internet connection or try again later.
-                        </Text>
-                    </Box>
+                    <NoDataFound
+                        entiyName='races'
+                    />
                 }
             />
         </Layout>
