@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import Leaderboard from '@/components/session/Leaderboard';
 import Radios from '@/components/session/Radios';
+import Button from '@/components/ui/Button';
 
 const SessionScreen = () => {
     const { session_key } = useLocalSearchParams<{ session_key: string }>();
@@ -18,18 +19,18 @@ const SessionScreen = () => {
             <Header title="Session" backButton />
 
             <View style={styles.tabContainer}>
-                <TouchableOpacity
-                    style={[styles.tabButton, activeSection === 'classement' && styles.activeTabButton]}
+                <Button
+                    variant={activeSection === 'classement' ? 'active' : 'inactive'}
                     onPress={() => setActiveSection('classement')}
                 >
-                    <Text style={[styles.tabText, activeSection === 'classement' && styles.activeTabText]}>Classement</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[styles.tabButton, activeSection === 'radio' && styles.activeTabButton]}
+                    Classement
+                </Button>
+                <Button
+                    variant={activeSection === 'radio' ? 'active' : 'inactive'}
                     onPress={() => setActiveSection('radio')}
                 >
-                    <Text style={[styles.tabText, activeSection === 'radio' && styles.activeTabText]}>Radio</Text>
-                </TouchableOpacity>
+                    Radios
+                </Button>
             </View>
 
             <View style={styles.container}>
@@ -52,31 +53,6 @@ const styles = StyleSheet.create({
     },
     tabContainer: {
         flexDirection: 'row',
-        borderBottomWidth: 1,
-        borderBottomColor: '#ddd',
+        marginBottom: 5,
     },
-    tabButton: {
-        flex: 1,
-        paddingVertical: 12,
-        alignItems: 'center',
-    },
-    activeTabButton: {
-        borderBottomWidth: 2,
-        borderBottomColor: '#ee0000',
-    },
-    tabText: {
-        fontSize: 16,
-        color: '#333',
-    },
-    activeTabText: {
-        fontWeight: 'bold',
-        color: '#ee0000',
-    },
-    noDataContainer: {
-        padding: 20,
-        alignItems: 'center',
-    },
-    noDataText: {
-        color: '#777',
-    }
 });
