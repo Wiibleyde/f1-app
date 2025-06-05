@@ -3,7 +3,7 @@ import Animated, { useSharedValue, useAnimatedStyle, withTiming, withRepeat } fr
 import { useEffect } from "react";
 
 export function Skeleton({ width = '100%', height = 20, borderRadius = 4 }: { width?: number | `${number}%`; height?: number; borderRadius?: number }) {
-    const opacity = useSharedValue(0.6);
+    const opacity = useSharedValue(0.4);
 
     useEffect(() => {
         opacity.value = withRepeat(
@@ -18,7 +18,9 @@ export function Skeleton({ width = '100%', height = 20, borderRadius = 4 }: { wi
     }));
 
     return (
-        <Animated.View style={[styles.skeleton, { width, height, borderRadius }, animatedStyle]} />
+        <Animated.View style={[styles.skeleton, { width, height, borderRadius }, animatedStyle]}>
+
+        </Animated.View>
     );
 }
 
