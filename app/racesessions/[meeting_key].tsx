@@ -13,13 +13,16 @@ const MeetingScreen = () => {
     return (
         <Layout>
             <Stack.Screen options={{ headerShown: false }} />
-            <Header title="Sessions" backButton />
             <FlatList
                 data={data}
                 renderItem={({ item }) => <RenderSession item={item} />}
                 contentContainerStyle={styles.listContainer}
                 showsVerticalScrollIndicator={false}
                 refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={'#ee0000'} />}
+                ListHeaderComponent={<Header title="Sessions" backButton />}
+                windowSize={1}
+                initialNumToRender={5}
+                maxToRenderPerBatch={5}
             />
         </Layout>
     );

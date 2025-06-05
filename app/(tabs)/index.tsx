@@ -11,19 +11,26 @@ export default function HomeScreen() {
 
     return (
         <Layout>
-            <Header title={`Races ${currentYear}`} />
 
             {isLoading ? (
                 <ActivityIndicator size="large" color="#ee0000" />
             ) : (
                 <FlatList
                     refreshControl={
-                        <RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={'#ee0000'} />
+                        <RefreshControl
+                            refreshing={isRefetching}
+                            onRefresh={refetch}
+                            tintColor={'#ee0000'}
+                        />
                     }
                     data={data}
                     renderItem={({ item }) => <RenderRace item={item} index={item.meeting_key} />}
                     contentContainerStyle={styles.listContainer}
                     showsVerticalScrollIndicator={false}
+                    ListHeaderComponent={<Header title={`Races ${currentYear}`} />}
+                    windowSize={1}
+                    initialNumToRender={6}
+                    maxToRenderPerBatch={6}
                 />
             )}
         </Layout>

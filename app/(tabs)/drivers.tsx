@@ -10,7 +10,7 @@ export default function HomeScreen() {
 
     return (
         <Box style={styles.container}>
-            <Header title="F1 Drivers" backButton={false} />
+            
 
             {isLoading ? (
                 <ActivityIndicator size="large" color="#ee0000" />
@@ -24,6 +24,10 @@ export default function HomeScreen() {
                     keyExtractor={(item) => item.broadcast_name}
                     contentContainerStyle={styles.listContainer}
                     showsVerticalScrollIndicator={false}
+                    ListHeaderComponent={<Header title="F1 Drivers" backButton={false} />}
+                    windowSize={1}
+                    initialNumToRender={8}
+                    maxToRenderPerBatch={8}
                 />
             )}
         </Box>

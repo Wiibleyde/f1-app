@@ -44,6 +44,9 @@ const SessionScreen = () => {
                             tintColor={'#ee0000'}
                         />
                     }
+                    windowSize={1}
+                    initialNumToRender={8}
+                    maxToRenderPerBatch={8}
                 />
             );
         } else {
@@ -69,6 +72,9 @@ const SessionScreen = () => {
                                 tintColor={'#ee0000'}
                             />
                         }
+                        windowSize={1}
+                        initialNumToRender={5}
+                        maxToRenderPerBatch={5}
                     />
                 );
             }
@@ -87,14 +93,14 @@ const SessionScreen = () => {
             <Header title="Session" backButton />
 
             <View style={styles.tabContainer}>
-                <TouchableOpacity 
-                    style={[styles.tabButton, activeSection === 'classement' && styles.activeTabButton]} 
+                <TouchableOpacity
+                    style={[styles.tabButton, activeSection === 'classement' && styles.activeTabButton]}
                     onPress={() => setActiveSection('classement')}
                 >
                     <Text style={[styles.tabText, activeSection === 'classement' && styles.activeTabText]}>Classement</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                    style={[styles.tabButton, activeSection === 'radio' && styles.activeTabButton]} 
+                <TouchableOpacity
+                    style={[styles.tabButton, activeSection === 'radio' && styles.activeTabButton]}
                     onPress={() => setActiveSection('radio')}
                 >
                     <Text style={[styles.tabText, activeSection === 'radio' && styles.activeTabText]}>Radio</Text>
