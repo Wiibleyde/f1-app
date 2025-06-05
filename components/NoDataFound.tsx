@@ -3,16 +3,16 @@ import Text from '@/theme/Text';
 import React from 'react'
 
 interface NoDataFoundProps {
-    entiyName?: string;
+    entityName?: string;
 }
 
 const NoDataFound = ({
-    entiyName
+    entityName
 }: NoDataFoundProps) => {
     return (
         <Box >
             <Text variant='text' style={{ color: '#FFFFFF' }}>
-                No {entiyName} found.
+                No {entityName} found.
                 {'\n'}Please check your internet connection or try again later.
             </Text>
         </Box>

@@ -20,7 +20,7 @@ const Radios = ({
         if (isRadioLoading) {
             return <RadioSkeleton />;
         } else {
-            return <NoDataFound entiyName='radio' />;
+            return <NoDataFound entityName='radio' />;
         }
     }
 

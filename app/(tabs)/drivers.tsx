@@ -14,7 +14,7 @@ export default function HomeScreen() {
         if (isLoading) {
             return <DriverSkeleton />;
         } else {
-            return <NoDataFound entiyName='drivers' />;
+            return <NoDataFound entityName='drivers' />;
         }
     };
 

@@ -26,7 +26,7 @@ const Leaderboard = ({
         if (isDriverLoading) {
             return <DriverSkeleton />;
         } else {
-            return <NoDataFound entiyName='leaderboard' />;
+            return <NoDataFound entityName='leaderboard' />;
         }
     }
 

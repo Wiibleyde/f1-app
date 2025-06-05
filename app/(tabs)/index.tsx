@@ -16,7 +16,7 @@ export default function HomeScreen() {
             return <RaceSkeleton />;
         } else {
             return (
-                <NoDataFound entiyName="races" />
+                <NoDataFound entityName="races" />
             );
         }
     }

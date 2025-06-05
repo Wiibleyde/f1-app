@@ -17,7 +17,7 @@ const MeetingScreen = () => {
             return <SessionSkeleton />;
         } else {
             return (
-                <NoDataFound entiyName='sessions' />
+                <NoDataFound entityName='sessions' />
             );
         }
     };
