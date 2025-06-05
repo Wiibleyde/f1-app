@@ -4,9 +4,18 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Slider from '@react-native-community/slider';
 import { Audio } from 'expo-av';
 import { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, ViewToken } from 'react-native';
+import Animated, { SharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
-export function RadioPlayer({ radioData }: { radioData: RadioData }) {
+interface RadioPlayerProps {
+    radioData: RadioData;
+    viewableItems: SharedValue<ViewToken[]>;
+}
+
+export function RadioPlayer({
+    radioData,
+    viewableItems
+}: RadioPlayerProps) {
     const audioSource = radioData.recording_url;
     const [sound, setSound] = useState<Audio.Sound | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -122,8 +131,24 @@ export function RadioPlayer({ radioData }: { radioData: RadioData }) {
         }
     };
 
+    const rStyle = useAnimatedStyle(() => {
+            const isViewable = Boolean(
+                viewableItems.value
+                    .filter((item) => item.isViewable)
+                    .find((viewableItem) => viewableItem.item.recording_url === radioData.recording_url));
+    
+            return {
+                opacity: withTiming(isViewable ? 1 : 0),
+                transform: [
+                    {
+                        scale: withTiming(isViewable ? 1 : 0.6),
+                    },
+                ],
+            }
+        }, [])
+
     return (
-        <View style={styles.radioItem}>
+        <Animated.View style={[rStyle, styles.radioItem]}>
             <Text style={styles.title}>
                 {currentDriver ? `${currentDriver.first_name} ${currentDriver.last_name}` : 'Extrait radio'}
             </Text>
@@ -164,7 +189,7 @@ export function RadioPlayer({ radioData }: { radioData: RadioData }) {
                     <MaterialCommunityIcons name="stop" size={22} color="#e10600" />
                 </TouchableOpacity>
             </View>
-        </View>
+        </Animated.View>
     );
 }
 

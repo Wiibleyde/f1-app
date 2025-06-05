@@ -1,15 +1,17 @@
 import { Driver, useFetchDrivers, useFetchPositionBySessionKey } from '@/query/hook';
 import React from 'react';
-import { FlatList, RefreshControl, StyleSheet } from 'react-native';
+import { FlatList, RefreshControl, StyleSheet, ViewToken } from 'react-native';
 import { DriverItem } from '../drivers/DriverItem';
 import NoDataFound from '../NoDataFound';
 import { DriverSkeleton } from '../skeleton/DriverSkeleton';
+import { useSharedValue } from 'react-native-reanimated';
 
 interface Props {
     session_key: string;
 }
 
 const Leaderboard = ({ session_key }: Props) => {
+    const viewableItems = useSharedValue<ViewToken[]>([]);
     const { data: positions, isRefetching, refetch } = useFetchPositionBySessionKey(session_key);
     const { data: drivers, isLoading: isDriverLoading } = useFetchDrivers();
 
@@ -29,15 +31,12 @@ const Leaderboard = ({ session_key }: Props) => {
     return (
         <FlatList
             data={classement}
-            renderItem={({ item, index }) => <DriverItem item={item} position={index + 1} />}
             contentContainerStyle={styles.listContainer}
             showsVerticalScrollIndicator={false}
             refreshControl={
                 <RefreshControl
                     refreshing={isRefetching}
-                    onRefresh={() => {
-                        refetch();
-                    }}
+                    onRefresh={refetch}
                     tintColor={'#ee0000'}
                 />
             }
@@ -45,6 +44,10 @@ const Leaderboard = ({ session_key }: Props) => {
             initialNumToRender={8}
             maxToRenderPerBatch={8}
             ListEmptyComponent={renderEmptyLeaderboard}
+            onViewableItemsChanged={({ viewableItems: vItems }) => {
+                viewableItems.value = vItems;
+            }}
+            renderItem={({ item, index }) => <DriverItem item={item} position={index + 1} viewableItems={viewableItems} />}
         />
     );
 };
