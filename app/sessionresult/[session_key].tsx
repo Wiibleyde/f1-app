@@ -8,10 +8,11 @@ import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, View, Text, To
 import { RadioPlayer } from '@/components/radio/RadioPlayer';
 import NoDataFound from '@/components/NoDataFound';
 import { DriverSkeleton } from '@/components/skeleton/DriverSkeleton';
+import { RadioSkeleton } from '@/components/skeleton/RadioSkeleton';
 
 const SessionScreen = () => {
     const { session_key } = useLocalSearchParams<{ session_key: string }>();
-    const { data: positions, isLoading, isRefetching, refetch } = useFetchPositionBySessionKey(session_key);
+    const { data: positions, isRefetching, refetch } = useFetchPositionBySessionKey(session_key);
     const { data: drivers, isLoading: isDriverLoading } = useFetchDrivers();
     const { data: radioData, isLoading: isRadioLoading, refetch: refetchRadio } = useFetchRadioBySessionKey(session_key);
 
@@ -23,7 +24,7 @@ const SessionScreen = () => {
     });
 
     const renderEmptyLeaderboard = () => {
-        if (!isLoading) {
+        if (isDriverLoading) {
             return <DriverSkeleton />;
         } else {
             return <NoDataFound entiyName='leaderboard' />;
@@ -31,10 +32,10 @@ const SessionScreen = () => {
     }
 
     const renderEmptyRadio = () => {
-        if (!isRadioLoading) {
-            return <NoDataFound entiyName='radio' />;
+        if (isRadioLoading) {
+            return <RadioSkeleton />;
         } else {
-            return <ActivityIndicator size="large" color="#ee0000" />;
+            return <NoDataFound entiyName='radio' />;
         }
     }
 
