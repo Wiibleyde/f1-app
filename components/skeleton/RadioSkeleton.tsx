@@ -36,19 +36,6 @@ export function RadioSkeleton() {
 }
 
 const styles = StyleSheet.create({
-    pilotItem: {
-        backgroundColor: '#1a1918',
-        borderRadius: 10,
-        marginVertical: 4,
-        overflow: 'hidden',
-        borderLeftWidth: 4,
-        borderLeftColor: '#232323',
-    },
-    pilotContent: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: 10,
-    },
     skeleton: {
         backgroundColor: '#232323',
         borderRadius: 4,
