@@ -40,7 +40,7 @@ const Radios = ({ session_key }: Props) => {
                     tintColor={'#ee0000'}
                 />
             }
-            windowSize={1}
+            windowSize={5}
             initialNumToRender={5}
             maxToRenderPerBatch={5}
             ListEmptyComponent={renderEmptyRadio}

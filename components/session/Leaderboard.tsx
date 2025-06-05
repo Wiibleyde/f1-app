@@ -40,7 +40,7 @@ const Leaderboard = ({ session_key }: Props) => {
                     tintColor={'#ee0000'}
                 />
             }
-            windowSize={1}
+            windowSize={8}
             initialNumToRender={8}
             maxToRenderPerBatch={8}
             ListEmptyComponent={renderEmptyLeaderboard}
