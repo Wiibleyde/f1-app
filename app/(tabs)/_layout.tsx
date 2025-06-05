@@ -61,7 +61,7 @@ export default function TabLayout() {
 
                     if (route.name === 'index') {
                         iconName = 'flag-checkered';
-                    } else if (route.name === 'pilots') {
+                    } else if (route.name === 'drivers') {
                         iconName = 'racing-helmet';
                     } else if (route.name === 'settings') {
                         iconName = 'cog';
