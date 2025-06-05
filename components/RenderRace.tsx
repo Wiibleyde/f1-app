@@ -1,11 +1,11 @@
 import { Race } from '@/query/hook';
 import Box from '@/theme/Box';
 import Text from '@/theme/Text';
-import { router } from 'expo-router';
-import React, { memo } from 'react';
-import { TouchableOpacity, StyleSheet, ViewToken } from 'react-native';
 import { getDay, getLastDay, getMonthThreeLetters } from '@/utils/date';
 import * as Haptics from 'expo-haptics';
+import { router } from 'expo-router';
+import React, { memo } from 'react';
+import { StyleSheet, TouchableOpacity, ViewToken } from 'react-native';
 import Animated, { SharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 interface RenderRaceProps {
@@ -24,6 +24,8 @@ const RenderRace = memo(({
         router.push({ pathname: '/racesessions/[meeting_key]', params: { meeting_key: item.meeting_key } });
     };
 
+    // Impossible de déplacer ça dans un hook, le fait de filtré fait planter l'application
+    // meme si je dois le filter de manière explicit
     const rStyle = useAnimatedStyle(() => {
         const isViewable = Boolean(
             viewableItems.value

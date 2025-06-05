@@ -5,8 +5,7 @@ import Header from '@/components/ui/Header';
 import Layout from '@/components/ui/Layout';
 import useFlatList from '@/hooks/useFlatList';
 import { useFetchRacesFromYear } from '@/query/hook';
-import { FlatList, RefreshControl, StyleSheet, ViewToken } from 'react-native';
-import { useSharedValue } from 'react-native-reanimated';
+import { FlatList, RefreshControl, StyleSheet } from 'react-native';
 
 export default function HomeScreen() {
     const currentYear = new Date().getFullYear();
