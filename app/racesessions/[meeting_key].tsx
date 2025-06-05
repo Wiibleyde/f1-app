@@ -1,4 +1,5 @@
 import RenderSession from '@/components/RenderSession';
+import SessionSkeleton from '@/components/skeleton/SessionSkeleton';
 import Header from '@/components/ui/Header';
 import Layout from '@/components/ui/Layout';
 import { useFetchRaceSessions } from '@/query/hook';
