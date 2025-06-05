@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         color: '#999999',
     },
     sessionInfosContainer: {
-        width: '15%',
+        width: '18%',
         height: '100%',
         display: 'flex',
         justifyContent: 'center',
