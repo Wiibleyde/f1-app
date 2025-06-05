@@ -34,7 +34,7 @@ export default function HomeScreen() {
                 ListEmptyComponent={
                     <Box>
                         <Text>
-                            No drivers found.
+                            No races found.
                             {'\n'}Please check your internet connection or try again later.
                         </Text>
                     </Box>
