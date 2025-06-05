@@ -65,6 +65,8 @@ export default function TabLayout() {
                         iconName = 'racing-helmet';
                     } else if (route.name === 'settings') {
                         iconName = 'cog';
+                    } else if (route.name === 'showcar') {
+                        iconName = 'car-convertible';
                     }
 
                     return (
@@ -99,6 +101,12 @@ export default function TabLayout() {
                 name="drivers"
                 options={{
                     title: 'Drivers',
+                }}
+            />
+            <Tabs.Screen
+                name="showcar"
+                options={{
+                    title: 'Show Car',
                 }}
             />
             <Tabs.Screen
