@@ -35,7 +35,7 @@ export default function TabLayout() {
                     backgroundColor: '#000',
                     height: 80,
                     paddingBottom: 10,
-                    borderTopWidth: 0, // Supprimé la bordure rouge du haut
+                    borderTopWidth: 0,
                     shadowColor: '#000',
                     shadowOffset: { width: 0, height: -2 },
                     shadowOpacity: 0.3,
