@@ -5,7 +5,6 @@ import Header from '@/components/ui/Header';
 import Layout from '@/components/ui/Layout';
 import NoDataFound from '@/components/ui/NoDataFound';
 import { useFetchDriverByBroadcasterName, useFetchSessionByKey } from '@/query/hook';
-import Text from '@/theme/Text';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
