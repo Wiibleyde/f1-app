@@ -236,3 +236,16 @@ export const useFetchDriverByNumber = (driver_number: number, session_key?: numb
         enabled: Boolean(driver_number),
     });
 };
+
+const fetchDriversBySessionKey = async (session_key: string): Promise<Driver[]> => {
+    const response = await fetch(`https://api.openf1.org/v1/drivers?session_key=${session_key}`);
+    const drivers: Driver[] = await response.json();
+    return drivers;
+};
+
+export const useFetchDriversBySessionKey = (session_key: string) => {
+    return useQuery({
+        queryKey: ['drivers_by_session_key', session_key],
+        queryFn: () => fetchDriversBySessionKey(session_key)
+    });
+};

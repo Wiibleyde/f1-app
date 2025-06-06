@@ -1,5 +1,5 @@
 import useFlatList from '@/hooks/useFlatList';
-import { Driver, useFetchDrivers, useFetchPositionBySessionKey } from '@/query/hook';
+import { Driver, useFetchDriversBySessionKey, useFetchPositionBySessionKey } from '@/query/hook';
 import React from 'react';
 import { FlatList, RefreshControl, StyleSheet } from 'react-native';
 import DriverItem from '../renders/RenderDriver';
@@ -12,7 +12,7 @@ interface Props {
 
 const Leaderboard = ({ session_key }: Props) => {
     const { data: positions, isRefetching, refetch } = useFetchPositionBySessionKey(session_key);
-    const { data: drivers, isLoading: isDriverLoading } = useFetchDrivers();
+    const { data: drivers, isLoading: isDriverLoading } = useFetchDriversBySessionKey(session_key);
     const { onViewableItemsChanged, viewableItems } = useFlatList();
 
     const classement: Driver[] = (positions ?? []).map((pos) => {
