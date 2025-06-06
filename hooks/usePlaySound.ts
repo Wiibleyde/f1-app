@@ -93,7 +93,7 @@ const usePlaySound = ({
         }
     };
 
-    return { sound, isPlaying, position, duration, handlePlay, handlePause, handleStop, handleSeek }
+    return { isPlaying, position, duration, handlePlay, handlePause, handleStop, handleSeek }
 }
 
 export default usePlaySound

@@ -21,7 +21,7 @@ const RadioPlayer = memo(({
 
     const { data: drivers } = useFetchDrivers();
 
-    const { duration, handlePause, handlePlay, handleSeek, handleStop, isPlaying, position, sound } = usePlaySound({ recording_url: radioData.recording_url });
+    const { duration, handlePause, handlePlay, handleSeek, handleStop, isPlaying, position } = usePlaySound({ recording_url: radioData.recording_url });
 
     useEffect(() => {
         if (drivers) {
@@ -30,7 +30,6 @@ const RadioPlayer = memo(({
         }
     }, [drivers, radioData.driver_number]);
 
-    // Ajout des shared values pour position et duration
     const positionSV = useSharedValue(position);
     const durationSV = useSharedValue(duration);
 
@@ -66,13 +65,10 @@ const RadioPlayer = memo(({
     }, [])
 
     const [sliderValue, setSliderValue] = useState(position);
-    const [isSliding, setIsSliding] = useState(false);
 
     useEffect(() => {
-        if (!isSliding) {
-            setSliderValue(position);
-        }
-    }, [position, isSliding]);
+        setSliderValue(position);
+    }, [position]);
 
     return (
         <Animated.View style={[rStyle, styles.radioItem]}>
@@ -90,11 +86,9 @@ const RadioPlayer = memo(({
                 maximumTrackTintColor="#555"
                 thumbTintColor="#e10600"
                 onValueChange={value => {
-                    setIsSliding(true);
                     setSliderValue(value);
                 }}
                 onSlidingComplete={value => {
-                    setIsSliding(false);
                     handleSeek(value);
                 }}
                 disabled={duration <= 1}
