@@ -1,10 +1,11 @@
 import usePlaySound from '@/hooks/usePlaySound';
 import useSlider from '@/hooks/useSlider';
-import { RadioData, useFetchDriverByNumber } from '@/query/hook';
+import { useFetchDriverByNumber } from '@/query/hook';
 import Text from '@/theme/Text';
+import { RadioData } from '@/types';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Slider from '@react-native-community/slider';
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 import { StyleSheet, TouchableOpacity, View, ViewToken } from 'react-native';
 import Animated, { SharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 

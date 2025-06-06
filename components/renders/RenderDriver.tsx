@@ -1,6 +1,6 @@
-import { Driver } from '@/query/hook';
 import Box from '@/theme/Box';
 import Text from '@/theme/Text';
+import { Driver } from '@/types';
 import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';

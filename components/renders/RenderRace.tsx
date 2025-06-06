@@ -1,6 +1,6 @@
-import { Race } from '@/query/hook';
 import Box from '@/theme/Box';
 import Text from '@/theme/Text';
+import { Race } from '@/types';
 import { getDay, getLastDay, getMonthThreeLetters } from '@/utils/date';
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
