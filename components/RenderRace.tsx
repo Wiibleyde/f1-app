@@ -14,11 +14,7 @@ interface RenderRaceProps {
     viewableItems: SharedValue<ViewToken[]>;
 }
 
-const RenderRace = memo(({
-    viewableItems,
-    item,
-    index
-}: RenderRaceProps) => {
+const RenderRace = memo(({ viewableItems, item, index }: RenderRaceProps) => {
     const handlePress = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         router.push({ pathname: '/racesessions/[meeting_key]', params: { meeting_key: item.meeting_key } });
@@ -30,7 +26,8 @@ const RenderRace = memo(({
         const isViewable = Boolean(
             viewableItems.value
                 .filter((item) => item.isViewable)
-                .find((viewableItem) => viewableItem.item.meeting_key === item.meeting_key));
+                .find((viewableItem) => viewableItem.item.meeting_key === item.meeting_key)
+        );
 
         return {
             opacity: withTiming(isViewable ? 1 : 0),
@@ -39,12 +36,11 @@ const RenderRace = memo(({
                     scale: withTiming(isViewable ? 1 : 0.6),
                 },
             ],
-        }
-    }, [])
+        };
+    }, []);
 
     return (
         <Animated.View style={rStyle}>
-
             <TouchableOpacity style={styles.container} onPress={handlePress}>
                 <Box style={styles.raceInfosContainer}>
                     <Box style={styles.raceInfosDateContainer}>
@@ -82,6 +78,8 @@ const RenderRace = memo(({
         </Animated.View>
     );
 });
+
+RenderRace.displayName = 'RenderRace';
 
 export default RenderRace;
 

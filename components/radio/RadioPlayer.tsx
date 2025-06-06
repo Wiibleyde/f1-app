@@ -12,16 +12,14 @@ interface RadioPlayerProps {
     viewableItems: SharedValue<ViewToken[]>;
 }
 
-const RadioPlayer = memo(({
-    radioData,
-    viewableItems
-}: RadioPlayerProps) => {
-
+const RadioPlayer = memo(({ radioData, viewableItems }: RadioPlayerProps) => {
     const [currentDriver, setCurrentDriver] = useState<Driver | null>(null);
 
     const { data: drivers } = useFetchDrivers();
 
-    const { duration, handlePause, handlePlay, handleSeek, handleStop, isPlaying, position } = usePlaySound({ recording_url: radioData.recording_url });
+    const { duration, handlePause, handlePlay, handleSeek, handleStop, isPlaying, position } = usePlaySound({
+        recording_url: radioData.recording_url,
+    });
 
     useEffect(() => {
         if (drivers) {
@@ -52,7 +50,8 @@ const RadioPlayer = memo(({
         const isViewable = Boolean(
             viewableItems.value
                 .filter((item) => item.isViewable)
-                .find((viewableItem) => viewableItem.item.recording_url === radioData.recording_url));
+                .find((viewableItem) => viewableItem.item.recording_url === radioData.recording_url)
+        );
 
         return {
             opacity: withTiming(isViewable ? 1 : 0),
@@ -61,8 +60,8 @@ const RadioPlayer = memo(({
                     scale: withTiming(isViewable ? 1 : 0.6),
                 },
             ],
-        }
-    }, [])
+        };
+    }, []);
 
     const [sliderValue, setSliderValue] = useState(position);
 
@@ -85,18 +84,16 @@ const RadioPlayer = memo(({
                 minimumTrackTintColor="#e10600"
                 maximumTrackTintColor="#555"
                 thumbTintColor="#e10600"
-                onValueChange={value => {
+                onValueChange={(value) => {
                     setSliderValue(value);
                 }}
-                onSlidingComplete={value => {
+                onSlidingComplete={(value) => {
                     handleSeek(value);
                 }}
                 disabled={duration <= 1}
             />
             <View style={styles.timeRow}>
-                <Text style={styles.timeText}>
-                    {(duration > 0 ? (sliderValue / duration) * 100 : 0).toFixed(1)}%
-                </Text>
+                <Text style={styles.timeText}>{(duration > 0 ? (sliderValue / duration) * 100 : 0).toFixed(1)}%</Text>
                 <Text style={styles.timeText}>
                     {(sliderValue / 1000).toFixed(2)}s / {(duration / 1000).toFixed(2)}s
                 </Text>
@@ -124,7 +121,7 @@ const RadioPlayer = memo(({
             </View>
         </Animated.View>
     );
-})
+});
 
 RadioPlayer.displayName = 'RadioPlayer';
 

@@ -16,7 +16,7 @@ const RaceSkeleton = () => {
             -1, // boucle infinie
             true // effet aller-retour
         );
-    }, []);
+    }, [opacity]);
 
     const animatedStyle = useAnimatedStyle(() => ({
         opacity: opacity.value,

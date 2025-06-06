@@ -5,8 +5,7 @@ import Header from '@/components/ui/Header';
 import useFlatList from '@/hooks/useFlatList';
 import { useFetchDrivers } from '@/query/hook';
 import Box from '@/theme/Box';
-import { FlatList, RefreshControl, StyleSheet, ViewToken } from 'react-native';
-import { useSharedValue } from 'react-native-reanimated';
+import { FlatList, RefreshControl, StyleSheet } from 'react-native';
 
 export default function HomeScreen() {
     const { data, isLoading, refetch, isRefetching } = useFetchDrivers();

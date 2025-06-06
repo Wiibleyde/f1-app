@@ -14,11 +14,7 @@ interface DriverItemProps {
     position?: number; // Optionnel pour la position du pilote
 }
 
-const DriverItem = memo(({
-    item,
-    position,
-    viewableItems
-}: DriverItemProps) => {
+const DriverItem = memo(({ item, position, viewableItems }: DriverItemProps) => {
     const handlePress = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         router.push({ pathname: '/driver/[broadcaster_name]', params: { broadcaster_name: item.broadcast_name } });
@@ -34,12 +30,12 @@ const DriverItem = memo(({
         positionColor = '#CD7F32'; // bronze
     else if (position && position < 11) positionColor = '#FFFFFF'; // blanc pour les autres positions
 
-
     const rStyle = useAnimatedStyle(() => {
         const isViewable = Boolean(
             viewableItems.value
                 .filter((item) => item.isViewable)
-                .find((viewableItem) => viewableItem.item.driver_number === item.driver_number));
+                .find((viewableItem) => viewableItem.item.driver_number === item.driver_number)
+        );
 
         return {
             opacity: withTiming(isViewable ? 1 : 0),
@@ -48,12 +44,15 @@ const DriverItem = memo(({
                     scale: withTiming(isViewable ? 1 : 0.6),
                 },
             ],
-        }
-    }, [])
+        };
+    }, []);
 
     return (
         <Animated.View style={rStyle}>
-            <TouchableOpacity style={[styles.pilotItem, { borderLeftColor: `#${item.team_colour}` }]} onPress={handlePress}>
+            <TouchableOpacity
+                style={[styles.pilotItem, { borderLeftColor: `#${item.team_colour}` }]}
+                onPress={handlePress}
+            >
                 <Box style={styles.pilotContent}>
                     <Box style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
                         <Box style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -79,7 +78,9 @@ const DriverItem = memo(({
             </TouchableOpacity>
         </Animated.View>
     );
-})
+});
+
+DriverItem.displayName = 'DriverItem';
 
 const styles = StyleSheet.create({
     pilotItem: {

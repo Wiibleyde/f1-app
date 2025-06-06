@@ -12,7 +12,7 @@ export default function HomeScreen() {
 
     const { data, isLoading, refetch, isRefetching } = useFetchRacesFromYear(currentYear);
 
-    const {onViewableItemsChanged, viewableItems} = useFlatList();
+    const { onViewableItemsChanged, viewableItems } = useFlatList();
 
     const renderEmptyRace = () => {
         if (isLoading) {
@@ -22,7 +22,6 @@ export default function HomeScreen() {
         }
     };
 
-    
     return (
         <Layout>
             <FlatList
@@ -36,7 +35,9 @@ export default function HomeScreen() {
                 maxToRenderPerBatch={6}
                 ListEmptyComponent={renderEmptyRace}
                 onViewableItemsChanged={onViewableItemsChanged}
-                renderItem={({ item }) => <RenderRace item={item} index={item.meeting_key} viewableItems={viewableItems} />}
+                renderItem={({ item }) => (
+                    <RenderRace item={item} index={item.meeting_key} viewableItems={viewableItems} />
+                )}
             />
         </Layout>
     );
