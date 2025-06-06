@@ -1,10 +1,10 @@
+import useFlatList from '@/hooks/useFlatList';
 import { Driver, useFetchDrivers, useFetchPositionBySessionKey } from '@/query/hook';
 import React from 'react';
 import { FlatList, RefreshControl, StyleSheet } from 'react-native';
-import NoDataFound from '../NoDataFound';
+import DriverItem from '../renders/RenderDriver';
 import { DriverSkeleton } from '../skeleton/DriverSkeleton';
-import DriverItem from '../drivers/DriverItem';
-import useFlatList from '@/hooks/useFlatList';
+import NoDataFound from '../ui/NoDataFound';
 
 interface Props {
     session_key: string;

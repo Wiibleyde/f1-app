@@ -1,7 +1,7 @@
-import DriverItem from '@/components/drivers/DriverItem';
-import NoDataFound from '@/components/NoDataFound';
+import DriverItem from '@/components/renders/RenderDriver';
 import { DriverSkeleton } from '@/components/skeleton/DriverSkeleton';
 import Header from '@/components/ui/Header';
+import NoDataFound from '@/components/ui/NoDataFound';
 import useFlatList from '@/hooks/useFlatList';
 import { useFetchDrivers } from '@/query/hook';
 import Box from '@/theme/Box';

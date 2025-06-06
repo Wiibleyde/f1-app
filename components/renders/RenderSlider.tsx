@@ -8,7 +8,9 @@ interface RenderSlideProps {
     };
 }
 
-const RenderSlide = ({ item }: RenderSlideProps) => {
+const RenderSlide = ({
+    item
+}: RenderSlideProps) => {
     return (
         <View style={styles.slideContainer}>
             <Text variant="title" color="text" style={styles.slideTitle}>

@@ -2,8 +2,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
-
-import { HapticTab } from '@/components/HapticTab';
 import { useStorage } from '@/hooks/useStorage';
 import OnBoardingScreen from '../onboarding';
 
@@ -27,7 +25,6 @@ export default function TabLayout() {
                 tabBarActiveTintColor: F1_RED,
                 tabBarInactiveTintColor: '#888888',
                 headerShown: false,
-                tabBarButton: HapticTab,
                 tabBarStyle: {
                     ...Platform.select({
                         ios: {
@@ -104,12 +101,6 @@ export default function TabLayout() {
                     title: 'Drivers',
                 }}
             />
-            {/* <Tabs.Screen
-                name="showcar"
-                options={{
-                    title: 'Show Car',
-                }}
-            /> */}
             <Tabs.Screen
                 name="settings"
                 options={{

@@ -8,13 +8,17 @@ import { memo } from 'react';
 import { StyleSheet, TouchableOpacity, ViewToken } from 'react-native';
 import Animated, { SharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
-interface DriverItemProps {
+interface RenderDriverProps {
     item: Driver;
     viewableItems: SharedValue<ViewToken[]>;
-    position?: number; // Optionnel pour la position du pilote
+    position?: number;
 }
 
-const DriverItem = memo(({ item, position, viewableItems }: DriverItemProps) => {
+const RenderDriver = memo(({
+    item,
+    position,
+    viewableItems
+}: RenderDriverProps) => {
     const handlePress = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         router.push({ pathname: '/driver/[broadcaster_name]', params: { broadcaster_name: item.broadcast_name } });
@@ -80,7 +84,7 @@ const DriverItem = memo(({ item, position, viewableItems }: DriverItemProps) => 
     );
 });
 
-DriverItem.displayName = 'DriverItem';
+RenderDriver.displayName = 'RenderDriver';
 
 const styles = StyleSheet.create({
     pilotItem: {
@@ -108,4 +112,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default DriverItem;
+export default RenderDriver;

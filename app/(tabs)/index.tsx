@@ -1,8 +1,8 @@
-import NoDataFound from '@/components/NoDataFound';
-import RenderRace from '@/components/RenderRace';
+import RenderRace from '@/components/renders/RenderRace';
 import RaceSkeleton from '@/components/skeleton/RaceSkeleton';
 import Header from '@/components/ui/Header';
 import Layout from '@/components/ui/Layout';
+import NoDataFound from '@/components/ui/NoDataFound';
 import useFlatList from '@/hooks/useFlatList';
 import { useFetchRacesFromYear } from '@/query/hook';
 import { FlatList, RefreshControl, StyleSheet } from 'react-native';

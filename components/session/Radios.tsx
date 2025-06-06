@@ -1,10 +1,10 @@
+import useFlatList from '@/hooks/useFlatList';
 import { useFetchRadioBySessionKey } from '@/query/hook';
 import React from 'react';
 import { FlatList, RefreshControl, StyleSheet } from 'react-native';
-import NoDataFound from '../NoDataFound';
-import RadioPlayer from '../radio/RadioPlayer';
+import RadioPlayer from '../renders/RenderRadio';
 import { RadioSkeleton } from '../skeleton/RadioSkeleton';
-import useFlatList from '@/hooks/useFlatList';
+import NoDataFound from '../ui/NoDataFound';
 
 interface Props {
     session_key: string;

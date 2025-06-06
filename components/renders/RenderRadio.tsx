@@ -7,12 +7,15 @@ import { StyleSheet, TouchableOpacity, View, ViewToken } from 'react-native';
 import Animated, { SharedValue, useAnimatedStyle, withTiming, useSharedValue } from 'react-native-reanimated';
 import Slider from '@react-native-community/slider';
 
-interface RadioPlayerProps {
+interface RenderRadioProps {
     radioData: RadioData;
     viewableItems: SharedValue<ViewToken[]>;
 }
 
-const RadioPlayer = memo(({ radioData, viewableItems }: RadioPlayerProps) => {
+const RenderRadio = memo(({
+    radioData,
+    viewableItems
+}: RenderRadioProps) => {
     const [currentDriver, setCurrentDriver] = useState<Driver | null>(null);
 
     const { data: drivers } = useFetchDrivers();
@@ -123,9 +126,9 @@ const RadioPlayer = memo(({ radioData, viewableItems }: RadioPlayerProps) => {
     );
 });
 
-RadioPlayer.displayName = 'RadioPlayer';
+RenderRadio.displayName = 'RenderRadio';
 
-export default RadioPlayer;
+export default RenderRadio;
 
 const styles = StyleSheet.create({
     radioItem: {
