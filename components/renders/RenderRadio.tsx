@@ -1,10 +1,10 @@
 import usePlaySound from '@/hooks/usePlaySound';
 import useSlider from '@/hooks/useSlider';
-import { Driver, RadioData, useFetchDrivers } from '@/query/hook';
+import { RadioData, useFetchDriverByNumber } from '@/query/hook';
 import Text from '@/theme/Text';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Slider from '@react-native-community/slider';
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, View, ViewToken } from 'react-native';
 import Animated, { SharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
@@ -17,22 +17,14 @@ const RenderRadio = memo(({
     radioData,
     viewableItems
 }: RenderRadioProps) => {
-    const [currentDriver, setCurrentDriver] = useState<Driver | null>(null);
 
-    const { data: drivers } = useFetchDrivers();
+    const { data: driver } = useFetchDriverByNumber(radioData.driver_number, radioData.session_key);
 
     const { duration, handlePause, handlePlay, handleSeek, handleStop, isPlaying, position } = usePlaySound({
         recording_url: radioData.recording_url,
     });
 
     const { setSliderValue, sliderValue } = useSlider({ position });
-
-    useEffect(() => {
-        if (drivers) {
-            const driver = drivers.find((d) => d.driver_number === radioData.driver_number);
-            setCurrentDriver(driver || null);
-        }
-    }, [drivers, radioData.driver_number]);
 
     const rStyle = useAnimatedStyle(() => {
         const isViewable = Boolean(
@@ -54,7 +46,7 @@ const RenderRadio = memo(({
     return (
         <Animated.View style={[rStyle, styles.radioItem]}>
             <Text style={styles.title}>
-                {currentDriver ? `${currentDriver.first_name} ${currentDriver.last_name}` : 'Extrait radio'}
+                {driver?.first_name ? `${driver.first_name} ${driver.last_name}` : 'Unknown Driver'}
             </Text>
 
             {radioData.date && <Text style={styles.dateText}>{new Date(radioData.date).toLocaleString('fr-FR')}</Text>}

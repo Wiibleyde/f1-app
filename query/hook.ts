@@ -222,3 +222,18 @@ export const useFetchRadioBySessionKey = (session_key: string) => {
         queryFn: () => fetchRadioBySessionKey(session_key),
     });
 };
+
+const fetchDriverByNumber = async (driver_number: number, session_key?: number): Promise<Driver | null> => {
+    console.log('Fetching driver by number:', driver_number, 'Session key:', session_key);
+    const response = await fetch(`https://api.openf1.org/v1/drivers?driver_number=${driver_number}${session_key ? `&session_key=${session_key}` : ''}`);
+    const drivers: Driver[] = await response.json();
+    return drivers.length > 0 ? drivers[0] : null;
+}
+
+export const useFetchDriverByNumber = (driver_number: number, session_key?: number) => {
+    return useQuery({
+        queryKey: ['driver_number', driver_number],
+        queryFn: () => fetchDriverByNumber(driver_number, session_key),
+        enabled: Boolean(driver_number),
+    });
+};
