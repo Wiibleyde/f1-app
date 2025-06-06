@@ -2,13 +2,10 @@ import { Audio } from 'expo-av';
 import { useEffect, useState } from 'react';
 
 interface usePlaySoundProps {
-    recording_url: string
+    recording_url: string;
 }
 
-const usePlaySound = ({
-    recording_url
-}: usePlaySoundProps) => {
-
+const usePlaySound = ({ recording_url }: usePlaySoundProps) => {
     const [sound, setSound] = useState<Audio.Sound | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [position, setPosition] = useState(0);
@@ -20,7 +17,10 @@ const usePlaySound = ({
 
         async function loadSound() {
             if (recording_url) {
-                const { sound: newSound } = await Audio.Sound.createAsync({ uri: recording_url }, { shouldPlay: false });
+                const { sound: newSound } = await Audio.Sound.createAsync(
+                    { uri: recording_url },
+                    { shouldPlay: false }
+                );
                 loadedSound = newSound;
                 // Ajout : met à jour l'intervalle de progression à 50ms
                 await newSound.setProgressUpdateIntervalAsync(50);
@@ -93,7 +93,7 @@ const usePlaySound = ({
         }
     };
 
-    return { sound, isPlaying, position, duration, handlePlay, handlePause, handleStop, handleSeek }
-}
+    return { isPlaying, position, duration, handlePlay, handlePause, handleStop, handleSeek };
+};
 
-export default usePlaySound
+export default usePlaySound;

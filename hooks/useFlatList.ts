@@ -1,9 +1,7 @@
-import { ViewToken } from "react-native";
-import { useSharedValue } from "react-native-reanimated";
-
+import { ViewToken } from 'react-native';
+import { useSharedValue } from 'react-native-reanimated';
 
 const useFlatList = () => {
-
     const viewableItems = useSharedValue<ViewToken[]>([]);
 
     const onViewableItemsChanged = ({ viewableItems: vItems }: { viewableItems: ViewToken[] }) => {
@@ -14,7 +12,6 @@ const useFlatList = () => {
         viewableItems,
         onViewableItemsChanged,
     };
+};
 
-}
-
-export default useFlatList
+export default useFlatList;

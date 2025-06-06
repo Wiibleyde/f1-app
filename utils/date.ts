@@ -1,4 +1,5 @@
-import { RaceSession } from '@/query/hook';
+import { RaceSession } from "@/types";
+
 
 export const getMonthThreeLetters = (date: string) => {
     return new Date(date).toLocaleString('en', { month: 'short' });

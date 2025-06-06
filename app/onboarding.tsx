@@ -5,7 +5,7 @@ import Button from '@/components/ui/Button';
 import { sliderInformations, videoSource } from '@/constants/OnBoarding';
 import Box from '@/theme/Box';
 import { router, Stack } from 'expo-router';
-import RenderSlide from '@/components/RenderSlider';
+import RenderSlide from '@/components/renders/RenderSlider';
 import { useStorage } from '@/hooks/useStorage';
 import Dot from '@/components/onBoarding/Dot';
 import Logo from '@/components/onBoarding/Logo';

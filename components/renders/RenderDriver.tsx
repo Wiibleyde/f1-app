@@ -1,6 +1,6 @@
-import { Driver } from '@/query/hook';
 import Box from '@/theme/Box';
 import Text from '@/theme/Text';
+import { Driver } from '@/types';
 import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
@@ -8,17 +8,17 @@ import { memo } from 'react';
 import { StyleSheet, TouchableOpacity, ViewToken } from 'react-native';
 import Animated, { SharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
-interface DriverItemProps {
+interface RenderDriverProps {
     item: Driver;
     viewableItems: SharedValue<ViewToken[]>;
-    position?: number; // Optionnel pour la position du pilote
+    position?: number;
 }
 
-const DriverItem = memo(({
+const RenderDriver = memo(({
     item,
     position,
     viewableItems
-}: DriverItemProps) => {
+}: RenderDriverProps) => {
     const handlePress = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         router.push({ pathname: '/driver/[broadcaster_name]', params: { broadcaster_name: item.broadcast_name } });
@@ -34,12 +34,12 @@ const DriverItem = memo(({
         positionColor = '#CD7F32'; // bronze
     else if (position && position < 11) positionColor = '#FFFFFF'; // blanc pour les autres positions
 
-
     const rStyle = useAnimatedStyle(() => {
         const isViewable = Boolean(
             viewableItems.value
                 .filter((item) => item.isViewable)
-                .find((viewableItem) => viewableItem.item.driver_number === item.driver_number));
+                .find((viewableItem) => viewableItem.item.driver_number === item.driver_number)
+        );
 
         return {
             opacity: withTiming(isViewable ? 1 : 0),
@@ -48,12 +48,15 @@ const DriverItem = memo(({
                     scale: withTiming(isViewable ? 1 : 0.6),
                 },
             ],
-        }
-    }, [])
+        };
+    }, []);
 
     return (
         <Animated.View style={rStyle}>
-            <TouchableOpacity style={[styles.pilotItem, { borderLeftColor: `#${item.team_colour}` }]} onPress={handlePress}>
+            <TouchableOpacity
+                style={[styles.pilotItem, { borderLeftColor: `#${item.team_colour}` }]}
+                onPress={handlePress}
+            >
                 <Box style={styles.pilotContent}>
                     <Box style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
                         <Box style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -79,7 +82,9 @@ const DriverItem = memo(({
             </TouchableOpacity>
         </Animated.View>
     );
-})
+});
+
+RenderDriver.displayName = 'RenderDriver';
 
 const styles = StyleSheet.create({
     pilotItem: {
@@ -107,4 +112,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default DriverItem;
+export default RenderDriver;

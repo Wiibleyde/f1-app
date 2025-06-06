@@ -1,11 +1,11 @@
-import { Race } from '@/query/hook';
 import Box from '@/theme/Box';
 import Text from '@/theme/Text';
-import { router } from 'expo-router';
-import React, { memo } from 'react';
-import { TouchableOpacity, StyleSheet, ViewToken } from 'react-native';
+import { Race } from '@/types';
 import { getDay, getLastDay, getMonthThreeLetters } from '@/utils/date';
 import * as Haptics from 'expo-haptics';
+import { router } from 'expo-router';
+import React, { memo } from 'react';
+import { StyleSheet, TouchableOpacity, ViewToken } from 'react-native';
 import Animated, { SharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 interface RenderRaceProps {
@@ -14,21 +14,20 @@ interface RenderRaceProps {
     viewableItems: SharedValue<ViewToken[]>;
 }
 
-const RenderRace = memo(({
-    viewableItems,
-    item,
-    index
-}: RenderRaceProps) => {
+const RenderRace = memo(({ viewableItems, item, index }: RenderRaceProps) => {
     const handlePress = () => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         router.push({ pathname: '/racesessions/[meeting_key]', params: { meeting_key: item.meeting_key } });
     };
 
+    // Impossible de déplacer ça dans un hook, le fait de filtré fait planter l'application
+    // meme si je dois le filter de manière explicit
     const rStyle = useAnimatedStyle(() => {
         const isViewable = Boolean(
             viewableItems.value
                 .filter((item) => item.isViewable)
-                .find((viewableItem) => viewableItem.item.meeting_key === item.meeting_key));
+                .find((viewableItem) => viewableItem.item.meeting_key === item.meeting_key)
+        );
 
         return {
             opacity: withTiming(isViewable ? 1 : 0),
@@ -37,12 +36,11 @@ const RenderRace = memo(({
                     scale: withTiming(isViewable ? 1 : 0.6),
                 },
             ],
-        }
-    }, [])
+        };
+    }, []);
 
     return (
         <Animated.View style={rStyle}>
-
             <TouchableOpacity style={styles.container} onPress={handlePress}>
                 <Box style={styles.raceInfosContainer}>
                     <Box style={styles.raceInfosDateContainer}>
@@ -80,6 +78,8 @@ const RenderRace = memo(({
         </Animated.View>
     );
 });
+
+RenderRace.displayName = 'RenderRace';
 
 export default RenderRace;
 
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
         gap: 6,
     },
     raceName: {
-        fontSize: 18,
+        fontSize: 14,
         color: '#CCCDD7',
     },
     raceLocation: {

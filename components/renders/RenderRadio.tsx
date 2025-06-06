@@ -1,59 +1,38 @@
 import usePlaySound from '@/hooks/usePlaySound';
-import { Driver, RadioData, useFetchDrivers } from '@/query/hook';
+import useSlider from '@/hooks/useSlider';
+import { useFetchDriverByNumber } from '@/query/hook';
 import Text from '@/theme/Text';
+import { RadioData } from '@/types';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { memo, useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View, ViewToken } from 'react-native';
-import Animated, { SharedValue, useAnimatedStyle, withTiming, useSharedValue } from 'react-native-reanimated';
 import Slider from '@react-native-community/slider';
+import { memo } from 'react';
+import { StyleSheet, TouchableOpacity, View, ViewToken } from 'react-native';
+import Animated, { SharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
-interface RadioPlayerProps {
+interface RenderRadioProps {
     radioData: RadioData;
     viewableItems: SharedValue<ViewToken[]>;
 }
 
-const RadioPlayer = memo(({
+const RenderRadio = memo(({
     radioData,
     viewableItems
-}: RadioPlayerProps) => {
+}: RenderRadioProps) => {
 
-    const [currentDriver, setCurrentDriver] = useState<Driver | null>(null);
+    const { data: driver } = useFetchDriverByNumber(radioData.driver_number, radioData.session_key);
 
-    const { data: drivers } = useFetchDrivers();
+    const { duration, handlePause, handlePlay, handleSeek, handleStop, isPlaying, position } = usePlaySound({
+        recording_url: radioData.recording_url,
+    });
 
-    const { duration, handlePause, handlePlay, handleSeek, handleStop, isPlaying, position, sound } = usePlaySound({ recording_url: radioData.recording_url });
-
-    useEffect(() => {
-        if (drivers) {
-            const driver = drivers.find((d) => d.driver_number === radioData.driver_number);
-            setCurrentDriver(driver || null);
-        }
-    }, [drivers, radioData.driver_number]);
-
-    // Ajout des shared values pour position et duration
-    const positionSV = useSharedValue(position);
-    const durationSV = useSharedValue(duration);
-
-    useEffect(() => {
-        positionSV.value = position;
-    }, [position, positionSV]);
-
-    useEffect(() => {
-        durationSV.value = duration;
-    }, [duration, durationSV]);
-
-    const progressSV = useSharedValue(duration > 0 ? position / duration : 0);
-
-    useEffect(() => {
-        const progress = duration > 0 ? position / duration : 0;
-        progressSV.value = withTiming(progress, { duration: 300 });
-    }, [position, duration, progressSV]);
+    const { setSliderValue, sliderValue } = useSlider({ position });
 
     const rStyle = useAnimatedStyle(() => {
         const isViewable = Boolean(
             viewableItems.value
                 .filter((item) => item.isViewable)
-                .find((viewableItem) => viewableItem.item.recording_url === radioData.recording_url));
+                .find((viewableItem) => viewableItem.item.recording_url === radioData.recording_url)
+        );
 
         return {
             opacity: withTiming(isViewable ? 1 : 0),
@@ -62,25 +41,17 @@ const RadioPlayer = memo(({
                     scale: withTiming(isViewable ? 1 : 0.6),
                 },
             ],
-        }
-    }, [])
-
-    const [sliderValue, setSliderValue] = useState(position);
-    const [isSliding, setIsSliding] = useState(false);
-
-    useEffect(() => {
-        if (!isSliding) {
-            setSliderValue(position);
-        }
-    }, [position, isSliding]);
+        };
+    }, []);
 
     return (
         <Animated.View style={[rStyle, styles.radioItem]}>
             <Text style={styles.title}>
-                {currentDriver ? `${currentDriver.first_name} ${currentDriver.last_name}` : 'Extrait radio'}
+                {driver?.first_name ? `${driver.first_name} ${driver.last_name}` : 'Unknown Driver'}
             </Text>
+
             {radioData.date && <Text style={styles.dateText}>{new Date(radioData.date).toLocaleString('fr-FR')}</Text>}
-            {/* Suppression du point animé */}
+
             <Slider
                 style={styles.slider}
                 minimumValue={0}
@@ -89,20 +60,16 @@ const RadioPlayer = memo(({
                 minimumTrackTintColor="#e10600"
                 maximumTrackTintColor="#555"
                 thumbTintColor="#e10600"
-                onValueChange={value => {
-                    setIsSliding(true);
+                onValueChange={(value) => {
                     setSliderValue(value);
                 }}
-                onSlidingComplete={value => {
-                    setIsSliding(false);
+                onSlidingComplete={(value) => {
                     handleSeek(value);
                 }}
                 disabled={duration <= 1}
             />
             <View style={styles.timeRow}>
-                <Text style={styles.timeText}>
-                    {(duration > 0 ? (sliderValue / duration) * 100 : 0).toFixed(1)}%
-                </Text>
+                <Text style={styles.timeText}>{(duration > 0 ? (sliderValue / duration) * 100 : 0).toFixed(1)}%</Text>
                 <Text style={styles.timeText}>
                     {(sliderValue / 1000).toFixed(2)}s / {(duration / 1000).toFixed(2)}s
                 </Text>
@@ -130,11 +97,11 @@ const RadioPlayer = memo(({
             </View>
         </Animated.View>
     );
-})
+});
 
-RadioPlayer.displayName = 'RadioPlayer';
+RenderRadio.displayName = 'RenderRadio';
 
-export default RadioPlayer;
+export default RenderRadio;
 
 const styles = StyleSheet.create({
     radioItem: {

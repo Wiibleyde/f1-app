@@ -1,8 +1,8 @@
-import NoDataFound from '@/components/NoDataFound';
-import RenderSession from '@/components/RenderSession';
+import RenderSession from '@/components/renders/RenderSession';
 import SessionSkeleton from '@/components/skeleton/SessionSkeleton';
 import Header from '@/components/ui/Header';
 import Layout from '@/components/ui/Layout';
+import NoDataFound from '@/components/ui/NoDataFound';
 import { useFetchRaceSessions } from '@/query/hook';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import React from 'react';

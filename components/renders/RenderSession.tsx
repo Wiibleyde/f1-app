@@ -1,11 +1,11 @@
-import { RaceSession } from '@/query/hook';
 import Box from '@/theme/Box';
 import Text from '@/theme/Text';
-import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { RaceSession } from '@/types';
 import { formatDate, getDay, getMonthThreeLetters } from '@/utils/date';
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
+import React from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 
 interface RenderSessionProps {
     item: RaceSession;
@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
         gap: 6,
     },
     raceName: {
+        fontSize: 14,
         color: '#CCCDD7',
     },
     raceInfosText: {

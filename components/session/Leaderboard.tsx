@@ -1,11 +1,11 @@
-import { Driver, useFetchDrivers, useFetchPositionBySessionKey } from '@/query/hook';
-import React from 'react';
-import { FlatList, RefreshControl, StyleSheet, ViewToken } from 'react-native';
-import NoDataFound from '../NoDataFound';
-import { DriverSkeleton } from '../skeleton/DriverSkeleton';
-import { useSharedValue } from 'react-native-reanimated';
-import DriverItem from '../drivers/DriverItem';
 import useFlatList from '@/hooks/useFlatList';
+import { useFetchDriversBySessionKey, useFetchPositionBySessionKey } from '@/query/hook';
+import React from 'react';
+import { FlatList, RefreshControl, StyleSheet } from 'react-native';
+import DriverItem from '../renders/RenderDriver';
+import { DriverSkeleton } from '../skeleton/DriverSkeleton';
+import NoDataFound from '../ui/NoDataFound';
+import { Driver } from '@/types';
 
 interface Props {
     session_key: string;
@@ -13,9 +13,8 @@ interface Props {
 
 const Leaderboard = ({ session_key }: Props) => {
     const { data: positions, isRefetching, refetch } = useFetchPositionBySessionKey(session_key);
-    const { data: drivers, isLoading: isDriverLoading } = useFetchDrivers();
+    const { data: drivers, isLoading: isDriverLoading } = useFetchDriversBySessionKey(session_key);
     const { onViewableItemsChanged, viewableItems } = useFlatList();
-
 
     const classement: Driver[] = (positions ?? []).map((pos) => {
         const driver = drivers?.find((d) => d.driver_number === pos.driver_number);
@@ -35,19 +34,15 @@ const Leaderboard = ({ session_key }: Props) => {
             data={classement}
             contentContainerStyle={styles.listContainer}
             showsVerticalScrollIndicator={false}
-            refreshControl={
-                <RefreshControl
-                    refreshing={isRefetching}
-                    onRefresh={refetch}
-                    tintColor={'#ee0000'}
-                />
-            }
+            refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={'#ee0000'} />}
             windowSize={8}
             initialNumToRender={8}
             maxToRenderPerBatch={8}
             ListEmptyComponent={renderEmptyLeaderboard}
             onViewableItemsChanged={onViewableItemsChanged}
-            renderItem={({ item, index }) => <DriverItem item={item} position={index + 1} viewableItems={viewableItems} />}
+            renderItem={({ item, index }) => (
+                <DriverItem item={item} position={index + 1} viewableItems={viewableItems} />
+            )}
         />
     );
 };

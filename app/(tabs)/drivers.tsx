@@ -1,12 +1,11 @@
-import DriverItem from '@/components/drivers/DriverItem';
-import NoDataFound from '@/components/NoDataFound';
+import DriverItem from '@/components/renders/RenderDriver';
 import { DriverSkeleton } from '@/components/skeleton/DriverSkeleton';
 import Header from '@/components/ui/Header';
+import NoDataFound from '@/components/ui/NoDataFound';
 import useFlatList from '@/hooks/useFlatList';
 import { useFetchDrivers } from '@/query/hook';
 import Box from '@/theme/Box';
-import { FlatList, RefreshControl, StyleSheet, ViewToken } from 'react-native';
-import { useSharedValue } from 'react-native-reanimated';
+import { FlatList, RefreshControl, StyleSheet } from 'react-native';
 
 export default function HomeScreen() {
     const { data, isLoading, refetch, isRefetching } = useFetchDrivers();

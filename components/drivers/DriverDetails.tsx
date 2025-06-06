@@ -46,12 +46,12 @@ const DriverDetails = ({
         Animated.parallel([
             Animated.timing(fadeAnim, {
                 toValue: 1,
-                duration: 800,
+                duration: 1200,
                 useNativeDriver: true,
             }),
             Animated.timing(slideAnim, {
                 toValue: 0,
-                duration: 600,
+                duration: 1000,
                 useNativeDriver: true,
             }),
         ]).start();
