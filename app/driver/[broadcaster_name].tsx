@@ -1,10 +1,9 @@
 import DriverDetails from '@/components/drivers/DriverDetails';
 import DriverIdentity from '@/components/drivers/DriverIdentity';
+import { DriverDetailSkeleton } from '@/components/skeleton/DriverDetailSkeleton';
 import Header from '@/components/ui/Header';
 import Layout from '@/components/ui/Layout';
 import { useFetchDriverByBroadcasterName, useFetchSessionByKey } from '@/query/hook';
-import Box from '@/theme/Box';
-import Text from '@/theme/Text';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
@@ -29,10 +28,7 @@ export default function PilotScreen() {
         return (
             <Layout>
                 <Stack.Screen options={{ headerShown: false }} />
-                <Header title="Détails du pilote" backButton />
-                <Box style={styles.loadingContainer}>
-                    <Text style={styles.loadingText}>Loading...</Text>
-                </Box>
+                <DriverDetailSkeleton />
             </Layout>
         );
     }
