@@ -1,15 +1,13 @@
-import { useStorage } from '@/hooks/useStorage';
 import Text from '@/theme/Text';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
 const ResetButton = () => {
-    const { clearStorage } = useStorage<boolean>('onboarding', false);
-
     const handleResetDataDebug = () => {
-        clearStorage();
+        AsyncStorage.clear()
         router.replace('/onboarding');
     };
 

@@ -3,20 +3,24 @@ import DriverIdentity from '@/components/drivers/DriverIdentity';
 import { DriverDetailSkeleton } from '@/components/skeleton/DriverDetailSkeleton';
 import Header from '@/components/ui/Header';
 import Layout from '@/components/ui/Layout';
+import NoDataFound from '@/components/ui/NoDataFound';
 import { useFetchDriverByBroadcasterName, useFetchSessionByKey } from '@/query/hook';
+import Text from '@/theme/Text';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
 export default function PilotScreen() {
     const { broadcaster_name } = useLocalSearchParams();
-    const { data } = useFetchDriverByBroadcasterName(broadcaster_name as string);
+    const { data, isLoading: isDriverLoading } = useFetchDriverByBroadcasterName(broadcaster_name as string);
 
     const [sessionKey, setSessionKey] = useState<string | null>(null);
 
-    const { data: sessionData } = useFetchSessionByKey(sessionKey || '', {
+    const { data: sessionData, isLoading: isSessionDataLoading } = useFetchSessionByKey(sessionKey || '', {
         enabled: Boolean(sessionKey),
     });
+
+    const isLoading = isDriverLoading || isSessionDataLoading;
 
     useEffect(() => {
         if (data?.session_key) {
@@ -24,11 +28,22 @@ export default function PilotScreen() {
         }
     }, [data]);
 
+    if (isLoading) {
+        return (
+            <Layout>
+                <Stack.Screen options={{ headerShown: false }} />
+                <Header title="Driver Details" backButton />
+                <DriverDetailSkeleton />
+            </Layout>
+        );
+    }
+
     if (!data || !sessionData) {
         return (
             <Layout>
                 <Stack.Screen options={{ headerShown: false }} />
-                <DriverDetailSkeleton />
+                <Header title="Driver Details" backButton />
+                <NoDataFound entityName='Driver' />
             </Layout>
         );
     }

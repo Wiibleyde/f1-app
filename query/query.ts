@@ -42,21 +42,21 @@ export const fetchRaceSessions = async (meeting_key: string): Promise<RaceSessio
     return response.json();
 };
 
-export const fetchSessionByKey = async (session_key: string): Promise<RaceSession | null> => {
+export const fetchSessionByKey = async (session_key: string): Promise<RaceSession> => {
     const response = await fetch(`https://api.openf1.org/v1/sessions?session_key=${session_key}`);
     const sessions = await response.json();
     if (!sessions || sessions.length === 0) {
-        return null;
+        return {} as RaceSession;
     }
     return sessions[0];
 };
 
-export const fetchDriverByBroadcasterName = async (broadcasterName: string): Promise<Driver | null> => {
+export const fetchDriverByBroadcasterName = async (broadcasterName: string): Promise<Driver> => {
     const response = await fetch(`https://api.openf1.org/v1/drivers?broadcast_name=${broadcasterName}`);
     const drivers = await response.json();
 
     if (!drivers || drivers.length === 0) {
-        return null;
+        return {} as Driver;
     }
 
     // Sort by session_key to get the most recent data first
@@ -66,7 +66,7 @@ export const fetchDriverByBroadcasterName = async (broadcasterName: string): Pro
     const matchingDrivers = sortedDrivers.filter((driver) => driver.broadcast_name === broadcasterName);
 
     if (matchingDrivers.length === 0) {
-        return null;
+        return {} as Driver;
     }
 
     // Start with the first driver as base
